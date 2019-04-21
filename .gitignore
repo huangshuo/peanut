@@ -4,3 +4,6 @@
 
 # Compile
 /out
+
+# Test
+/src/test
