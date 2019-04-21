@@ -16,7 +16,7 @@ import java.util.Properties;
  */
 public final class PropertyUtil {
 
-  public static final String PROPERTIES_PATH = "/../config/project.properties";
+  public static final String PROPERTIES_PATH = "/config/project.properties";
   public static final String JDBC_URL = "jdbc.url";
   public static final String JDBC_USERNAME = "jdbc.username";
   public static final String JDBC_PASSWORD = "jdbc.password";

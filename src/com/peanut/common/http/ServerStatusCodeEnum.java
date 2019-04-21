@@ -10,7 +10,11 @@ package com.peanut.common.http;
  */
 public enum ServerStatusCodeEnum {
   // 成功
-  SUCCESS(200, "操作成功");
+  SUCCESS(200, "操作成功"),
+  // 资源不存在
+  NOT_FOUND(404, "资源不存在"),
+  // 身份验证失败
+  AUTHENTICATION_FAILED(401, "身份验证失败");
 
   private int code;
   private String msg;

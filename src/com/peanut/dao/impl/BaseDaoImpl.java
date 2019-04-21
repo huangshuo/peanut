@@ -59,11 +59,16 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
    * @return 删除是否成功
    */
   @Override
-  public boolean deleteByPrimaryKey(Long primaryKey) {
+  public boolean deleteByPrimaryKey(Object primaryKey) {
     StringBuilder sqlBuilder = new StringBuilder();
     sqlBuilder.append("DELETE FROM tb_").append(entityClass.getSimpleName())
         .append(" WHERE ")
-        .append(entityFields[0].getName()).append(" = ").append(primaryKey);
+        .append(entityFields[0].getName()).append(" = ");
+    if (String.class.equals(entityFields[0].getType())) {
+      sqlBuilder.append("'").append(primaryKey).append("'");
+    } else {
+      sqlBuilder.append(primaryKey);
+    }
     return executeSql(sqlBuilder);
   }
 
@@ -106,11 +111,47 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
    * @return entity
    */
   @Override
-  public T selectOneByPrimaryKey(Long primaryKey) {
+  public T selectOneByPrimaryKey(Object primaryKey) {
+    T entityTemplate = null;
+    try {
+      entityTemplate = (T) entityClass.newInstance();
+      PropertyDescriptor propertyDescriptor = new PropertyDescriptor(entityFields[0].getName(), entityClass);
+      propertyDescriptor.getWriteMethod().invoke(entityTemplate, primaryKey);
+    } catch (InstantiationException | IllegalAccessException | IntrospectionException | InvocationTargetException e) {
+      e.printStackTrace();
+    }
+    return selectOneByTemplate(entityTemplate);
+  }
+
+  /**
+   * 根据模板查找
+   *
+   * @param entityTemplate 查找模板
+   * @return entity
+   */
+  @Override
+  public T selectOneByTemplate(T entityTemplate) {
     StringBuilder sqlBuilder = new StringBuilder();
     sqlBuilder.append("SELECT * FROM tb_").append(entityClass.getSimpleName())
-        .append(" WHERE ")
-        .append(entityFields[0].getName()).append(" = ").append(primaryKey);
+        .append(" WHERE ");
+    // 获取第一个非空字段
+    try {
+      for (Field field :entityFields) {
+        PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), entityClass);
+        Object fieldValue = propertyDescriptor.getReadMethod().invoke(entityTemplate);
+        if (fieldValue != null) {
+          sqlBuilder.append(field.getName()).append(" = ");
+          if (String.class.equals(String.class.equals(field.getType())) || Date.class.equals(field.getType()) || Timestamp.class.equals(field.getType())) {
+            sqlBuilder.append("'").append(fieldValue).append("'");
+          } else {
+            sqlBuilder.append(fieldValue);
+          }
+          break;
+        }
+      }
+    } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
+      e.printStackTrace();
+    }
     ResultSet resultSet;
     T resultEntity = null;
     Connection connection = DbUtil.getConnection();

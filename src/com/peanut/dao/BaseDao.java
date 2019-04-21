@@ -24,7 +24,7 @@ public interface BaseDao<T> {
    * @param primaryKey 主键
    * @return 删除是否成功
    */
-  boolean deleteByPrimaryKey(Long primaryKey);
+  boolean deleteByPrimaryKey(Object primaryKey);
 
   /**
    * 根据模板更新
@@ -38,7 +38,14 @@ public interface BaseDao<T> {
    * @param primaryKey 主键
    * @return entity
    */
-  T selectOneByPrimaryKey(Long primaryKey);
+  T selectOneByPrimaryKey(Object primaryKey);
+
+  /**
+   * 根据模板查找
+   * @param entityTemplate 查找模板
+   * @return entity
+   */
+  T selectOneByTemplate(T entityTemplate);
 
   /**
    * 查找所有

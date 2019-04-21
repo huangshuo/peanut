@@ -7,7 +7,13 @@
         <welcome-file>static/index.html</welcome-file>
     </welcome-file-list>
     
-    <listener>
-        <listener-class>com.peanut.web.config.TestListener</listener-class>
-    </listener>
+    <filter>
+        <filter-name>requestConfigFilter</filter-name>
+        <filter-class>com.peanut.web.config.filter.CharsetConfigFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>requestConfigFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 </web-app>
