@@ -2,23 +2,23 @@ package com.peanut.entity.pojo;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-import java.io.Serializable;
-
 /**
- * description:视频一级目录 .
+ * description: .
  *
  * @author JAVASM
  * @date 2019-04-22
  * @see com.peanut.entity.pojo
  * @since 1.0
  */
-public class VFirstList implements Serializable {
+public class VideoSecondList {
 
   @JSONField(serialize = false)
-  private Long id;
+  private Long  id;
   private String icon;
   private String name;
   private Long cid;
+  @JSONField(serialize = false)
+  private Long fid;
 
   public Long getId() {
     return id;
@@ -52,12 +52,11 @@ public class VFirstList implements Serializable {
     this.cid = cid;
   }
 
-  public VFirstList(String icon, String name, Long cid) {
-    this.icon = icon;
-    this.name = name;
-    this.cid = cid;
+  public Long getFid() {
+    return fid;
   }
 
-  public VFirstList() {
+  public void setFid(Long fid) {
+    this.fid = fid;
   }
 }
