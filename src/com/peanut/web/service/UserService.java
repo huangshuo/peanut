@@ -2,6 +2,7 @@ package com.peanut.web.service;
 
 import com.peanut.common.http.ServerResponse;
 import com.peanut.entity.pojo.User;
+import com.peanut.entity.pojo.UserFeedback;
 
 /**
  * description: 用户相关Service接口.
@@ -34,4 +35,11 @@ public interface UserService {
    * @return serverResponse
    */
   ServerResponse modifyUserInfo(User user);
+
+  /**
+   * 用户反馈
+   * @param userFeedback 反馈信息对象
+   * @return serverResponse
+   */
+  ServerResponse addUserFeedBack(UserFeedback userFeedback);
 }
