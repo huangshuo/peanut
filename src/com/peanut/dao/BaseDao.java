@@ -48,6 +48,14 @@ public interface BaseDao<T> {
   T selectOneByTemplate(T entityTemplate);
 
   /**
+   * 根据模板查找List
+   * @param entityTemplate 查找模板
+   * @param fuzzyQueryFields 要开始模糊查询的字段名(可变参数列表)
+   * @return List<entity>
+   */
+  List<T> selectListByTemplate(T entityTemplate, String...fuzzyQueryFields);
+
+  /**
    * 查找所有
    * @return List<entity>
    */

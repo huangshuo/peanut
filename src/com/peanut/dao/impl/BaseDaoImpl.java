@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ import java.util.List;
  * @see com.peanut.dao.impl
  * @since 1.0
  */
+@SuppressWarnings("unchecked")
 public class BaseDaoImpl<T> implements BaseDao<T> {
 
   /**
@@ -31,7 +33,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
    */
   private Field[] entityFields;
 
-  public BaseDaoImpl() {
+  BaseDaoImpl() {
     ParameterizedType parameterizedType = (ParameterizedType) this.getClass().getGenericSuperclass();
     entityClass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
     entityFields = entityClass.getDeclaredFields();
@@ -88,12 +90,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
       Field field = entityFields[i];
       Object fieldValue = getFieldValue(entityTemplate, field);
       if (fieldValue != null) {
-        sqlBuilder.append(field.getName()).append(" = ");
-        if (String.class.equals(field.getType()) || Date.class.equals(field.getType()) || Timestamp.class.equals(field.getType())) {
-          sqlBuilder.append("'").append(fieldValue).append("'");
-        } else {
-          sqlBuilder.append(fieldValue);
-        }
+        sqlBuilder.append(getNameValueSql(field, fieldValue, false));
         sqlBuilder.append(",");
       }
     }
@@ -133,20 +130,14 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
   public T selectOneByTemplate(T entityTemplate) {
     StringBuilder sqlBuilder = new StringBuilder();
     sqlBuilder.append("SELECT * FROM tb_").append(entityClass.getSimpleName())
-        .append(" WHERE ");
-    // 获取第一个非空字段
+        .append(" WHERE 1 = 1 ");
+    // 获取非空字段
     try {
       for (Field field :entityFields) {
         PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), entityClass);
         Object fieldValue = propertyDescriptor.getReadMethod().invoke(entityTemplate);
         if (fieldValue != null) {
-          sqlBuilder.append(field.getName()).append(" = ");
-          if (String.class.equals(String.class.equals(field.getType())) || Date.class.equals(field.getType()) || Timestamp.class.equals(field.getType())) {
-            sqlBuilder.append("'").append(fieldValue).append("'");
-          } else {
-            sqlBuilder.append(fieldValue);
-          }
-          break;
+          sqlBuilder.append("AND ").append(getNameValueSql(field, fieldValue, false));
         }
       }
     } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
@@ -177,6 +168,38 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
   }
 
   /**
+   * 根据模板查找List
+   *
+   * @param entityTemplate   查找模板
+   * @param fuzzyQueryFields 要开始模糊查询的字段名(可变参数列表)
+   * @return List<entity>
+   */
+  @Override
+  public List<T> selectListByTemplate(T entityTemplate, String... fuzzyQueryFields) {
+    StringBuilder sqlBuilder = new StringBuilder();
+    sqlBuilder.append("SELECT * FROM tb_").append(entityClass.getSimpleName())
+        .append(" WHERE 1 = 1 ");
+    try {
+      for (Field field :entityFields) {
+        PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), entityClass);
+        Object fieldValue = propertyDescriptor.getReadMethod().invoke(entityTemplate);
+        if (fieldValue != null) {
+          sqlBuilder.append("AND ");
+          // 模糊查询参数中包含此字段
+          if (fuzzyQueryFields != null && Arrays.asList(fuzzyQueryFields).contains(field.getName())) {
+            sqlBuilder.append(getNameValueSql(field, fieldValue, true));
+          } else {
+            sqlBuilder.append(getNameValueSql(field, fieldValue, false));
+          }
+        }
+      }
+    } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
+      e.printStackTrace();
+    }
+    return executeSqlForList(sqlBuilder);
+  }
+
+  /**
    * 查找所有
    *
    * @return List<entity>
@@ -185,9 +208,39 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
   public List<T> selectAll() {
     StringBuilder sqlBuilder = new StringBuilder();
     sqlBuilder.append("SELECT * FROM tb_").append(entityClass.getSimpleName());
-    ResultSet resultSet;
+    return executeSqlForList(sqlBuilder);
+  }
+
+  /**
+   * 执行返回操作成功与否的增加/修改/删除语句
+   * @param sqlBuilder sql语句
+   * @return boolean
+   */
+  private boolean executeSql(StringBuilder sqlBuilder) {
+    boolean succeed = false;
+    Connection connection = DbUtil.getConnection();
+    try (PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString())) {
+      DbUtil.startTransaction();
+      int rowAffected = preparedStatement.executeUpdate();
+      succeed = rowAffected > 0 && DbUtil.commit();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      DbUtil.rollback();
+    } finally {
+      DbUtil.closeConnection();
+    }
+    return succeed;
+  }
+
+  /**
+   * 执行返回List的查询语句
+   * @param sqlBuilder sql语句
+   * @return List<T>
+   */
+  private List<T> executeSqlForList(StringBuilder sqlBuilder) {
     List<T> resultList = new ArrayList<>();
     Connection connection = DbUtil.getConnection();
+    ResultSet resultSet;
     try (PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString())) {
       resultSet = preparedStatement.executeQuery();
       while (resultSet.next()) {
@@ -208,6 +261,24 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
       DbUtil.closeConnection();
     }
     return resultList;
+  }
+
+  /**
+   * 获取字段值
+   * @param field 字段
+   * @param entity entity对象
+   * @return Object
+   */
+  private Object getFieldValue(T entity, Field field) {
+    Object fieldValue = null;
+    try {
+      PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), entityClass);
+      // 通过get方法获取指定字段的值
+      fieldValue = propertyDescriptor.getReadMethod().invoke(entity);
+    } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
+      e.printStackTrace();
+    }
+    return fieldValue;
   }
 
   /**
@@ -252,41 +323,33 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
   }
 
   /**
-   * 获取字段值
-   * @param field 字段
-   * @param entity entity对象
-   * @return Object
+   * 拼接字段名 = 字段值/字段名 like 字段值
+   * @param field 字段对象
+   * @param fieldValue 字段值
+   * @param fuzzy 是否开始模糊查询
+   * @return String
    */
-  private Object getFieldValue(T entity, Field field) {
-    Object fieldValue = null;
-    try {
-      PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), entityClass);
-      // 通过get方法获取指定字段的值
-      fieldValue = propertyDescriptor.getReadMethod().invoke(entity);
-    } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
-      e.printStackTrace();
+  private String getNameValueSql(Field field, Object fieldValue, boolean fuzzy) {
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append(field.getName());
+    if (fuzzy) {
+      stringBuilder.append(" like ");
+    } else {
+      stringBuilder.append(" = ");
     }
-    return fieldValue;
-  }
-
-  /**
-   * 执行指定的sql语句
-   * @param sqlBuilder sqlBuilder
-   * @return boolean
-   */
-  private boolean executeSql(StringBuilder sqlBuilder) {
-    boolean succeed = false;
-    Connection connection = DbUtil.getConnection();
-    try (PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString())) {
-      DbUtil.startTransaction();
-      int rowAffected = preparedStatement.executeUpdate();
-      succeed = rowAffected > 0 && DbUtil.commit();
-    } catch (SQLException e) {
-      e.printStackTrace();
-      DbUtil.rollback();
-    } finally {
-      DbUtil.closeConnection();
+    stringBuilder.append("'");
+    if (fuzzy) {
+      stringBuilder.append("%");
     }
-    return succeed;
+    if (String.class.equals(field.getType()) || Date.class.equals(field.getType()) || Timestamp.class.equals(field.getType())) {
+      stringBuilder.append(fieldValue);
+    } else {
+      stringBuilder.append(fieldValue);
+    }
+    if (fuzzy) {
+      stringBuilder.append("%");
+    }
+    stringBuilder.append("'");
+    return stringBuilder.toString();
   }
 }
