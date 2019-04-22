@@ -17,7 +17,7 @@ public class VideoSecondList {
   private String icon;
   private String name;
   private Long cid;
-  @JSONField(serialize = false)
+
   private Long fid;
 
   public Long getId() {

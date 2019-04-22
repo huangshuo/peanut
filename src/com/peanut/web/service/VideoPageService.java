@@ -1,9 +1,8 @@
 package com.peanut.web.service;
 
 import com.peanut.common.http.ServerResponse;
-import com.peanut.entity.pojo.VideoSecondList;
+import com.peanut.entity.pojo.VideoPage;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -14,6 +13,6 @@ import java.util.List;
  * @see com.peanut.web.service
  * @since 1.0
  */
-public interface VideoSecondListService {
-    ServerResponse<List<VideoSecondList>> videoSecondList(Long fid);
+public interface VideoPageService {
+  ServerResponse<List<VideoPage>> videoPage(Long fid);
 }

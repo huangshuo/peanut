@@ -2,7 +2,7 @@ package com.peanut.web.controller.video;
 
 import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServerResponse;
-import com.peanut.web.service.impl.VideoSecondListServiceImpl;
+import com.peanut.web.service.impl.VideoPageServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,11 +17,11 @@ import java.io.PrintWriter;
  *
  * @author JAVASM
  * @date 2019-04-22
- * @see com.peanut.web.controller
+ * @see com.peanut.web.controller.video
  * @since 1.0
  */
-@WebServlet(name = "videoSecondList", urlPatterns = "/video/secondList")
-public class VideoSecondListController extends HttpServlet {
+@WebServlet(name = "videoPage",urlPatterns = "/video/Page")
+public class VideoPageController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     doPost(req, resp);
@@ -30,7 +30,7 @@ public class VideoSecondListController extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     long fid=Long.parseLong(req.getParameter("fid"));
-    ServerResponse serverResponse=new VideoSecondListServiceImpl().videoSecondList(fid);
+    ServerResponse serverResponse=new VideoPageServiceImpl().videoPage(fid);
     PrintWriter pw=resp.getWriter();
     pw.print(JSON.toJSONString(serverResponse));
     pw.flush();

@@ -21,10 +21,10 @@ public class VideoSecondListServiceImpl implements VideoSecondListService {
 
 
   @Override
-  public ServerResponse<List<VideoSecondList>> videoSecondList(Long cid) {
+  public ServerResponse<List<VideoSecondList>> videoSecondList(Long fid) {
     BaseDao bd=new VideoSecondListDaoImpl();
     VideoSecondList videoSecondList=new VideoSecondList();
-    videoSecondList.setCid(cid);
+    videoSecondList.setFid(fid);
     List<VideoSecondList> list =bd.selectListByTemplate(videoSecondList);
     ServerResponse<List<VideoSecondList>> serverResponse=ServerResponse.successWithData(list);
     return serverResponse;
