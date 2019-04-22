@@ -1,6 +1,7 @@
 package com.peanut.dao.impl;
 
 import com.peanut.common.util.DbUtil;
+import com.peanut.common.util.StringUtil;
 import com.peanut.dao.BaseDao;
 
 import java.beans.IntrospectionException;
@@ -48,7 +49,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
   @Override
   public boolean insert(T entity) {
     StringBuilder sqlBuilder = new StringBuilder();
-    sqlBuilder.append("INSERT INTO tb_").append(entityClass.getSimpleName());
+    sqlBuilder.append("INSERT INTO ").append(getTableName());
     sqlBuilder.append(getFieldSql(entity))
         .append(" VALUES").append(getValueSql(entity));
     return executeSql(sqlBuilder);
@@ -63,7 +64,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
   @Override
   public boolean deleteByPrimaryKey(Object primaryKey) {
     StringBuilder sqlBuilder = new StringBuilder();
-    sqlBuilder.append("DELETE FROM tb_").append(entityClass.getSimpleName())
+    sqlBuilder.append("DELETE FROM ").append(getTableName())
         .append(" WHERE ")
         .append(entityFields[0].getName()).append(" = ");
     if (String.class.equals(entityFields[0].getType())) {
@@ -83,7 +84,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
   @Override
   public boolean updateByTemplate(T entityTemplate) {
     StringBuilder sqlBuilder = new StringBuilder();
-    sqlBuilder.append("UPDATE tb_").append(entityClass.getSimpleName())
+    sqlBuilder.append("UPDATE ").append(getTableName())
         .append(" SET ");
     // 不更新主键(主键默认为第一个字段)
     for (int i = 1; i < entityFields.length; i++) {
@@ -129,7 +130,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
   @Override
   public T selectOneByTemplate(T entityTemplate) {
     StringBuilder sqlBuilder = new StringBuilder();
-    sqlBuilder.append("SELECT * FROM tb_").append(entityClass.getSimpleName())
+    sqlBuilder.append("SELECT * FROM ").append(getTableName())
         .append(" WHERE 1 = 1 ");
     // 获取非空字段
     try {
@@ -154,7 +155,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         for (Field field : entityFields) {
           PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), entityClass);
           // 获取resultSet中指定字段的值
-          Object fieldValue = resultSet.getObject(field.getName());
+          Object fieldValue = resultSet.getObject(getColumnName(field));
           // 通过set方法设置该字段的值
           propertyDescriptor.getWriteMethod().invoke(resultEntity, fieldValue);
         }
@@ -177,7 +178,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
   @Override
   public List<T> selectListByTemplate(T entityTemplate, String... fuzzyQueryFields) {
     StringBuilder sqlBuilder = new StringBuilder();
-    sqlBuilder.append("SELECT * FROM tb_").append(entityClass.getSimpleName())
+    sqlBuilder.append("SELECT * FROM ").append(getTableName())
         .append(" WHERE 1 = 1 ");
     try {
       for (Field field :entityFields) {
@@ -186,7 +187,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         if (fieldValue != null) {
           sqlBuilder.append("AND ");
           // 模糊查询参数中包含此字段
-          if (fuzzyQueryFields != null && Arrays.asList(fuzzyQueryFields).contains(field.getName())) {
+          if (fuzzyQueryFields != null && Arrays.asList(fuzzyQueryFields).contains(getColumnName(field))) {
             sqlBuilder.append(getNameValueSql(field, fieldValue, true));
           } else {
             sqlBuilder.append(getNameValueSql(field, fieldValue, false));
@@ -207,7 +208,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
   @Override
   public List<T> selectAll() {
     StringBuilder sqlBuilder = new StringBuilder();
-    sqlBuilder.append("SELECT * FROM tb_").append(entityClass.getSimpleName());
+    sqlBuilder.append("SELECT * FROM ").append(getTableName());
     return executeSqlForList(sqlBuilder);
   }
 
@@ -249,7 +250,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         for (Field field : entityFields) {
           PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), entityClass);
           // 获取resultSet中指定字段的值
-          Object fieldValue = resultSet.getObject(field.getName());
+          Object fieldValue = resultSet.getObject(getColumnName(field));
           // 通过set方法设置该字段的值
           propertyDescriptor.getWriteMethod().invoke(resultEntity, fieldValue);
         }
@@ -291,7 +292,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     for (Field field : entityFields) {
       if (getFieldValue(entity, field) != null) {
         // 拼接不为空的字段名
-        stringBuilder.append(field.getName()).append(",");
+        stringBuilder.append(getColumnName(field)).append(",");
       }
     }
     // 将最后一个,替换为)
@@ -331,25 +332,39 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
    */
   private String getNameValueSql(Field field, Object fieldValue, boolean fuzzy) {
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(field.getName());
+    stringBuilder.append(getColumnName(field));
     if (fuzzy) {
       stringBuilder.append(" like ");
     } else {
       stringBuilder.append(" = ");
     }
-    stringBuilder.append("'");
     if (fuzzy) {
-      stringBuilder.append("%");
-    }
-    if (String.class.equals(field.getType()) || Date.class.equals(field.getType()) || Timestamp.class.equals(field.getType())) {
-      stringBuilder.append(fieldValue);
+      stringBuilder.append("'").append("%").append(fieldValue).append("%").append("'");
     } else {
-      stringBuilder.append(fieldValue);
+      if (String.class.equals(field.getType()) || Date.class.equals(field.getType()) || Timestamp.class.equals(field.getType())) {
+        stringBuilder.append("'").append(fieldValue).append("'");
+      } else {
+        stringBuilder.append(fieldValue);
+      }
     }
-    if (fuzzy) {
-      stringBuilder.append("%");
-    }
-    stringBuilder.append("'");
     return stringBuilder.toString();
   }
+
+  /**
+   * 获取实体类对应的数据库表名(tb_开头, 驼峰式转换为下划线)
+   * @return String
+   */
+  private String getTableName() {
+    return "tb" + StringUtil.convertCamelCaseToSnakeCase(entityClass.getSimpleName());
+  }
+
+  /**
+   * 获取字段的数据库列名
+   * @param field 字段对象
+   * @return String
+   */
+  private String getColumnName(Field field) {
+    return StringUtil.convertCamelCaseToSnakeCase(field.getName());
+  }
+
 }
