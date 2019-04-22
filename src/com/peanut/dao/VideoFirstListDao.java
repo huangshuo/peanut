@@ -1,6 +1,6 @@
 package com.peanut.dao;
 
-import com.peanut.entity.pojo.VFirstList;
+import com.peanut.entity.pojo.VideoFirstList;
 
 /**
  * description: .
@@ -10,7 +10,7 @@ import com.peanut.entity.pojo.VFirstList;
  * @see com.peanut.dao
  * @since 1.0
  */
-public interface VFirstListDao extends BaseDao<VFirstList> {
+public interface VideoFirstListDao extends BaseDao<VideoFirstList> {
 
 
 }

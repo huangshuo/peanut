@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @see com.peanut.entity.pojo
  * @since 1.0
  */
-public class VFirstList implements Serializable {
+public class VideoFirstList implements Serializable {
 
   @JSONField(serialize = false)
   private Long id;
@@ -52,12 +52,12 @@ public class VFirstList implements Serializable {
     this.cid = cid;
   }
 
-  public VFirstList(String icon, String name, Long cid) {
+  public VideoFirstList(String icon, String name, Long cid) {
     this.icon = icon;
     this.name = name;
     this.cid = cid;
   }
 
-  public VFirstList() {
+  public VideoFirstList() {
   }
 }

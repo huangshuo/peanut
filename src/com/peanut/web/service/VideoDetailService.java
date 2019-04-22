@@ -1,7 +1,9 @@
 package com.peanut.web.service;
 
+
 import com.peanut.common.http.ServerResponse;
-import com.peanut.entity.pojo.VFirstList;
+import com.peanut.entity.pojo.VideoDetail;
+
 
 /**
  * description: .
@@ -11,6 +13,6 @@ import com.peanut.entity.pojo.VFirstList;
  * @see com.peanut.web.service
  * @since 1.0
  */
-public interface VFirstListService {
-    ServerResponse<VFirstList> vfirstlist();
+public interface VideoDetailService {
+  ServerResponse<VideoDetail> videoDetail(String fid);
 }
