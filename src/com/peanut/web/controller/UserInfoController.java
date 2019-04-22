@@ -12,22 +12,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * description: 密码登录.
+ * description: 获取个人信息.
  *
  * @author huangs
- * @date 2019-04-21
+ * @date 2019-04-22
  * @see com.peanut.web.controller
  * @since 1.0
  */
-@WebServlet(name = "login", urlPatterns = "/login")
-public class LoginController extends HttpServlet {
+@WebServlet(name = "userInfo", urlPatterns = "/user/info")
+public class UserInfoController extends HttpServlet {
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    String username = req.getParameter("username");
-    String password = req.getParameter("password");
-    ServerResponse serverResponse = new UserServiceImpl().login(username, password);
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     PrintWriter printWriter = resp.getWriter();
+    long uid = Long.parseLong(req.getParameter("uid"));
+    ServerResponse serverResponse = new UserServiceImpl().getUserInfo(uid);
     printWriter.println(JSON.toJSONString(serverResponse));
     printWriter.flush();
     printWriter.close();

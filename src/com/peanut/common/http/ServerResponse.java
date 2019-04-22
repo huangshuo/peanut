@@ -1,8 +1,6 @@
 package com.peanut.common.http;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.annotation.JSONType;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import java.io.Serializable;
 
@@ -14,19 +12,21 @@ import java.io.Serializable;
  * @see com.peanut.common.http
  * @since 1.0
  */
-@JSONType(serialzeFeatures = { SerializerFeature.WriteMapNullValue })
 public class ServerResponse<T> implements Serializable {
   /**
    * 响应状态码
    */
+  @JSONField(ordinal = 1)
   private int code;
   /**
    * 响应信息
    */
+  @JSONField(ordinal = 2)
   private String msg;
   /**
    * 响应数据
    */
+  @JSONField(ordinal = 3)
   private T data;
 
   private ServerResponse(int code, String msg) {

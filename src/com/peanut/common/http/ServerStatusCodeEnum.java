@@ -11,8 +11,12 @@ package com.peanut.common.http;
 public enum ServerStatusCodeEnum {
   // 成功
   SUCCESS(200, "操作成功"),
+  // 失败
+  FAIL(400, "操作失败"),
   // 资源不存在
   NOT_FOUND(404, "资源不存在"),
+  // 资源名重复
+  DUPLICATE_KEY(402, "资源名重复"),
   // 身份验证失败
   AUTHENTICATION_FAILED(401, "身份验证失败");
 

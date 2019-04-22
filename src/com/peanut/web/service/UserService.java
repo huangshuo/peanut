@@ -20,4 +20,18 @@ public interface UserService {
    * @return serverResponse
    */
   ServerResponse<User> login(String username, String password);
+
+  /**
+   * 获取用户个人信息
+   * @param uid 用户id
+   * @return serverResponse
+   */
+  ServerResponse<User> getUserInfo(long uid);
+
+  /**
+   * 修改用户个人信息
+   * @param user 修改后的用户信息对象
+   * @return serverResponse
+   */
+  ServerResponse modifyUserInfo(User user);
 }

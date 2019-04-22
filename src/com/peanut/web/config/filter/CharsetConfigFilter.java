@@ -4,7 +4,7 @@ import javax.servlet.*;
 import java.io.IOException;
 
 /**
- * description: 统一设置编码filter.
+ * description: 设置请求编码和响应contentType.
  *
  * @author huangs
  * @date 2019-04-21
@@ -14,13 +14,13 @@ import java.io.IOException;
 public class CharsetConfigFilter implements Filter {
 
   @Override
-  public void init(FilterConfig filterConfig) throws ServletException {
+  public void init(FilterConfig filterConfig) {
   }
 
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
     servletRequest.setCharacterEncoding("UTF-8");
-    servletResponse.setCharacterEncoding("UTF-8");
+    servletResponse.setContentType("application/json;charset=utf-8");
     filterChain.doFilter(servletRequest, servletResponse);
   }
 
