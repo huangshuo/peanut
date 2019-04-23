@@ -3,7 +3,7 @@ package com.peanut.entity.pojo;
 /**
  * description: .
  *
- * @author JAVASM
+ * @author zhaomaomao
  * @date 2019-04-22
  * @see com.peanut.entity.pojo
  * @since 1.0

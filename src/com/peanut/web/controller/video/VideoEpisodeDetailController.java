@@ -13,15 +13,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * description:视频二级菜单响应 .
+ * description:视频分集响应 .
  *
  * @author zhaomaomao
  * @date 2019-04-22
- * @see com.peanut.web.controller
+ * @see com.peanut.web.controller.video
  * @since 1.0
  */
-@WebServlet(name = "videoSecondList", urlPatterns = "/video/secondList")
-public class VideoSecondListController extends HttpServlet {
+@WebServlet(name = "videoEpisodeDetail",urlPatterns = "/video/episode/detail")
+public class VideoEpisodeDetailController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     doPost(req, resp);
@@ -29,10 +29,10 @@ public class VideoSecondListController extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    long fid=Long.parseLong(req.getParameter("fid"));
-    ServerResponse serverResponse=new VideoServiceImpl().videoSecondList(fid);
+    String vid=req.getParameter("vid");
+    ServerResponse serverResponse=new VideoServiceImpl().videoEpisodeDetail(vid);
     PrintWriter pw=resp.getWriter();
-    pw.print(JSON.toJSONString(serverResponse));
+    pw.write(JSON.toJSONString(serverResponse));
     pw.flush();
     pw.close();
   }

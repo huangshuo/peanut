@@ -5,7 +5,6 @@ import com.peanut.common.http.ServerResponse;
 import com.peanut.entity.pojo.UserFeedback;
 import com.peanut.web.service.impl.UserServiceImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
