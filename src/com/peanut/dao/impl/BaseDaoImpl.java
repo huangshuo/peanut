@@ -196,7 +196,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     // 获取总行数
     int totalRow = executeSqlForList(sqlBuilder).size();
     // 总页数
-    int totalPage = totalRow / pageSize + 1;
+    int totalPage = totalRow % pageSize == 0 ? totalRow /pageSize : totalRow / pageSize + 1;
     boolean isFirstPage = pageNum == 1;
     boolean isLastPage = pageNum == totalPage;
     pageNum = pageNum > 0 ? pageNum : 1;
