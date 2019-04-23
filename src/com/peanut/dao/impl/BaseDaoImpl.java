@@ -231,7 +231,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), entityClass);
         Object fieldValue = propertyDescriptor.getReadMethod().invoke(entityTemplate);
         if (fieldValue != null) {
-          sqlBuilder.append("AND ");
+          sqlBuilder.append(" AND ");
           // 模糊查询参数中包含此字段
           if (fuzzyQueryFields != null && Arrays.asList(fuzzyQueryFields).contains(getColumnName(field))) {
             sqlBuilder.append(getNameValueSql(field, fieldValue, true));
