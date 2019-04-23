@@ -1,4 +1,4 @@
-package com.peanut.entity.pojo;
+package com.peanut.entity.pojo.novel;
 
 /**
  * description: 小说分类信息.
@@ -8,7 +8,7 @@ package com.peanut.entity.pojo;
  * @see com.peanut.entity.pojo
  * @since 1.0
  */
-public class NovelClassificationInfo {
+public class NovelType {
 
 	/**
 	 * 分类ID
@@ -85,7 +85,7 @@ public class NovelClassificationInfo {
 	 */
 	@Override
 	public String toString() {
-		return "NovelClassificationInfo{" +
+		return "NovelType{" +
 				"typeId=" + typeId +
 				", typeName='" + typeName + '\'' +
 				", typeDescription='" + typeDescription + '\'' +

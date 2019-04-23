@@ -1,4 +1,4 @@
-package com.peanut.entity.pojo;
+package com.peanut.entity.pojo.novel;
 
 import java.math.BigDecimal;
 
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * @see com.peanut.entity.pojo
  * @since 1.0
  */
-public class NovelChapterInfo {
+public class NovelChapter {
 
 	/**
 	 * 章节ID
@@ -40,7 +40,7 @@ public class NovelChapterInfo {
 	/**
 	 * 是否需要VIP
 	 */
-	private Boolean isVip;
+	private Integer isVip;
 
 	public Long getChapterId() {
 		return chapterId;
@@ -82,11 +82,11 @@ public class NovelChapterInfo {
 		this.sortId = sortId;
 	}
 
-	public Boolean getVip() {
+	public Integer getVip() {
 		return isVip;
 	}
 
-	public void setVip(Boolean vip) {
+	public void setVip(Integer vip) {
 		isVip = vip;
 	}
 
@@ -113,7 +113,7 @@ public class NovelChapterInfo {
 	 */
 	@Override
 	public String toString() {
-		return "NovelChapterInfo{" +
+		return "NovelChapter{" +
 				"chapterId=" + chapterId +
 				", chapterName='" + chapterName + '\'' +
 				", novelId=" + novelId +
