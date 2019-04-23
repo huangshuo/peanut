@@ -4,6 +4,7 @@ import com.peanut.common.http.ServerResponse;
 import com.peanut.entity.pojo.VideoPage;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * description: .
@@ -14,5 +15,5 @@ import java.util.List;
  * @since 1.0
  */
 public interface VideoPageService {
-  ServerResponse<List<VideoPage>> videoPage(Long fid);
+  ServerResponse<Map<String,Object>> videoPage(Long fid);
 }

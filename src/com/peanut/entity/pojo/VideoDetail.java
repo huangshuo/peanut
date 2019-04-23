@@ -19,6 +19,7 @@ public class VideoDetail {
   private Integer length;
   private String vid;
   private Long fid;
+
   public Long getId() {
     return id;
   }
