@@ -13,7 +13,7 @@ public class NovelType {
 	/**
 	 * 分类ID
 	 */
-	private Long typeId;
+	private Integer typeId;
 
 	/**
 	 * 分类名称
@@ -28,13 +28,13 @@ public class NovelType {
 	/**
 	 * 此分类小说数
 	 */
-	private Long novelCount;
+	private Integer novelCount;
 
-	public Long getTypeId() {
+	public Integer getTypeId() {
 		return typeId;
 	}
 
-	public void setTypeId(Long typeId) {
+	public void setTypeId(Integer typeId) {
 		this.typeId = typeId;
 	}
 
@@ -54,11 +54,11 @@ public class NovelType {
 		this.typeDescription = typeDescription;
 	}
 
-	public Long getNovelCount() {
+	public Integer getNovelCount() {
 		return novelCount;
 	}
 
-	public void setNovelCount(Long novelCount) {
+	public void setNovelCount(Integer novelCount) {
 		this.novelCount = novelCount;
 	}
 

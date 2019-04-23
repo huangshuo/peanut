@@ -16,7 +16,7 @@ public class Novel {
 	/**
 	 * 小说ID
 	 */
-	private Long novelId;
+	private Integer novelId;
 
 	/**
 	 * 小说名称
@@ -26,7 +26,7 @@ public class Novel {
 	/**
 	 * 小说类型ID
 	 */
-	private Long typeId;
+	private Integer typeId;
 
 	/**
 	 * 小说简介
@@ -56,18 +56,18 @@ public class Novel {
 	/**
 	 * 读者统计
 	 */
-	private Long readCount;
+	private Integer readCount;
 
 	/**
 	 * 字数统计
 	 */
-	private Long wordCount;
+	private Integer wordCount;
 
-	public Long getNovelId() {
+	public Integer getNovelId() {
 		return novelId;
 	}
 
-	public void setNovelId(Long novelId) {
+	public void setNovelId(Integer novelId) {
 		this.novelId = novelId;
 	}
 
@@ -79,11 +79,11 @@ public class Novel {
 		this.novelName = novelName;
 	}
 
-	public Long getTypeId() {
+	public Integer getTypeId() {
 		return typeId;
 	}
 
-	public void setTypeId(Long typeId) {
+	public void setTypeId(Integer typeId) {
 		this.typeId = typeId;
 	}
 
@@ -127,19 +127,19 @@ public class Novel {
 		this.updataDate = updataDate;
 	}
 
-	public Long getReadCount() {
+	public Integer getReadCount() {
 		return readCount;
 	}
 
-	public void setReadCount(Long readCount) {
+	public void setReadCount(Integer readCount) {
 		this.readCount = readCount;
 	}
 
-	public Long getWordCount() {
+	public Integer getWordCount() {
 		return wordCount;
 	}
 
-	public void setWordCount(Long wordCount) {
+	public void setWordCount(Integer wordCount) {
 		this.wordCount = wordCount;
 	}
 

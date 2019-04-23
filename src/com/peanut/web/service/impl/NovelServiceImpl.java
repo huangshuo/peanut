@@ -34,7 +34,7 @@ public class NovelServiceImpl implements NovelService {
 	 * @return serverResponse
 	 */
 	@Override
-	public ServerResponse<PageInfo<Novel>> pagingQueryByTypeId(long novelTypeId, int start, int rows) {
+	public ServerResponse<PageInfo<Novel>> pagingQueryByTypeId(int novelTypeId, int start, int rows) {
 		Novel bean = new Novel();
 		bean.setTypeId(novelTypeId);
 		PageInfo<Novel> pageInfo = novelDao.pageQueryByTemplate(start, rows, bean);
@@ -50,7 +50,7 @@ public class NovelServiceImpl implements NovelService {
 	 * @return serverResponse
 	 */
 	@Override
-	public ServerResponse<Novel> novelDetail(long novelId) {
+	public ServerResponse<Novel> novelDetail(int novelId) {
 
 		Novel bean = novelDao.selectOneByPrimaryKey(novelId);
 		if(bean.getNovelId() == null){
@@ -67,7 +67,7 @@ public class NovelServiceImpl implements NovelService {
 	 * @return serverResponse
 	 */
 	@Override
-	public ServerResponse<PageInfo<Novel>> pagingQueryByNovelId(long novelId, int start, int rows) {
+	public ServerResponse<PageInfo<Novel>> pagingQueryByNovelId(int novelId, int start, int rows) {
 
 		Novel bean = new Novel();
 		bean.setNovelId(novelId);
@@ -87,7 +87,7 @@ public class NovelServiceImpl implements NovelService {
 	 * @return serverResponse
 	 */
 	@Override
-	public ServerResponse<NovelChapter> chapterContext(long userId, long novelId, int sortId, int isVip) {
+	public ServerResponse<NovelChapter> getChapterContext(int userId, int novelId, int sortId, int isVip) {
 
 		NovelChapter chapterBean = new NovelChapter();
 		chapterBean.setNovelId(novelId);
@@ -107,7 +107,7 @@ public class NovelServiceImpl implements NovelService {
 	 * @return serverResponse
 	 */
 	@Override
-	public ServerResponse<PageInfo<Novel>>pagingQueryByNovelIdSameType(long novelId, int start, int rows) {
+	public ServerResponse<PageInfo<Novel>>pagingQueryByNovelIdSameType(int novelId, int start, int rows) {
 
 		Novel bean = novelDao.selectOneByPrimaryKey(novelId);
 		if(bean.getNovelId() == null){

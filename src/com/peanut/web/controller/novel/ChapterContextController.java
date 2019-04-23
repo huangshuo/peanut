@@ -3,10 +3,7 @@ package com.peanut.web.controller.novel;
 import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServerResponse;
 import com.peanut.entity.pojo.novel.requestParameter.ChapterContextRequestParameter;
-import com.peanut.web.service.NovelService;
 import com.peanut.web.service.impl.NovelServiceImpl;
-
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,13 +27,12 @@ public class ChapterContextController extends HttpServlet {
 
 		ChapterContextRequestParameter ccrp = new ChapterContextRequestParameter();
 
-		ccrp.setUserId(Long.parseLong(req.getParameter("userId")));
+		ccrp.setUserId(Integer.parseInt(req.getParameter("userId")));
 		ccrp.setIsVip(Integer.parseInt(req.getParameter("isVip")));
-		ccrp.setNovelId(Long.parseLong(req.getParameter("novelId")));
+		ccrp.setNovelId(Integer.parseInt(req.getParameter("novelId")));
 		ccrp.setSortId(Integer.parseInt(req.getParameter("sortId")));
 
-		NovelService service = new NovelServiceImpl();
-		ServerResponse serverResponse = service.chapterContext(ccrp.getUserId(), ccrp.getNovelId(), ccrp.getSortId(), ccrp.getIsVip());
+		ServerResponse serverResponse =  new NovelServiceImpl().getChapterContext(ccrp.getUserId(), ccrp.getNovelId(), ccrp.getSortId(), ccrp.getIsVip());
 		String json = JSON.toJSONString(serverResponse);
 		PrintWriter printWriter = resp.getWriter();
 		printWriter.println(json);

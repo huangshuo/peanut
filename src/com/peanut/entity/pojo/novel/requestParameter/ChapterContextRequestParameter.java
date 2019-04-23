@@ -13,12 +13,12 @@ public class ChapterContextRequestParameter {
 	/**
 	 * 用户ID
 	 */
-	private Long userId;
+	private Integer userId;
 
 	/**
 	 * 小说ID
 	 */
-	private Long novelId;
+	private Integer novelId;
 
 	/**
 	 * 章节排号
@@ -30,19 +30,19 @@ public class ChapterContextRequestParameter {
 	 */
 	private Integer isVip;
 
-	public Long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
-	public Long getNovelId() {
+	public Integer getNovelId() {
 		return novelId;
 	}
 
-	public void setNovelId(Long novelId) {
+	public void setNovelId(Integer novelId) {
 		this.novelId = novelId;
 	}
 

@@ -15,7 +15,7 @@ public class NovelChapter {
 	/**
 	 * 章节ID
 	 */
-	private Long chapterId;
+	private Integer chapterId;
 
 	/**
 	 * 章节名称
@@ -25,12 +25,12 @@ public class NovelChapter {
 	/**
 	 * 小说ID
 	 */
-	private Long novelId;
+	private Integer novelId;
 
 	/**
 	 * 章节价格（￥）
 	 */
-	private BigDecimal price = BigDecimal.ZERO;
+	private BigDecimal price;
 
 	/**
 	 * 章节序号，即第几章
@@ -42,11 +42,11 @@ public class NovelChapter {
 	 */
 	private Integer isVip;
 
-	public Long getChapterId() {
+	public Integer getChapterId() {
 		return chapterId;
 	}
 
-	public void setChapterId(Long chapterId) {
+	public void setChapterId(Integer chapterId) {
 		this.chapterId = chapterId;
 	}
 
@@ -58,11 +58,11 @@ public class NovelChapter {
 		this.chapterName = chapterName;
 	}
 
-	public Long getNovelId() {
+	public Integer getNovelId() {
 		return novelId;
 	}
 
-	public void setNovelId(Long novelId) {
+	public void setNovelId(Integer novelId) {
 		this.novelId = novelId;
 	}
 
