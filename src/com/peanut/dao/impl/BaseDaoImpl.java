@@ -3,6 +3,7 @@ package com.peanut.dao.impl;
 import com.peanut.common.util.DbUtil;
 import com.peanut.common.util.StringUtil;
 import com.peanut.dao.BaseDao;
+import com.peanut.entity.vo.PageInfo;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -171,15 +172,60 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
   /**
    * 根据模板查找List
    *
-   * @param entityTemplate   查找模板
+   * @param entityTemplate   查找模板(传入null时表示查找所有)
    * @param fuzzyQueryFields 要开始模糊查询的字段名(可变参数列表)
    * @return List<entity>
    */
   @Override
   public List<T> selectListByTemplate(T entityTemplate, String... fuzzyQueryFields) {
+    return executeSqlForList(getSqlForSelectListByTemplate(entityTemplate, fuzzyQueryFields));
+  }
+
+  /**
+   * 根据模版分页查询
+   *
+   * @param pageNum          页码
+   * @param pageSize         分页大小
+   * @param entityTemplate   查询模板(传入null时表示查询所有)
+   * @param fuzzyQueryFields 模糊查询的字段
+   * @return pageInfo<entity>
+   */
+  @Override
+  public PageInfo<T> pageQueryByTemplate(int pageNum, int pageSize, T entityTemplate, String... fuzzyQueryFields) {
+    StringBuilder sqlBuilder = getSqlForSelectListByTemplate(entityTemplate, fuzzyQueryFields);
+    // 获取总行数
+    int totalRow = executeSqlForList(sqlBuilder).size();
+    // 总页数
+    int totalPage = totalRow / pageSize + 1;
+    boolean isFirstPage = pageNum == 1;
+    boolean isLastPage = pageNum == totalPage;
+    pageNum = pageNum > 0 ? pageNum : 1;
+    // 拼接分页参数
+    sqlBuilder.append(" LIMIT ").append((pageNum - 1) * pageSize)
+        .append(" , ").append(pageSize);
+    List<T> resultList = executeSqlForList(sqlBuilder);
+    return new PageInfo.Builder<T>(pageNum, pageSize)
+        .pageData(resultList)
+        .totalRow(totalRow)
+        .totalPage(totalPage)
+        .isFirstPage(isFirstPage)
+        .isLastPage(isLastPage)
+        .build();
+  }
+
+  /**
+   * 拼接根据模版查询list的sql语句
+   * @param entityTemplate 查询模板
+   * @param fuzzyQueryFields 开启模糊查询的字段
+   * @return StringBuilder
+   */
+  private StringBuilder getSqlForSelectListByTemplate(T entityTemplate, String... fuzzyQueryFields) {
     StringBuilder sqlBuilder = new StringBuilder();
     sqlBuilder.append("SELECT * FROM ").append(getTableName())
         .append(" WHERE 1 = 1 ");
+    if (entityTemplate == null) {
+      return sqlBuilder;
+    }
     try {
       for (Field field :entityFields) {
         PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), entityClass);
@@ -197,19 +243,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
       e.printStackTrace();
     }
-    return executeSqlForList(sqlBuilder);
-  }
-
-  /**
-   * 查找所有
-   *
-   * @return List<entity>
-   */
-  @Override
-  public List<T> selectAll() {
-    StringBuilder sqlBuilder = new StringBuilder();
-    sqlBuilder.append("SELECT * FROM ").append(getTableName());
-    return executeSqlForList(sqlBuilder);
+    return sqlBuilder;
   }
 
   /**

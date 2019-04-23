@@ -1,5 +1,7 @@
 package com.peanut.dao;
 
+import com.peanut.entity.vo.PageInfo;
+
 import java.util.List;
 
 /**
@@ -49,16 +51,20 @@ public interface BaseDao<T> {
 
   /**
    * 根据模板查找List
-   * @param entityTemplate 查找模板
+   * @param entityTemplate 查找模板(传入null时表示查询所有)
    * @param fuzzyQueryFields 要开始模糊查询的字段名(可变参数列表)
    * @return List<entity>
    */
   List<T> selectListByTemplate(T entityTemplate, String...fuzzyQueryFields);
 
   /**
-   * 查找所有
-   * @return List<entity>
+   * 根据模版分页查询
+   * @param pageNum 页码
+   * @param pageSize 分页大小
+   * @param entityTemplate 查询模板(传入null时表示查询所有)
+   * @param fuzzyQueryFields 模糊查询的字段
+   * @return pageInfo<entity>
    */
-  List<T> selectAll();
+  PageInfo<T> pageQueryByTemplate(int pageNum, int pageSize, T entityTemplate, String...fuzzyQueryFields);
 
 }
