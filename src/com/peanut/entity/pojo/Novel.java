@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * @see com.peanut.entity.pojo
  * @since 1.0
  */
-public class NovelInfo {
+public class Novel {
 
 	/**
 	 * 小说ID
@@ -22,6 +22,11 @@ public class NovelInfo {
 	 * 小说名称
 	 */
 	private String novelName;
+
+	/**
+	 * 小说类型ID
+	 */
+	private Long typeId;
 
 	/**
 	 * 小说简介
@@ -72,6 +77,14 @@ public class NovelInfo {
 
 	public void setNovelName(String novelName) {
 		this.novelName = novelName;
+	}
+
+	public Long getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(Long typeId) {
+		this.typeId = typeId;
 	}
 
 	public String getDescription() {
@@ -153,7 +166,7 @@ public class NovelInfo {
 	 */
 	@Override
 	public String toString() {
-		return "NovelInfo{" +
+		return "Novel{" +
 				"novelId=" + novelId +
 				", novelName='" + novelName + '\'' +
 				", description='" + description + '\'' +
