@@ -139,7 +139,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), entityClass);
         Object fieldValue = propertyDescriptor.getReadMethod().invoke(entityTemplate);
         if (fieldValue != null) {
-          sqlBuilder.append("AND ").append(getNameValueSql(field, fieldValue, false));
+          sqlBuilder.append(" AND ").append(getNameValueSql(field, fieldValue, false));
         }
       }
     } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
