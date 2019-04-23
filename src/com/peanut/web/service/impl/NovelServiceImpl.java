@@ -38,7 +38,7 @@ public class NovelServiceImpl implements NovelService {
 		Novel bean = new Novel();
 		bean.setTypeId(novelTypeId);
 		PageInfo<Novel> pageInfo = novelDao.pageQueryByTemplate(start, rows, bean);
-		if(pageInfo.getPageData() != null){
+		if(!pageInfo.getPageData().isEmpty()){
 			return ServerResponse.successWithData(pageInfo);
 		}
 		return ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(),"无此类型小说");
@@ -72,14 +72,14 @@ public class NovelServiceImpl implements NovelService {
 		Novel bean = new Novel();
 		bean.setNovelId(novelId);
 		PageInfo<Novel> pageInfo = novelDao.pageQueryByTemplate(start, rows, bean);
-		if(pageInfo.getPageData() == null){
-
+		if(pageInfo.getPageData().isEmpty()){
+			return ServerResponse.successWithData(pageInfo);
 		}
-		return null;
+		return ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(), ServerStatusCodeEnum.NOT_FOUND.getMsg());
 	}
 
 	/**
-	 * 根据novelId 和chapterId 来查询章节内容
+	 * 根据novelId 和sortId 来查询章节内容
 	 * @param userId 用户ID
 	 * @param novelId 小说ID
 	 * @param sortId 章节排号
@@ -88,7 +88,15 @@ public class NovelServiceImpl implements NovelService {
 	 */
 	@Override
 	public ServerResponse<NovelChapter> chapterContext(long userId, long novelId, int sortId, int isVip) {
-		return null;
+
+		NovelChapter chapterBean = new NovelChapter();
+		chapterBean.setNovelId(novelId);
+		chapterBean.setSortId(sortId);
+		chapterBean = novelChapterDao.selectOneByTemplate(chapterBean);
+		if(chapterBean.getChapterId() == null){
+			return ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(), ServerStatusCodeEnum.NOT_FOUND.getMsg());
+		}
+		return ServerResponse.successWithData(chapterBean);
 	}
 
 	/**
@@ -100,6 +108,13 @@ public class NovelServiceImpl implements NovelService {
 	 */
 	@Override
 	public ServerResponse<PageInfo<Novel>>pagingQueryByNovelIdSameType(long novelId, int start, int rows) {
-		return null;
+
+		Novel bean = novelDao.selectOneByPrimaryKey(novelId);
+		if(bean.getNovelId() == null){
+			return ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(), ServerStatusCodeEnum.NOT_FOUND.getMsg());
+		}
+		PageInfo<Novel> pageInfo = novelDao.pageQueryByTemplate(start, rows, bean);
+
+		return ServerResponse.successWithData(pageInfo);
 	}
 }

@@ -1,4 +1,4 @@
-package com.peanut.entity.pojo;
+package com.peanut.entity.pojo.novel;
 
 /**
  * description: 小说分类信息.

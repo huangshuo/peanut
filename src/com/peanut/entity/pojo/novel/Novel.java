@@ -1,4 +1,4 @@
-package com.peanut.entity.pojo;
+package com.peanut.entity.pojo.novel;
 
 import java.sql.Date;
 import java.time.LocalDate;
