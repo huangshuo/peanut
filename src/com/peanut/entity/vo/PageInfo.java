@@ -1,5 +1,8 @@
 package com.peanut.entity.vo;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,26 +13,41 @@ import java.util.List;
  * @see com.peanut.entity.vo
  * @since 1.0
  */
-public class PageInfo<T> {
+public class PageInfo<T> implements Serializable {
   /**
    * 页码.
    */
+  @JSONField(ordinal = 1)
   private int pageNum;
   /**
    * 分页大小.
    */
+  @JSONField(ordinal = 2)
   private int pageSize;
   /**
    * 总页数.
    */
+  @JSONField(ordinal = 3)
   private int totalPage;
   /**
    * 数据总行数.
    */
+  @JSONField(ordinal = 4)
   private int totalRow;
+  /**
+   * 是否是第一页
+   */
+  @JSONField(ordinal = 5)
+  private boolean isFirstPage;
+  /**
+   * 是否是最后一页
+   */
+  @JSONField(ordinal = 6)
+  private boolean isLastPage;
   /**
    * 数据list.
    */
+  @JSONField(ordinal = 7)
   private List<T> pageData;
 
   private PageInfo(Builder<T> pageInfoBuilder) {
@@ -37,6 +55,8 @@ public class PageInfo<T> {
     this.pageSize = pageInfoBuilder.pageSize;
     this.totalPage = pageInfoBuilder.totalPage;
     this.totalRow = pageInfoBuilder.totalRow;
+    this.isFirstPage = pageInfoBuilder.isFirstPage;
+    this.isLastPage = pageInfoBuilder.isLastPage;
     this.pageData = pageInfoBuilder.pageData;
   }
 
@@ -49,45 +69,70 @@ public class PageInfo<T> {
     private int pageSize;
     private int totalPage;
     private int totalRow;
+    private boolean isFirstPage;
+    private boolean isLastPage;
     private List<T> pageData;
 
-    public Builder(List<T> pageData) {
-      this.pageData = pageData;
-    }
-
-    public Builder pageNum(int pageNum) {
+    public Builder(int pageNum, int pageSize) {
       this.pageNum = pageNum;
-      return this;
-    }
-
-    public Builder pageSize(int pageSize) {
       this.pageSize = pageSize;
-      return this;
     }
 
-    public Builder totalPage(int totalPage) {
+    public Builder<T> totalPage(int totalPage) {
       this.totalPage = totalPage;
       return this;
     }
 
-    public Builder totalRow(int totalRow) {
+    public Builder<T> totalRow(int totalRow) {
       this.totalRow = totalRow;
       return this;
     }
 
-    public PageInfo build() {
+    public Builder<T> isFirstPage(boolean isFirstPage) {
+      this.isFirstPage = isFirstPage;
+      return this;
+    }
+
+    public Builder<T> isLastPage(boolean isLastPage) {
+      this.isLastPage = isLastPage;
+      return this;
+    }
+
+    public Builder<T> pageData(List<T> pageData) {
+      this.pageData = pageData;
+      return this;
+    }
+
+    public PageInfo<T> build() {
       return new PageInfo<>(this);
     }
   }
 
-  @Override
-  public String toString() {
-    return "PageInfo{" +
-        "pageNum=" + pageNum +
-        ", pageSize=" + pageSize +
-        ", totalPage=" + totalPage +
-        ", totalRow=" + totalRow +
-        ", pageData=" + pageData +
-        '}';
+  public int getPageNum() {
+    return pageNum;
+  }
+
+  public int getPageSize() {
+    return pageSize;
+  }
+
+  public int getTotalPage() {
+    return totalPage;
+  }
+
+  public int getTotalRow() {
+    return totalRow;
+  }
+
+  public List<T> getPageData() {
+    return pageData;
+  }
+
+  public boolean isFirstPage() {
+    return isFirstPage;
+  }
+
+  public boolean isLastPage() {
+    return isLastPage;
   }
 }
