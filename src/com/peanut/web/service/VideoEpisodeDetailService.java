@@ -1,9 +1,8 @@
 package com.peanut.web.service;
 
 import com.peanut.common.http.ServerResponse;
-import com.peanut.entity.pojo.VideoSecondList;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * description: .
@@ -13,6 +12,6 @@ import java.util.List;
  * @see com.peanut.web.service
  * @since 1.0
  */
-public interface VideoSecondListService {
-    ServerResponse<List<VideoSecondList>> videoSecondList(Long fid);
+public interface VideoEpisodeDetailService {
+  ServerResponse<Map<String,Object>> videoEpisodeDetail(String vid);
 }

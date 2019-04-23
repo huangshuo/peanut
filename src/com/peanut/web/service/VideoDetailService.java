@@ -14,5 +14,5 @@ import com.peanut.entity.pojo.VideoDetail;
  * @since 1.0
  */
 public interface VideoDetailService {
-  ServerResponse<VideoDetail> videoDetail(String fid);
+  ServerResponse<VideoDetail> videoDetail(String vid);
 }
