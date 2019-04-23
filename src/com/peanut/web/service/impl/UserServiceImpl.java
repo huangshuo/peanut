@@ -4,8 +4,11 @@ import com.peanut.common.http.ServerResponse;
 import com.peanut.common.http.ServerStatusCodeEnum;
 import com.peanut.common.util.Md5Util;
 import com.peanut.dao.UserDao;
+import com.peanut.dao.UserFeedbackDao;
 import com.peanut.dao.impl.UserDaoImpl;
+import com.peanut.dao.impl.UserFeedbackDaoImpl;
 import com.peanut.entity.pojo.User;
+import com.peanut.entity.pojo.UserFeedback;
 import com.peanut.web.service.UserService;
 
 /**
@@ -19,6 +22,7 @@ import com.peanut.web.service.UserService;
 public class UserServiceImpl implements UserService {
 
   private static UserDao userDao = new UserDaoImpl();
+  private static UserFeedbackDao userFeedbackDao = new UserFeedbackDaoImpl();
 
   /**
    * 密码登录
@@ -80,6 +84,24 @@ public class UserServiceImpl implements UserService {
       return ServerResponse.failWithMsg(ServerStatusCodeEnum.DUPLICATE_KEY.getCode(), "手机号已被占用");
     }
     boolean succeed = userDao.updateByTemplate(user);
+    if (succeed) {
+      return ServerResponse.success();
+    }
+    return ServerResponse.failWithMsg(ServerStatusCodeEnum.FAIL.getCode(), ServerStatusCodeEnum.FAIL.getMsg());
+  }
+
+  /**
+   * 用户反馈
+   *
+   * @param userFeedback 反馈信息对象
+   * @return serverResponse
+   */
+  @Override
+  public ServerResponse addUserFeedBack(UserFeedback userFeedback) {
+    if (userDao.selectOneByPrimaryKey(userFeedback.getUid()).getUid() == null) {
+      return ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(), "用户不存在");
+    }
+    boolean succeed = userFeedbackDao.insert(userFeedback);
     if (succeed) {
       return ServerResponse.success();
     }
