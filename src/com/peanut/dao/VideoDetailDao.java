@@ -1,11 +1,11 @@
 package com.peanut.dao;
 
-import com.peanut.entity.pojo.VideoDetail;
+import com.peanut.entity.pojo.video.VideoDetail;
 
 /**
- * description: .
+ * description:视频详情Dao接口 .
  *
- * @author JAVASM
+ * @author zhaomaomao
  * @date 2019-04-22
  * @see com.peanut.dao
  * @since 1.0

@@ -1,11 +1,11 @@
 package com.peanut.dao;
 
-import com.peanut.entity.pojo.VideoSecondList;
+import com.peanut.entity.pojo.video.VideoSecondList;
 
 /**
- * description: .
+ * description:视频二级目录Dao接口 .
  *
- * @author JAVASM
+ * @author zhaomaomao
  * @date 2019-04-22
  * @see com.peanut.dao
  * @since 1.0

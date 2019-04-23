@@ -1,12 +1,12 @@
 package com.peanut.dao.impl;
 
 import com.peanut.dao.VideoDetailDao;
-import com.peanut.entity.pojo.VideoDetail;
+import com.peanut.entity.pojo.video.VideoDetail;
 
 /**
- * description: .
+ * description:视频详情Dao实现 .
  *
- * @author JAVASM
+ * @author zhaomaomao
  * @date 2019-04-22
  * @see com.peanut.dao.impl
  * @since 1.0

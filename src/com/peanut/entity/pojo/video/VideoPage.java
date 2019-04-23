@@ -1,16 +1,19 @@
-package com.peanut.entity.pojo;
+package com.peanut.entity.pojo.video;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 import java.io.Serializable;
 
 /**
- * description: .
+ * description:根据二级目录分页显示 .
  *
- * @author JAVASM
+ * @author zhaomaomao
  * @date 2019-04-22
  * @see com.peanut.entity.pojo
  * @since 1.0
  */
 public class VideoPage implements Serializable {
+  @JSONField(serialize = false)
   private Long id;
   private String imgA;
   private String imgB;

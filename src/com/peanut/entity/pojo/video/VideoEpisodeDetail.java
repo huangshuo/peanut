@@ -1,14 +1,17 @@
-package com.peanut.entity.pojo;
+package com.peanut.entity.pojo.video;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 /**
- * description: .
+ * description:视频单集信息 .
  *
- * @author JAVASM
+ * @author zhaomaomao
  * @date 2019-04-22
  * @see com.peanut.entity.pojo
  * @since 1.0
  */
 public class VideoEpisodeDetail {
+  @JSONField(serialize = false)
   private Long id;
   private String vid;
   private Integer  num;
