@@ -42,6 +42,11 @@ public class NovelChapter {
 	 */
 	private Integer isVip;
 
+	/**
+	 * 章节正文
+	 */
+	private String text;
+
 	public Integer getChapterId() {
 		return chapterId;
 	}
@@ -82,12 +87,19 @@ public class NovelChapter {
 		this.sortId = sortId;
 	}
 
-	public Integer getVip() {
+	public Integer getIsVip() {
 		return isVip;
 	}
 
-	public void setVip(Integer vip) {
-		isVip = vip;
+	public void setIsVip(Integer isVip) {
+		this.isVip = isVip;
+	}
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	/**
@@ -120,6 +132,7 @@ public class NovelChapter {
 				", price=" + price +
 				", sortId=" + sortId +
 				", isVip=" + isVip +
+				", text='" + text + '\'' +
 				'}';
 	}
 

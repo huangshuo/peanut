@@ -1,7 +1,8 @@
 package com.peanut.entity.pojo.novel;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.sql.Date;
-import java.time.LocalDate;
 
 /**
  * description: 小说信息实体类.
@@ -46,12 +47,13 @@ public class Novel {
 	/**
 	 * 最新章节 格式："第三千二百章 这个斗帝不太萌"
 	 */
-	private String lastUpdatedChapter;
+	private Integer lastUpdatedChapterId;
 
 	/**
 	 * 最后更新日期
 	 */
-	private Date updataDate;
+	@JSONField(format = "yyyy-MM-dd")
+	private Date updateDate;
 
 	/**
 	 * 读者统计
@@ -111,20 +113,20 @@ public class Novel {
 		this.authorName = authorName;
 	}
 
-	public String getLastUpdatedChapter() {
-		return lastUpdatedChapter;
+	public Integer getLastUpdatedChapterId() {
+		return lastUpdatedChapterId;
 	}
 
-	public void setLastUpdatedChapter(String lastUpdatedChapter) {
-		this.lastUpdatedChapter = lastUpdatedChapter;
+	public void setLastUpdatedChapterId(Integer lastUpdatedChapterId) {
+		this.lastUpdatedChapterId = lastUpdatedChapterId;
 	}
 
-	public Date getUpdataDate() {
-		return updataDate;
+	public Date getUpdateDate() {
+		return updateDate;
 	}
 
-	public void setUpdataDate(Date updataDate) {
-		this.updataDate = updataDate;
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
 	}
 
 	public Integer getReadCount() {
@@ -172,8 +174,8 @@ public class Novel {
 				", description='" + description + '\'' +
 				", coverUrl='" + coverUrl + '\'' +
 				", authorName='" + authorName + '\'' +
-				", lastUpdatedChapter='" + lastUpdatedChapter + '\'' +
-				", updataDate=" + updataDate +
+				", lastUpdatedChapterId='" + lastUpdatedChapterId + '\'' +
+				", updateDate=" + updateDate +
 				", readCount=" + readCount +
 				", wordCount=" + wordCount +
 				'}';

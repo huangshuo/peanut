@@ -72,7 +72,7 @@ public class NovelServiceImpl implements NovelService {
 		Novel bean = new Novel();
 		bean.setNovelId(novelId);
 		PageInfo<Novel> pageInfo = novelDao.pageQueryByTemplate(start, rows, bean);
-		if(pageInfo.getPageData().isEmpty()){
+		if(!pageInfo.getPageData().isEmpty()){
 			return ServerResponse.successWithData(pageInfo);
 		}
 		return ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(), ServerStatusCodeEnum.NOT_FOUND.getMsg());
