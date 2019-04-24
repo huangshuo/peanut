@@ -2,6 +2,7 @@ package com.peanut.web.controller.novel;
 
 import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServerResponse;
+import com.peanut.web.service.NovelService;
 import com.peanut.web.service.impl.NovelServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * description: 根据novelId 查询小说信息，根据start 和rows 分页参数进行分页，返回章节列表.
+ * description: 根据novelID 查询小说类型，分页查询同类型小说并返回.
  *
  * @author Doc10th
  * @date 2019-04-23
@@ -20,8 +21,8 @@ import java.io.PrintWriter;
  * @since 1.0
  */
 
-@WebServlet(name = "novelList", urlPatterns = "/novel")
-public class PagingQueryByNovelIdController extends HttpServlet {
+@WebServlet(name = "sameType", urlPatterns = "/novel/sameType")
+public class PagingQueryByNovelIdSameTypeController extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -29,7 +30,9 @@ public class PagingQueryByNovelIdController extends HttpServlet {
     int novelId = Integer.parseInt(req.getParameter("novelId"));
     int start = Integer.parseInt(req.getParameter("start"));
     int row = Integer.parseInt(req.getParameter("row"));
-    ServerResponse serverResponse = new NovelServiceImpl().pagingQueryByNovelId(novelId, start, row);
+    NovelService novelService = new NovelServiceImpl();
+    int novelTypeId = novelService.novelDetail(novelId).getData().getTypeId();
+    ServerResponse serverResponse = novelService.pagingQueryByTypeId(novelTypeId, start, row);
     PrintWriter printWriter = resp.getWriter();
     printWriter.println(JSON.toJSONString(serverResponse));
     printWriter.close();

@@ -23,7 +23,8 @@ public final class PropertyUtil {
   public static final String JDBC_DRIVER = "jdbc.driver";
   public static final String MD5_SALT = "md5.salt";
 
-  private PropertyUtil() {}
+  private PropertyUtil() {
+  }
 
   private static Map<String, String> propertyMap = new HashMap<>();
 

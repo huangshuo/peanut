@@ -1,4 +1,4 @@
-package com.peanut.entity.pojo.video;
+package com.peanut.entity.pojo;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -11,10 +11,20 @@ import com.alibaba.fastjson.annotation.JSONField;
  * @since 1.0
  */
 public class VideoEpisodeDetail {
+
+  /**
+   * 主键id.
+   */
   @JSONField(serialize = false)
   private Long id;
+  /**
+   * 视频编号.
+   */
   private String vid;
-  private Integer  num;
+  /**
+   * 当前集数.
+   */
+  private Integer num;
   private String fdncode;
 
   public Long getId() {

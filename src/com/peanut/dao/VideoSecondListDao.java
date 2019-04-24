@@ -1,6 +1,6 @@
 package com.peanut.dao;
 
-import com.peanut.entity.pojo.video.VideoSecondList;
+import com.peanut.entity.pojo.VideoSecondList;
 
 /**
  * description:视频二级目录Dao接口 .
@@ -11,6 +11,4 @@ import com.peanut.entity.pojo.video.VideoSecondList;
  * @since 1.0
  */
 public interface VideoSecondListDao extends BaseDao<VideoSecondList> {
-
-
 }

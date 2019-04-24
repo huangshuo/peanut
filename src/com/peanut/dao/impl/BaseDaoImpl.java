@@ -135,7 +135,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         .append(" WHERE 1 = 1 ");
     // 获取非空字段
     try {
-      for (Field field :entityFields) {
+      for (Field field : entityFields) {
         PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), entityClass);
         Object fieldValue = propertyDescriptor.getReadMethod().invoke(entityTemplate);
         if (fieldValue != null) {
@@ -196,7 +196,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     // 获取总行数
     int totalRow = executeSqlForList(sqlBuilder).size();
     // 总页数
-    int totalPage = totalRow % pageSize == 0 ? totalRow /pageSize : totalRow / pageSize + 1;
+    int totalPage = totalRow % pageSize == 0 ? totalRow / pageSize : totalRow / pageSize + 1;
     boolean isFirstPage = pageNum == 1;
     boolean isLastPage = pageNum == totalPage;
     pageNum = pageNum > 0 ? pageNum : 1;
@@ -215,7 +215,8 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
   /**
    * 拼接根据模版查询list的sql语句
-   * @param entityTemplate 查询模板
+   *
+   * @param entityTemplate   查询模板
    * @param fuzzyQueryFields 开启模糊查询的字段
    * @return StringBuilder
    */
@@ -227,7 +228,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
       return sqlBuilder;
     }
     try {
-      for (Field field :entityFields) {
+      for (Field field : entityFields) {
         PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), entityClass);
         Object fieldValue = propertyDescriptor.getReadMethod().invoke(entityTemplate);
         if (fieldValue != null) {
@@ -248,6 +249,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
   /**
    * 执行返回操作成功与否的增加/修改/删除语句
+   *
    * @param sqlBuilder sql语句
    * @return boolean
    */
@@ -269,6 +271,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
   /**
    * 执行返回List的查询语句
+   *
    * @param sqlBuilder sql语句
    * @return List<T>
    */
@@ -300,7 +303,8 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
   /**
    * 获取字段值
-   * @param field 字段
+   *
+   * @param field  字段
    * @param entity entity对象
    * @return Object
    */
@@ -318,6 +322,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
   /**
    * 拼接sql语句的字段sql
+   *
    * @param entity entity对象
    * @return String
    */
@@ -336,6 +341,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
   /**
    * 拼接sql语句VALUES的sql
+   *
    * @param entity entity对象
    * @return String
    */
@@ -359,9 +365,10 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
   /**
    * 拼接字段名 = 字段值/字段名 like 字段值
-   * @param field 字段对象
+   *
+   * @param field      字段对象
    * @param fieldValue 字段值
-   * @param fuzzy 是否开始模糊查询
+   * @param fuzzy      是否开始模糊查询
    * @return String
    */
   private String getNameValueSql(Field field, Object fieldValue, boolean fuzzy) {
@@ -386,6 +393,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
   /**
    * 获取实体类对应的数据库表名(tb_开头, 驼峰式转换为下划线)
+   *
    * @return String
    */
   private String getTableName() {
@@ -394,6 +402,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
   /**
    * 获取字段的数据库列名
+   *
    * @param field 字段对象
    * @return String
    */

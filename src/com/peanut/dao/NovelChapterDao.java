@@ -1,7 +1,6 @@
 package com.peanut.dao;
 
-import com.peanut.dao.BaseDao;
-import com.peanut.entity.pojo.novel.NovelChapter;
+import com.peanut.entity.pojo.NovelChapter;
 
 /**
  * description: 小说章节Dao接口.

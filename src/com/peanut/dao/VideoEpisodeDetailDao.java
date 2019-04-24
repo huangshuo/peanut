@@ -1,6 +1,6 @@
 package com.peanut.dao;
 
-import com.peanut.entity.pojo.video.VideoEpisodeDetail;
+import com.peanut.entity.pojo.VideoEpisodeDetail;
 
 /**
  * description:视频分集详情Dao接口 .
@@ -11,5 +11,4 @@ import com.peanut.entity.pojo.video.VideoEpisodeDetail;
  * @since 1.0
  */
 public interface VideoEpisodeDetailDao extends BaseDao<VideoEpisodeDetail> {
-
 }

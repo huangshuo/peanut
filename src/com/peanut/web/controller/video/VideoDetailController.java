@@ -2,10 +2,9 @@ package com.peanut.web.controller.video;
 
 import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServerResponse;
-import com.peanut.entity.pojo.video.VideoDetail;
+import com.peanut.entity.pojo.VideoDetail;
 import com.peanut.web.service.impl.VideoServiceImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,17 +20,13 @@ import java.io.PrintWriter;
  * @see com.peanut.web.controller
  * @since 1.0
  */
-@WebServlet(name = "videoDetail",urlPatterns = "/video/detail")
+@WebServlet(name = "videoDetail", urlPatterns = "/video/detail")
 public class VideoDetailController extends HttpServlet {
-  @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    doPost(req, resp);
-  }
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    String vid=req.getParameter("vid");
-    ServerResponse<VideoDetail> serverResponse=new VideoServiceImpl().videoDetail(vid);
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    String vid = req.getParameter("vid");
+    ServerResponse<VideoDetail> serverResponse = new VideoServiceImpl().videoDetail(vid);
     PrintWriter printWriter = resp.getWriter();
     printWriter.println(JSON.toJSONString(serverResponse));
     printWriter.flush();

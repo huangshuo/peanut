@@ -1,4 +1,4 @@
-package com.peanut.entity.pojo.video;
+package com.peanut.entity.pojo;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -13,35 +13,56 @@ import java.io.Serializable;
  * @since 1.0
  */
 public class VideoPage implements Serializable {
+
+  /**
+   * 主键id.
+   */
   @JSONField(serialize = false)
   private Long id;
+  /**
+   * 视频图片地址.
+   */
   private String imgA;
+  /**
+   * 视频图片地址.
+   */
   private String imgB;
-  private Integer isclose;
-  private String title;
-  private Integer attr;
-  private Integer epcnt;
-  private String vid;
-  private Integer eptotal;
-  private String  imgC;
+  /**
+   * 视频图片地址.
+   */
+  private String imgC;
+  /**
+   * 视频图片地址.
+   */
   private String imgD;
-  private Long cid;
-
+  /**
+   * 是否完结(1.完结 2.未完结)
+   */
+  private Integer isclose;
+  /**
+   * 视频标题.
+   */
+  private String title;
+  /**
+   * 视频类型(1.单片 2.剧集)
+   */
+  private Integer attr;
+  /**
+   * 当前播放的集数.
+   */
+  private Integer epcnt;
+  /**
+   * 视频编号.
+   */
+  private String vid;
+  /**
+   * 总集数.
+   */
+  private Integer eptotal;
+  /**
+   * 对应二级目录编号.
+   */
   private Long fid;
-  //分页属性
-
-
-
-//  private PageInfo pageInfo;
-
-//  public PageInfo getPageInfo() {
-//    return pageInfo;
-//  }
-//
-//  public void setPageInfo(PageInfo pageInfo) {
-//    this.pageInfo = pageInfo;
-//  }
-
 
   public Long getId() {
     return id;
@@ -129,14 +150,6 @@ public class VideoPage implements Serializable {
 
   public void setImgD(String imgD) {
     this.imgD = imgD;
-  }
-
-  public Long getCid() {
-    return cid;
-  }
-
-  public void setCid(Long cid) {
-    this.cid = cid;
   }
 
   public Long getFid() {

@@ -1,6 +1,6 @@
 package com.peanut.dao;
 
-import com.peanut.entity.pojo.video.VideoPage;
+import com.peanut.entity.pojo.VideoPage;
 
 /**
  * description:视频分页Dao接口 .
@@ -11,5 +11,4 @@ import com.peanut.entity.pojo.video.VideoPage;
  * @since 1.0
  */
 public interface VideoPageDao extends BaseDao<VideoPage> {
-
 }

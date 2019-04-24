@@ -2,8 +2,8 @@ package com.peanut.web.controller.novel;
 
 import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServerResponse;
-import com.peanut.entity.pojo.novel.requestParameter.ChapterContextRequestParameter;
 import com.peanut.web.service.impl.NovelServiceImpl;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,20 +22,17 @@ import java.io.PrintWriter;
 
 @WebServlet(name = "context", urlPatterns = "/novel/chapter/context")
 public class ChapterContextController extends HttpServlet {
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-		ChapterContextRequestParameter ccrp = new ChapterContextRequestParameter();
+    int userId = Integer.parseInt(req.getParameter("userId"));
+    int isVip = Integer.parseInt(req.getParameter("isVip"));
+    int novelId = Integer.parseInt(req.getParameter("novelId"));
+    int sortId = Integer.parseInt(req.getParameter("sortId"));
 
-		ccrp.setUserId(Integer.parseInt(req.getParameter("userId")));
-		ccrp.setIsVip(Integer.parseInt(req.getParameter("isVip")));
-		ccrp.setNovelId(Integer.parseInt(req.getParameter("novelId")));
-		ccrp.setSortId(Integer.parseInt(req.getParameter("sortId")));
-
-		ServerResponse serverResponse =  new NovelServiceImpl().getChapterContext(ccrp.getUserId(), ccrp.getNovelId(), ccrp.getSortId(), ccrp.getIsVip());
-		String json = JSON.toJSONString(serverResponse);
-		PrintWriter printWriter = resp.getWriter();
-		printWriter.println(json);
-		printWriter.close();
-	}
+    ServerResponse serverResponse = new NovelServiceImpl().getChapterContext(userId, novelId, sortId, isVip);
+    PrintWriter printWriter = resp.getWriter();
+    printWriter.println(JSON.toJSONString(serverResponse));
+    printWriter.close();
+  }
 }

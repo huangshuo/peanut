@@ -1,7 +1,7 @@
 package com.peanut.dao.impl;
 
 import com.peanut.dao.VideoDetailDao;
-import com.peanut.entity.pojo.video.VideoDetail;
+import com.peanut.entity.pojo.VideoDetail;
 
 /**
  * description:视频详情Dao实现 .
@@ -11,5 +11,5 @@ import com.peanut.entity.pojo.video.VideoDetail;
  * @see com.peanut.dao.impl
  * @since 1.0
  */
-public class VideoDetailDaoImpl extends BaseDaoImpl<VideoDetail> implements VideoDetailDao  {
+public class VideoDetailDaoImpl extends BaseDaoImpl<VideoDetail> implements VideoDetailDao {
 }

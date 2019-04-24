@@ -10,10 +10,12 @@ package com.peanut.common.util;
  */
 public final class StringUtil {
 
-  private StringUtil() {}
+  private StringUtil() {
+  }
 
   /**
    * 驼峰式转换为下划线
+   *
    * @param camelCaseString 驼峰式字符串
    * @return String
    */

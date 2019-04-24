@@ -2,7 +2,7 @@ package com.peanut.dao.impl;
 
 
 import com.peanut.dao.VideoEpisodeDetailDao;
-import com.peanut.entity.pojo.video.VideoEpisodeDetail;
+import com.peanut.entity.pojo.VideoEpisodeDetail;
 
 /**
  * description:视频单集详情Dao实现 .

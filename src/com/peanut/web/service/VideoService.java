@@ -2,9 +2,9 @@ package com.peanut.web.service;
 
 
 import com.peanut.common.http.ServerResponse;
-import com.peanut.entity.pojo.video.VideoDetail;
-import com.peanut.entity.pojo.video.VideoFirstList;
-import com.peanut.entity.pojo.video.VideoSecondList;
+import com.peanut.entity.pojo.VideoDetail;
+import com.peanut.entity.pojo.VideoFirstList;
+import com.peanut.entity.pojo.VideoSecondList;
 
 import java.util.List;
 import java.util.Map;
@@ -21,33 +21,42 @@ import java.util.Map;
 public interface VideoService {
   /**
    * 获得视频一级菜单
-   * @return  serverResponse
+   *
+   * @return serverResponse
    */
   ServerResponse<List<VideoFirstList>> videoFirstList();
+
   /**
    * 获得视频二级菜单
+   *
    * @param fid 关联一级菜单fid
    * @return serverResponse
    */
   ServerResponse<List<VideoSecondList>> videoSecondList(Long fid);
+
   /**
    * 根据二级菜单获得分页信息
-   * @param fid 关联二级菜单fid
+   *
+   * @param fid  关联二级菜单fid
    * @param page 第几页
    * @return serverResponse
    */
-  ServerResponse<Map<String,Object>> videoPage(Long fid,int page);
+  ServerResponse<Map<String, Object>> videoPage(Long fid, int page);
+
   /**
-   *  获得视频详情信息
+   * 获得视频详情信息
+   *
    * @param vid 视频编号
    * @return serverResponse
    */
   ServerResponse<VideoDetail> videoDetail(String vid);
+
   /**
    * 获得视频单集详情信息
+   *
    * @param vid 视频编号
    * @return serverResponse
    */
-  ServerResponse<Map<String,Object>> videoEpisodeDetail(String vid);
+  ServerResponse<Map<String, Object>> videoEpisodeDetail(String vid);
 
 }

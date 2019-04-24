@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServerResponse;
 import com.peanut.web.service.impl.NovelServiceImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,16 +23,16 @@ import java.io.PrintWriter;
 @WebServlet(name = "byType", urlPatterns = "/novel/byType")
 public class PagingQueryByTypeIdController extends HttpServlet {
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-		int typeId = Integer.parseInt(req.getParameter("typeId"));
-		int start = Integer.parseInt(req.getParameter("start"));
-		int row = Integer.parseInt(req.getParameter("row"));
-		ServerResponse serverResponse = new NovelServiceImpl().pagingQueryByTypeId(typeId, start, row);
-		PrintWriter printWriter = resp.getWriter();
-		printWriter.println(JSON.toJSONString(serverResponse));
-		printWriter.close();
-	}
+    int typeId = Integer.parseInt(req.getParameter("typeId"));
+    int start = Integer.parseInt(req.getParameter("start"));
+    int row = Integer.parseInt(req.getParameter("row"));
+    ServerResponse serverResponse = new NovelServiceImpl().pagingQueryByTypeId(typeId, start, row);
+    PrintWriter printWriter = resp.getWriter();
+    printWriter.println(JSON.toJSONString(serverResponse));
+    printWriter.close();
+  }
 
 }

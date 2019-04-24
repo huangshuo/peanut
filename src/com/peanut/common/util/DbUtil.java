@@ -14,12 +14,14 @@ import java.sql.*;
  */
 public final class DbUtil {
 
-  private DbUtil() {}
+  private DbUtil() {
+  }
 
   private static final ThreadLocal<Connection> LOCAL_CONNECTION = new ThreadLocal<>();
 
   /**
    * 获取数据库连接
+   *
    * @return 连接对象connection
    */
   public static Connection getConnection() {
@@ -73,6 +75,7 @@ public final class DbUtil {
 
   /**
    * 提交事务
+   *
    * @return 事务是否成功提交
    */
   public static boolean commit() {
@@ -90,6 +93,7 @@ public final class DbUtil {
 
   /**
    * 设置savepoint
+   *
    * @return savepoint对象
    */
   public static Savepoint getSavepoint() {
@@ -107,9 +111,10 @@ public final class DbUtil {
 
   /**
    * 事务回滚
+   *
    * @param savepoint savepoint
    */
-  public static void rollback(Savepoint...savepoint) {
+  public static void rollback(Savepoint... savepoint) {
     Connection connection = LOCAL_CONNECTION.get();
     if (connection != null) {
       try {

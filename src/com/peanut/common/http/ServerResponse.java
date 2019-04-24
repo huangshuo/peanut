@@ -66,6 +66,7 @@ public class ServerResponse<T> implements Serializable {
 
   /**
    * 响应是否成功
+   *
    * @return boolean
    */
   @JSONField(serialize = false)

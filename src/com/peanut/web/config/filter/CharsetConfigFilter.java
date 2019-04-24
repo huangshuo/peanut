@@ -1,7 +1,5 @@
 package com.peanut.web.config.filter;
 
-import com.alibaba.fastjson.JSON;
-
 import javax.servlet.*;
 import java.io.IOException;
 

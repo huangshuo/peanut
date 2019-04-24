@@ -1,6 +1,6 @@
 package com.peanut.dao;
 
-import com.peanut.entity.pojo.video.VideoDetail;
+import com.peanut.entity.pojo.VideoDetail;
 
 /**
  * description:视频详情Dao接口 .

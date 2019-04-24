@@ -12,72 +12,51 @@
   <title>登录</title>
 
   <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/js/semantic.min.js"></script>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/semantic.min.css">
+  <script src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css">
 
-  <style type="text/css">
-    body {
-      background-color: #DADADA;
+  <style>
+    .header {
+      text-align: center;
     }
-    body > .grid {
-      height: 100%;
+    .header h1 {
+      font-size: 200%;
+      color: #333;
+      margin-top: 30px;
     }
-    .column {
-      max-width: 450px;
+    .header p {
+      font-size: 14px;
     }
   </style>
-  <script>
-    $(function() {
-      var loginForm = $('#loginForm');
-      $('#submitButton').on('click', function () {
-        $.ajax({
-          url: '${pageContext.request.contextPath}/login',
-          type: 'POST',
-          data: loginForm.serialize(),
-          success: function(serverResponse) {
-            // 登录成功
-            if (serverResponse.code === 200) {
-            } else {
-              // 用户状态为不可用
-              if (serverResponse.code === 404) {
-                $('#usernameField').addClass('error');
-              } else {
-                // 用户名或密码错误
-                $('.field').addClass('error');
-              }
-            }
-          },
-          dataType: 'json'
-        })
-      });
-    })
-  </script>
-
 </head>
 <body>
-
-<div class="ui middle aligned center aligned grid">
-  <div class="column">
-    <form class="ui large form" id="loginForm">
-      <div class="ui stacked segment">
-        <div id="usernameField" class="field">
-          <div class="ui left icon input">
-            <i class="user icon"></i>
-            <input type="text" name="username" placeholder="用户名">
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui left icon input">
-            <i class="lock icon"></i>
-            <input type="password" name="password" placeholder="密码">
-          </div>
-        </div>
-        <div id="submitButton" class="ui fluid large teal button">登录</div>
+<div class="header">
+  <div class="am-g">
+    <h1>花生娱乐后台管理系统</h1>
+  </div>
+  <hr />
+</div>
+<div class="am-g">
+  <div class="am-u-lg-4 am-u-md-8 am-u-sm-centered">
+    <form method="post" class="am-form">
+      <div class="am-input-group am-input-group-primary">
+        <span class="am-input-group-label"><i class="am-icon-user am-icon-fw"></i></span>
+        <input type="text" id="username" name="username" class="am-form-field" placeholder="请输入用户名">
+      </div>
+      <br />
+      <div class="am-input-group am-input-group-primary">
+        <span class="am-input-group-label"><i class="am-icon-lock am-icon-fw"></i></span>
+        <input type="password" id="password" name="password" class="am-form-field" placeholder="请输入密码">
+      </div>
+      <br />
+      <div class="am-cf">
+        <input type="submit" name="" value="登 录" class="am-btn am-btn-primary am-btn-sm am-fl">
       </div>
     </form>
+    <hr>
+    <p>© 2019 花生娱乐</p>
   </div>
-</div>
 
+  </div>
 </body>
-
 </html>

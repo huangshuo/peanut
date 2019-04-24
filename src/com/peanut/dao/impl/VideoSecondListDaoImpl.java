@@ -2,7 +2,7 @@ package com.peanut.dao.impl;
 
 
 import com.peanut.dao.VideoSecondListDao;
-import com.peanut.entity.pojo.video.VideoSecondList;
+import com.peanut.entity.pojo.VideoSecondList;
 
 /**
  * description:视频二级目录Dao实现 .
@@ -13,5 +13,4 @@ import com.peanut.entity.pojo.video.VideoSecondList;
  * @since 1.0
  */
 public class VideoSecondListDaoImpl extends BaseDaoImpl<VideoSecondList> implements VideoSecondListDao {
-
 }

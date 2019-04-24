@@ -19,6 +19,7 @@ import com.peanut.web.service.GameService;
 public class GameServiceImpl implements GameService {
 
   private static GameDao gameDao = new GameDaoImpl();
+
   /**
    * 根据游戏类型id和平台id分页查询游戏
    *

@@ -62,6 +62,7 @@ public class PageInfo<T> implements Serializable {
 
   /**
    * Builder模式
+   *
    * @param <T>
    */
   public static class Builder<T> {

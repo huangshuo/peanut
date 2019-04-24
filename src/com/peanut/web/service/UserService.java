@@ -16,6 +16,7 @@ public interface UserService {
 
   /**
    * 密码登录
+   *
    * @param username 用户名
    * @param password 密码
    * @return serverResponse
@@ -24,6 +25,7 @@ public interface UserService {
 
   /**
    * 获取用户个人信息
+   *
    * @param uid 用户id
    * @return serverResponse
    */
@@ -31,6 +33,7 @@ public interface UserService {
 
   /**
    * 修改用户个人信息
+   *
    * @param user 修改后的用户信息对象
    * @return serverResponse
    */
@@ -38,6 +41,7 @@ public interface UserService {
 
   /**
    * 用户反馈
+   *
    * @param userFeedback 反馈信息对象
    * @return serverResponse
    */

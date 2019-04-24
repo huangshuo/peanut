@@ -14,10 +14,12 @@ import java.security.NoSuchAlgorithmException;
  */
 public final class Md5Util {
 
-  private Md5Util() {}
+  private Md5Util() {
+  }
 
   /**
    * 获取加密后的密码
+   *
    * @param originPassword 原始密码
    * @return String
    */
@@ -28,7 +30,8 @@ public final class Md5Util {
 
   /**
    * 校验密码是否正确
-   * @param originPassword 原始密码
+   *
+   * @param originPassword    原始密码
    * @param encryptedPassword 加密后的密码
    * @return boolean
    */

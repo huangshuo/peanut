@@ -16,9 +16,10 @@ public interface GameService {
 
   /**
    * 根据游戏类型id和平台id分页查询游戏
-   * @param pageNum 页码
+   *
+   * @param pageNum  页码
    * @param pageSize 分页大小
-   * @param typeId 游戏类型id
+   * @param typeId   游戏类型id
    * @param platform 游戏平台id
    * @return serverResponse
    */
@@ -26,6 +27,7 @@ public interface GameService {
 
   /**
    * 根据游戏id查询游戏详情信息
+   *
    * @param gameId 游戏id
    * @return serverResponse
    */
