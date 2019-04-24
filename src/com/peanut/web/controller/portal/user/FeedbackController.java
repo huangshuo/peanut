@@ -1,7 +1,8 @@
-package com.peanut.web.controller.user;
+package com.peanut.web.controller.portal.user;
 
 import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServerResponse;
+import com.peanut.common.http.ServletUrl;
 import com.peanut.entity.pojo.UserFeedback;
 import com.peanut.web.service.impl.UserServiceImpl;
 
@@ -17,10 +18,10 @@ import java.io.PrintWriter;
  *
  * @author huangs
  * @date 2019-04-22
- * @see com.peanut.web.controller.user
+ * @see com.peanut.web.controller.portal.user
  * @since 1.0
  */
-@WebServlet(name = "feedback", urlPatterns = "/user/feedback")
+@WebServlet(name = "feedback", urlPatterns = ServletUrl.FEEDBACK)
 public class FeedbackController extends HttpServlet {
 
   @Override

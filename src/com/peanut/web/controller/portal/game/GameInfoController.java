@@ -1,5 +1,6 @@
-package com.peanut.web.controller.game;
+package com.peanut.web.controller.portal.game;
 
+import com.peanut.common.http.ServletUrl;
 import com.peanut.web.service.impl.GameServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
@@ -14,10 +15,10 @@ import java.io.PrintWriter;
  *
  * @author huangs
  * @date 2019-04-23
- * @see com.peanut.web.controller.game
+ * @see com.peanut.web.controller.portal.game
  * @since 1.0
  */
-@WebServlet(name = "gameInfo", urlPatterns = "/game/info")
+@WebServlet(name = "gameInfo", urlPatterns = ServletUrl.GAME_INFO)
 public class GameInfoController extends HttpServlet {
 
   @Override

@@ -1,5 +1,6 @@
-package com.peanut.web.controller.game;
+package com.peanut.web.controller.portal.game;
 
+import com.peanut.common.http.ServletUrl;
 import com.peanut.web.service.impl.GameServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
@@ -14,10 +15,10 @@ import java.io.PrintWriter;
  *
  * @author huangs
  * @date 2019-04-23
- * @see com.peanut.web.controller.game
+ * @see com.peanut.web.controller.portal.game
  * @since 1.0
  */
-@WebServlet(name = "gameList", urlPatterns = "/game/list")
+@WebServlet(name = "gameList", urlPatterns = ServletUrl.GAME_LIST)
 public class GameListController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

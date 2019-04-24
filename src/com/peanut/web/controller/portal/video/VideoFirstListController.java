@@ -1,7 +1,8 @@
-package com.peanut.web.controller.video;
+package com.peanut.web.controller.portal.video;
 
 import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServerResponse;
+import com.peanut.common.http.ServletUrl;
 import com.peanut.web.service.impl.VideoServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
@@ -12,23 +13,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * description:视频分页响应 .
+ * description:视频一级菜单响应 .
  *
  * @author zhaomaomao
  * @date 2019-04-22
- * @see com.peanut.web.controller.video
+ * @see com.peanut.web.controller
  * @since 1.0
  */
-@WebServlet(name = "videoPage", urlPatterns = "/video/Page")
-public class VideoPageController extends HttpServlet {
+@WebServlet(name = "videoFirstList", urlPatterns = ServletUrl.VIDEO_DETAIL)
+public class VideoFirstListController extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    long fid = Long.parseLong(req.getParameter("fid"));
-    int page = Integer.parseInt(req.getParameter("page"));
-    ServerResponse serverResponse = new VideoServiceImpl().videoPage(fid, page);
+    ServerResponse serverResponse = new VideoServiceImpl().videoFirstList();
     PrintWriter pw = resp.getWriter();
-    pw.print(JSON.toJSONString(serverResponse));
+    pw.write(JSON.toJSONString(serverResponse));
     pw.flush();
     pw.close();
   }

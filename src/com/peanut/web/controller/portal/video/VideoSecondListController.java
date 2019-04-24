@@ -1,7 +1,8 @@
-package com.peanut.web.controller.video;
+package com.peanut.web.controller.portal.video;
 
 import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServerResponse;
+import com.peanut.common.http.ServletUrl;
 import com.peanut.web.service.impl.VideoServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +20,7 @@ import java.io.PrintWriter;
  * @see com.peanut.web.controller
  * @since 1.0
  */
-@WebServlet(name = "videoSecondList", urlPatterns = "/video/secondList")
+@WebServlet(name = "videoSecondList", urlPatterns = ServletUrl.VIDEO_SECOND_LIST)
 public class VideoSecondListController extends HttpServlet {
 
   @Override

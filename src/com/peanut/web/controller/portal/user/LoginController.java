@@ -1,7 +1,8 @@
-package com.peanut.web.controller.user;
+package com.peanut.web.controller.portal.user;
 
 import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServerResponse;
+import com.peanut.common.http.ServletUrl;
 import com.peanut.web.service.impl.UserServiceImpl;
 
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +20,7 @@ import java.io.PrintWriter;
  * @see com.peanut.web.controller
  * @since 1.0
  */
-@WebServlet(name = "login", urlPatterns = "/login")
+@WebServlet(name = "login", urlPatterns = ServletUrl.LOGIN)
 public class LoginController extends HttpServlet {
 
   @Override

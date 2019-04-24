@@ -1,7 +1,8 @@
-package com.peanut.web.controller.user;
+package com.peanut.web.controller.portal.user;
 
 import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServerResponse;
+import com.peanut.common.http.ServletUrl;
 import com.peanut.entity.pojo.User;
 import com.peanut.web.service.impl.UserServiceImpl;
 
@@ -21,7 +22,7 @@ import java.sql.Date;
  * @see com.peanut.web.controller
  * @since 1.0
  */
-@WebServlet(name = "modifyUserInfo", urlPatterns = "/user/modify")
+@WebServlet(name = "modifyUserInfo", urlPatterns = ServletUrl.MODIFY_USER_INFO)
 public class ModifyUserInfoController extends HttpServlet {
 
   @Override
