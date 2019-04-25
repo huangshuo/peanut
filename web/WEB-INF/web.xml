@@ -19,7 +19,7 @@
         <filter-class>com.peanut.web.config.filter.LoginFilter</filter-class>
         <init-param>
             <param-name>excluded</param-name>
-            <param-value>.*login.*</param-value>
+            <param-value>.*login.*,.*</param-value>
         </init-param>
     </filter>
     <filter-mapping>
