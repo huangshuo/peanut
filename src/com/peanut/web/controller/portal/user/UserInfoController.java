@@ -20,7 +20,7 @@ import java.io.PrintWriter;
  * @see com.peanut.web.controller
  * @since 1.0
  */
-@WebServlet(name = "userInfo", urlPatterns = ServletUrl.USER_INFO)
+@WebServlet(urlPatterns = ServletUrl.Portal.USER_INFO)
 public class UserInfoController extends HttpServlet {
 
   @Override

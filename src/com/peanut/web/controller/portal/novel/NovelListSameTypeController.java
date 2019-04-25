@@ -22,7 +22,7 @@ import java.io.PrintWriter;
  * @since 1.0
  */
 
-@WebServlet(name = "sameType", urlPatterns = ServletUrl.NOVEL_LIST_SAME_TYPE)
+@WebServlet(urlPatterns = ServletUrl.Portal.NOVEL_LIST_SAME_TYPE)
 public class NovelListSameTypeController extends HttpServlet {
 
   @Override

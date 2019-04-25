@@ -21,7 +21,7 @@ import java.io.PrintWriter;
  * @see com.peanut.web.controller.portal.user
  * @since 1.0
  */
-@WebServlet(name = "feedback", urlPatterns = ServletUrl.FEEDBACK)
+@WebServlet(urlPatterns = ServletUrl.Portal.FEEDBACK)
 public class FeedbackController extends HttpServlet {
 
   @Override

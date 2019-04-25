@@ -2,8 +2,8 @@ package com.peanut.web.service.impl;
 
 import com.peanut.common.http.ServerResponse;
 import com.peanut.common.http.ServerStatusCodeEnum;
-import com.peanut.dao.GameDao;
-import com.peanut.dao.impl.GameDaoImpl;
+import com.peanut.dao.BaseDao;
+import com.peanut.dao.impl.BaseDaoImpl;
 import com.peanut.entity.pojo.Game;
 import com.peanut.entity.vo.PageInfo;
 import com.peanut.web.service.GameService;
@@ -18,7 +18,7 @@ import com.peanut.web.service.GameService;
  */
 public class GameServiceImpl implements GameService {
 
-  private static GameDao gameDao = new GameDaoImpl();
+  private static BaseDao<Game> gameDao = new BaseDaoImpl<>(Game.class);
 
   /**
    * 根据游戏类型id和平台id分页查询游戏

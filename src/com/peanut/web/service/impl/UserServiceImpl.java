@@ -3,10 +3,8 @@ package com.peanut.web.service.impl;
 import com.peanut.common.http.ServerResponse;
 import com.peanut.common.http.ServerStatusCodeEnum;
 import com.peanut.common.util.Md5Util;
-import com.peanut.dao.UserDao;
-import com.peanut.dao.UserFeedbackDao;
-import com.peanut.dao.impl.UserDaoImpl;
-import com.peanut.dao.impl.UserFeedbackDaoImpl;
+import com.peanut.dao.BaseDao;
+import com.peanut.dao.impl.BaseDaoImpl;
 import com.peanut.entity.pojo.User;
 import com.peanut.entity.pojo.UserFeedback;
 import com.peanut.web.service.UserService;
@@ -21,8 +19,8 @@ import com.peanut.web.service.UserService;
  */
 public class UserServiceImpl implements UserService {
 
-  private static UserDao userDao = new UserDaoImpl();
-  private static UserFeedbackDao userFeedbackDao = new UserFeedbackDaoImpl();
+  private static BaseDao<User> userDao = new BaseDaoImpl<>(User.class);
+  private static BaseDao<UserFeedback> userFeedbackDao = new BaseDaoImpl<>(UserFeedback.class);
 
   /**
    * 密码登录

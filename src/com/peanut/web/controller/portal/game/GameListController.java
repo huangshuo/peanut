@@ -18,7 +18,7 @@ import java.io.PrintWriter;
  * @see com.peanut.web.controller.portal.game
  * @since 1.0
  */
-@WebServlet(name = "gameList", urlPatterns = ServletUrl.GAME_LIST)
+@WebServlet(urlPatterns = ServletUrl.Portal.GAME_LIST)
 public class GameListController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

@@ -22,7 +22,7 @@ import java.util.Map;
  * @see com.peanut.web.controller
  * @since 1.0
  */
-@WebServlet(name = "serverTime", urlPatterns = ServletUrl.SERVER_TIME)
+@WebServlet(urlPatterns = ServletUrl.Portal.SERVER_TIME)
 public class ServerTimeController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

@@ -22,7 +22,7 @@ import java.sql.Date;
  * @see com.peanut.web.controller
  * @since 1.0
  */
-@WebServlet(name = "modifyUserInfo", urlPatterns = ServletUrl.MODIFY_USER_INFO)
+@WebServlet(urlPatterns = ServletUrl.Portal.MODIFY_USER_INFO)
 public class ModifyUserInfoController extends HttpServlet {
 
   @Override

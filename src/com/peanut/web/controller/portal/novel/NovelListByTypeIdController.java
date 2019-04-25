@@ -21,7 +21,7 @@ import java.io.PrintWriter;
  * @since 1.0
  */
 
-@WebServlet(name = "byType", urlPatterns = ServletUrl.NOVEL_LIST_BY_TYPE_ID)
+@WebServlet(urlPatterns = ServletUrl.Portal.NOVEL_LIST_BY_TYPE_ID)
 public class NovelListByTypeIdController extends HttpServlet {
 
   @Override

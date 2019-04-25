@@ -20,7 +20,7 @@ import java.io.PrintWriter;
  * @see com.peanut.web.controller
  * @since 1.0
  */
-@WebServlet(name = "videoFirstList", urlPatterns = ServletUrl.VIDEO_DETAIL)
+@WebServlet(urlPatterns = ServletUrl.Portal.VIDEO_FIRST_LIST)
 public class VideoFirstListController extends HttpServlet {
 
   @Override

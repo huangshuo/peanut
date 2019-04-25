@@ -18,7 +18,7 @@ import java.io.PrintWriter;
  * @see com.peanut.web.controller.portal.game
  * @since 1.0
  */
-@WebServlet(name = "gameInfo", urlPatterns = ServletUrl.GAME_INFO)
+@WebServlet(urlPatterns = ServletUrl.Portal.GAME_INFO)
 public class GameInfoController extends HttpServlet {
 
   @Override

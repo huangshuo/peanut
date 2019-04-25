@@ -21,7 +21,7 @@ import java.io.PrintWriter;
  * @since 1.0
  */
 
-@WebServlet(name = "novelDetail", urlPatterns = ServletUrl.NOVEL_DETAIL)
+@WebServlet(urlPatterns = ServletUrl.Portal.NOVEL_DETAIL)
 public class NovelDetailController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

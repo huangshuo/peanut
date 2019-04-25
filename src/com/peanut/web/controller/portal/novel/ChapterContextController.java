@@ -21,7 +21,7 @@ import java.io.PrintWriter;
  * @since 1.0
  */
 
-@WebServlet(name = "context", urlPatterns = ServletUrl.CHAPTER_CONTEXT)
+@WebServlet(urlPatterns = ServletUrl.Portal.CHAPTER_CONTEXT)
 public class ChapterContextController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

@@ -49,11 +49,12 @@
           button.addClass('am-disabled');
         } else {
           $.ajax({
-            url: '${pageContext.request.contextPath}/login',
+            url: '${pageContext.request.contextPath}/backend/login',
             type: 'POST',
             data: myForm.serialize(),
             dataType: 'json',
             success: function (data) {
+              // 登录失败
               if (data.code !== 200) {
                 inputAlert.html(data.msg);
                 inputAlert.show();
