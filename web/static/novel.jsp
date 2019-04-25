@@ -7,16 +7,16 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <title>小说信息管理</title>
-<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>--%>
-<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>--%>
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css" />--%>
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css" />--%>
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />--%>
-<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js" ></script>--%>
-<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js" ></script>--%>
-<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>--%>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css" />
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js" ></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js" ></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>
 <script>
     $(function () {
+
         $("#primarySelect").on("change", function () {
             if($("#primarySelect>option[value='0']").prop("selected") === false){
                 $("#primarySelect").css("color", "#3c3c3c");
@@ -31,6 +31,10 @@
                 $("#secondarySelect").css("color", "#f5cecd");
             }
         });
+        $("table tr:gt(0)").on("click", function () {
+            $("table tr").attr("class", null);
+            $(this).attr("class", "am-primary");
+        })
     })
 </script>
 <style>
@@ -134,7 +138,7 @@
                             <div class="am-panel-bd">
                                 <div class="am-u-md-12">
                                     <table class="am-table am-table-striped am-table-hover am-table-centered am-table-bordered am-table-radius">
-                                        <tr>
+                                        <tr id="tableHead">
                                             <th>书籍ID</th>
                                             <th>书籍名称</th>
                                             <th>书籍作者</th>
