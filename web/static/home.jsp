@@ -40,11 +40,9 @@
     $('.am-panel ul').on('open.collapse.amui', function() {
       $(this).prev().children("i:first").next().removeClass();
       $(this).prev().children("i:first").next().addClass("am-icon-angle-down am-fr am-margin-right");
-      console.log('折叠菜单打开了！');
     }).on('close.collapse.amui', function() {
       $(this).prev().children("i:first").next().removeClass();
       $(this).prev().children("i:first").next().addClass("am-icon-angle-right am-fr am-margin-right");
-      console.log('折叠菜单关闭鸟！');
     });
   }
   //返回主菜单（刷新页面）
@@ -55,8 +53,8 @@
   }
   //隐藏左侧菜单具体动作
     function moveii(){
-      console.log(clickNum);
       if(clickNum % 2 !== 0){
+
         document.getElementById("bodyLeft").style.left="-14%";
         document.getElementById("change").style.left="-14%";
         document.getElementsByClassName("bodyRight")[0].style.width="93%";
@@ -389,7 +387,7 @@
     background-color: rgb(41, 60, 85);
     box-shadow: 2px 2px 2px 2px darkgray;
   }
-  .bodyLeft li,ul {
+  .bodyLeft li,.bodyLeft ul {
     background-color: rgb(41, 60, 85);
     border: 0px;
   }
@@ -503,7 +501,7 @@
           <a href="###" id="authorityManagement"><i class="am-icon-qq am-margin-left-lg" ></i> 权限管理 </a>
         </li>
         <li>
-          <a href="###" id="menuManagement"><i class="am-icon-qq  am-margin-left-lg"></i> 菜单管理 </a>
+          <a href="###" id="menuManage"><i class="am-icon-qq  am-margin-left-lg"></i> 菜单管理 </a>
         </li>
       </ul>
     </li>

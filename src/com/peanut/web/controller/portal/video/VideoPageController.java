@@ -24,7 +24,7 @@ import java.io.PrintWriter;
 public class VideoPageController extends HttpServlet {
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     long fid = Long.parseLong(req.getParameter("fid"));
     int page = Integer.parseInt(req.getParameter("page"));
     ServerResponse serverResponse = new VideoServiceImpl().videoPage(fid, page);
