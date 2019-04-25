@@ -389,7 +389,7 @@
     background-color: rgb(41, 60, 85);
     box-shadow: 2px 2px 2px 2px darkgray;
   }
-  .bodyLeft li,ul {
+  .bodyLeft li, .bodyLeft ul {
     background-color: rgb(41, 60, 85);
     border: 0px;
   }
@@ -537,12 +537,12 @@
     </li>
 
     <li class="am-panel">
-      <a data-am-collapse="{parent: '#collapase-nav-1', target: '#game'}">
+      <a data-am-collapse="{parent: '#collapase-nav-1', target: '#gameMenu'}">
         <i class="am-icon-gamepad am-margin-left-sm"></i> 游戏管理 <i class="am-icon-angle-right am-fr am-margin-right"></i>
       </a>
-      <ul class="am-list am-collapse " id="game">
+      <ul class="am-list am-collapse " id="gameMenu">
         <li>
-          <a href="###"><span class="am-icon-gamepad am-margin-left-lg"></span> 游戏配置 </a>
+          <a href="###" id="game"><span class="am-icon-gamepad am-margin-left-lg"></span> 游戏配置 </a>
         </li>
       </ul>
     </li>

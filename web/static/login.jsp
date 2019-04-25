@@ -54,10 +54,13 @@
             data: myForm.serialize(),
             dataType: 'json',
             success: function (data) {
+              console.log(data);
               // 登录失败
               if (data.code !== 200) {
                 inputAlert.html(data.msg);
                 inputAlert.show();
+              } else {
+                window.self.location = "${pageContext.request.contextPath}/static/home.jsp";
               }
             }
           })
