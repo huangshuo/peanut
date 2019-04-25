@@ -1,6 +1,7 @@
 package com.peanut.entity.pojo;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * description: 游戏实体类.
@@ -64,6 +65,18 @@ public class Game implements Serializable {
    * 游戏状态(1.启用 2.下线)
    */
   private Integer gameStatus;
+  /**
+   * 游戏描述.
+   */
+  private String description;
+  /**
+   * 创建时间.
+   */
+  private Timestamp createTime;
+  /**
+   * 更新时间.
+   */
+  private Timestamp updateTime;
 
   public Long getGameId() {
     return gameId;
@@ -167,5 +180,29 @@ public class Game implements Serializable {
 
   public void setGameStatus(Integer gameStatus) {
     this.gameStatus = gameStatus;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Timestamp getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Timestamp createTime) {
+    this.createTime = createTime;
+  }
+
+  public Timestamp getUpdateTime() {
+    return updateTime;
+  }
+
+  public void setUpdateTime(Timestamp updateTime) {
+    this.updateTime = updateTime;
   }
 }

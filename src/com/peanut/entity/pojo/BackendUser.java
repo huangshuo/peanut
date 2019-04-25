@@ -1,6 +1,7 @@
 package com.peanut.entity.pojo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.peanut.common.Constant;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -51,11 +52,18 @@ public class BackendUser implements Serializable {
   /**
    * 帐号创建时间.
    */
+  @JSONField(format = Constant.DEFAULT_DATE_TIME_FORMAT)
   private Timestamp createTime;
   /**
    * 帐号最后更新时间.
    */
+  @JSONField(format = Constant.DEFAULT_DATE_TIME_FORMAT)
   private Timestamp updateTime;
+  /**
+   * 帐号最后登录时间.
+   */
+  @JSONField(format = Constant.DEFAULT_DATE_TIME_FORMAT)
+  private Timestamp lastLoginTime;
 
   public Long getUid() {
     return uid;
@@ -135,5 +143,13 @@ public class BackendUser implements Serializable {
 
   public void setUpdateTime(Timestamp updateTime) {
     this.updateTime = updateTime;
+  }
+
+  public Timestamp getLastLoginTime() {
+    return lastLoginTime;
+  }
+
+  public void setLastLoginTime(Timestamp lastLoginTime) {
+    this.lastLoginTime = lastLoginTime;
   }
 }

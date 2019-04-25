@@ -1,6 +1,7 @@
 package com.peanut.web.config.filter;
 
 import com.peanut.common.Constant;
+import com.peanut.entity.pojo.BackendUser;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -39,8 +40,8 @@ public class LoginFilter implements Filter {
     if (isExcluded) {
       filterChain.doFilter(request, response);
     } else {
-      HttpSession session = request.getSession();
-      if (session.getAttribute(Constant.SESSION_USER_KEY) == null) {
+      BackendUser backendUser = (BackendUser) request.getSession().getAttribute(Constant.SESSION_USER_KEY);
+      if (backendUser.getUid() == null) {
         // session中无用户信息, 需要重新登录
         response.sendRedirect(request.getContextPath());
       } else {

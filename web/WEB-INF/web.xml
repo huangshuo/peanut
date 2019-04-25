@@ -3,10 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <!-- session过期时间(分钟) -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <!-- 启动页面 -->
     <welcome-file-list>
         <welcome-file>/static/login.jsp</welcome-file>
     </welcome-file-list>
+
+    <!-- 过滤器 -->
     <filter>
+        <!-- 设置请求和响应编码 -->
         <filter-name>requestConfigFilter</filter-name>
         <filter-class>com.peanut.web.config.filter.CharsetConfigFilter</filter-class>
     </filter>
@@ -15,6 +24,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter>
+        <!-- 登录控制 -->
         <filter-name>loginFilter</filter-name>
         <filter-class>com.peanut.web.config.filter.LoginFilter</filter-class>
         <init-param>

@@ -16,8 +16,15 @@ public final class ServletUrl {
   public interface Backend {
 
     String LOGIN = "/backend/login";
-
     String LOGOUT = "/backend/logout";
+    String USER_LIST = "/backend/user/list";
+    String ADD_USER = "/backend/user/add";
+    String DELETE_USER = "/backend/user/delete";
+    String MODIFY_USER = "/backend/user/modify";
+    String ADD_GAME = "/backend/game/add";
+    String DELETE_GAME = "/backend/game/delete";
+    String MODIFY_GAME = "/backend/game/modify";
+    String GAME_LIST = "/backend/game/list";
   }
 
   /**
@@ -43,6 +50,6 @@ public final class ServletUrl {
     String VIDEO_PAGE = "/video/page";
     String VIDEO_FIRST_LIST = "/video/list/first";
     String VIDEO_SECOND_LIST = "/video/list/second";
-
+    String MENU_MANAGE = "/menu/manage";
   }
 }

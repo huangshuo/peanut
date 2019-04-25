@@ -7,9 +7,9 @@ import com.peanut.dao.NovelChapterDao;
 import com.peanut.dao.NovelDao;
 import com.peanut.dao.impl.NovelChapterDaoImpl;
 import com.peanut.dao.impl.NovelDaoImpl;
-import com.peanut.entity.vo.PageInfo;
 import com.peanut.entity.pojo.Novel;
 import com.peanut.entity.pojo.NovelChapter;
+import com.peanut.entity.vo.PageInfo;
 import com.peanut.web.service.NovelService;
 
 import java.sql.Date;
@@ -112,8 +112,7 @@ public class NovelServiceImpl implements NovelService {
    *
    * @param novelId 小说ID
    */
-  @Override
-  public void flushNovelWordCount(int novelId) {
+  private void flushNovelWordCount(int novelId) {
     NovelDao novelDao = new NovelDaoImpl();
     NovelChapterDao chapterDao = new NovelChapterDaoImpl();
     Novel novel = new Novel();
@@ -121,13 +120,12 @@ public class NovelServiceImpl implements NovelService {
     novelChapter.setNovelId(novelId);
     int wordCount = 0;
     List<NovelChapter> novelChapters = chapterDao.selectListByTemplate(novelChapter);
-    for(NovelChapter chapter:novelChapters){
+    for (NovelChapter chapter : novelChapters) {
       wordCount += WordCountUtil.countWord(chapter.getText()).get("numberOfWords");
     }
     novel.setUpdateDate(Date.valueOf(LocalDate.now()));
     novel.setWordCount(wordCount);
     novelDao.updateByTemplate(novel);
   }
-
 
 }
