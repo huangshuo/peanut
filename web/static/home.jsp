@@ -10,8 +10,10 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js" ></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js" ></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>
 
 <script>
   //主函数
@@ -51,21 +53,27 @@
       window.location.reload();
     });
   }
-  //隐藏左侧菜单
-  function hiddenMenu() {
-    var clickNum = 1;
-    $("#change").on("click",function(){
-      if(clickNum%2!=0){
-        $(".bodyLeft").css("display","none");
-        $(".bodyRight").css("width","90%");
-        $("#change").html('<i class="am-icon-sliders am-fr  am-margin-bottom-xs"></i>');
+  //隐藏左侧菜单具体动作
+    function moveii(){
+      console.log(clickNum);
+      if(clickNum % 2 !== 0){
+        document.getElementById("bodyLeft").style.left="-14%";
+        document.getElementById("change").style.left="-14%";
+        document.getElementsByClassName("bodyRight")[0].style.width="93%";
+        $("#change").html('<a class="am-icon-angle-double-left am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px" onclick="moveii()"></a>');
       }else{
-        $(".bodyLeft").css("display","block");
-        $(".bodyRight").css("width","80%");
-        $("#change").html('<i class="am-icon-bars am-fr  am-margin-bottom-xs" ></i>');
+        document.getElementsByClassName("bodyLeft")[0].style.left="0px";
+        document.getElementById("change").style.left="0px";
+        document.getElementsByClassName("bodyRight")[0].style.width="80%";
+        // $(".bodyRight").css("width","80%");
+        $("#change").html('<a class="am-icon-angle-double-right am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px" onclick="moveii()"></a>');
       }
       clickNum++;
-    });
+    }
+  //隐藏左侧菜单
+  var clickNum = 0;
+  function hiddenMenu() {
+    $("#change").on("click", moveii());
   }
   //面包屑导航
   function breadCrumb() {
@@ -351,11 +359,35 @@
     line-height: 45px;
     padding-left: 50px;
   }
+  .bodyLeftLable{
+    -webkit-transition: left 0.75s;
+    z-index : 2;
+    float: left;
+    position: relative;
+    left: -1px;
+    top: 40%;
+    height: 60px;
+    width: 25px;
+    margin-top: 30px;
+    background: rgba(41, 60, 85,1) ;
+    border-radius: 0px 5px 5px 0px;
+    font-size: 23px;
+    text-align: center;
+    /*color: rgba(237,63,20,1);*/
+    font-weight: 700;
+    border: 0;
+    outline:none;
+    box-shadow: 2px 2px 2px 0px darkgray;
+  }
   .bodyLeft {
+    -webkit-transition: left 0.75s;
+    z-index : 1;
+    position:relative;
     float: left;
     width: 14%;
     height: 937px;
     background-color: rgb(41, 60, 85);
+    box-shadow: 2px 2px 2px 2px darkgray;
   }
   .bodyLeft li,ul {
     background-color: rgb(41, 60, 85);
@@ -364,27 +396,18 @@
   .admin-sidebar-list li a {
     color: white;
   }
-  .bodyLeftLable{
-    float: left;
-    height: 60px;
-    width: 40px;
-    margin-top: 30px;
-    background: rgba(41, 60, 85,0.8) ;
-    border-radius: 0px 20px 10px 0;
-    font-size: 23px;
-    text-align: center;
-    color: rgba(237,63,20,1);
-    font-weight: 700;
-    border: 0;
-    outline:none;
-  }
   .bodyRight{
-    float: left;
+    -webkit-transition: width 0.75s;
+    float: right;
+    position: absolute;
+    right: 50px;
     height: 937px;
     width: 80%;
     margin: 0px 1%;
   }
   .bodyRightContent{
+    float: right;
+    position: absolute;
     height: 850px;
     width: 100%;
   }
@@ -464,7 +487,7 @@
   花生娱乐管理平台
 </div>
 <%--页面左侧(折叠菜单)--%>
-<div class="bodyLeft">
+<div class="bodyLeft" id="bodyLeft">
   <ul class="am-list admin-sidebar-list" id="collapase-nav-1">
 
     <li class="am-panel">
@@ -569,7 +592,7 @@
       </a>
       <ul class="am-list am-collapse " id="books">
         <li>
-          <a href="###" id="bookList"><span class="am-icon-book am-margin-left-lg" ></span> 图书列表 </a>
+          <a href="###" id="novel"><span class="am-icon-book am-margin-left-lg" ></span> 图书列表 </a>
         </li>
       </ul>
     </li>
@@ -621,7 +644,7 @@
 </div>
 <%--显示隐藏标签--%>
 <button class="bodyLeftLable" id="change" type="button">
-  <i class="am-icon-bars am-fr  am-margin-bottom-xs" ></i>
+  <a class="am-icon-angle-double-right am-secondary am-fr am-margin-bottom-xs" style="position: relative; top: 2px"></a>
 </button>
 <%--页面主要内容--%>
 <div class="bodyRight">
