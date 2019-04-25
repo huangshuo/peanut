@@ -2,6 +2,7 @@ package com.peanut.web.service.impl;
 
 import com.peanut.common.http.ServerResponse;
 import com.peanut.common.http.ServerStatusCodeEnum;
+import com.peanut.common.util.WordCountUtil;
 import com.peanut.dao.NovelChapterDao;
 import com.peanut.dao.NovelDao;
 import com.peanut.dao.impl.NovelChapterDaoImpl;
@@ -10,6 +11,10 @@ import com.peanut.entity.vo.PageInfo;
 import com.peanut.entity.pojo.Novel;
 import com.peanut.entity.pojo.NovelChapter;
 import com.peanut.web.service.NovelService;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * description: 小说service接口实现类.
@@ -52,6 +57,7 @@ public class NovelServiceImpl implements NovelService {
   @Override
   public ServerResponse<Novel> novelDetail(int novelId) {
 
+    flushNovelWordCount(novelId);
     Novel bean = novelDao.selectOneByPrimaryKey(novelId);
     if (bean.getNovelId() == null) {
       return ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(), ServerStatusCodeEnum.NOT_FOUND.getMsg());
@@ -100,4 +106,28 @@ public class NovelServiceImpl implements NovelService {
     }
     return ServerResponse.successWithData(chapterBean);
   }
+
+  /**
+   * 刷新小说总字数
+   *
+   * @param novelId 小说ID
+   */
+  @Override
+  public void flushNovelWordCount(int novelId) {
+    NovelDao novelDao = new NovelDaoImpl();
+    NovelChapterDao chapterDao = new NovelChapterDaoImpl();
+    Novel novel = new Novel();
+    NovelChapter novelChapter = new NovelChapter();
+    novelChapter.setNovelId(novelId);
+    int wordCount = 0;
+    List<NovelChapter> novelChapters = chapterDao.selectListByTemplate(novelChapter);
+    for(NovelChapter chapter:novelChapters){
+      wordCount += WordCountUtil.countWord(chapter.getText()).get("numberOfWords");
+    }
+    novel.setUpdateDate(Date.valueOf(LocalDate.now()));
+    novel.setWordCount(wordCount);
+    novelDao.updateByTemplate(novel);
+  }
+
+
 }

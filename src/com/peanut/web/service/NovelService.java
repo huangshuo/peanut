@@ -54,4 +54,10 @@ public interface NovelService {
    */
   ServerResponse<NovelChapter> getChapterContext(int userId, int novelId, int sortId, int isVip);
 
+  /**
+   * 刷新小说总字数
+   *
+   * @param novelId 小说ID
+   */
+  void flushNovelWordCount(int novelId);
 }
