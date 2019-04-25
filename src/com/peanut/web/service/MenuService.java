@@ -16,4 +16,5 @@ import java.util.List;
  */
 public interface MenuService {
   ServerResponse<PageInfo<MenuManage>> menuList(int page);
+
 }
