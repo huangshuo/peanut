@@ -1,9 +1,11 @@
 package com.peanut.entity.pojo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.peanut.common.Constant;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * description: 用户信息实体类.
@@ -47,6 +49,7 @@ public class User implements Serializable {
   /**
    * 用户生日.
    */
+  @JSONField(format = Constant.DEFAULT_DATE_FORMAT)
   private Date birthday;
   /**
    * 用户爱好.
@@ -60,6 +63,16 @@ public class User implements Serializable {
    * 用户等级.
    */
   private Integer grade;
+  /**
+   * 创建时间.
+   */
+  @JSONField(format = Constant.DEFAULT_DATE_TIME_FORMAT)
+  private Timestamp createTime;
+  /**
+   * 最后更新时间.
+   */
+  @JSONField(format = Constant.DEFAULT_DATE_TIME_FORMAT)
+  private Timestamp updateTime;
 
   public Long getUid() {
     return uid;
@@ -149,40 +162,19 @@ public class User implements Serializable {
     this.grade = grade;
   }
 
-  /**
-   * Returns a string representation of the object. In general, the
-   * {@code toString} method returns a string that
-   * "textually represents" this object. The result should
-   * be a concise but informative representation that is easy for a
-   * person to read.
-   * It is recommended that all subclasses override this method.
-   * <p>
-   * The {@code toString} method for class {@code Object}
-   * returns a string consisting of the name of the class of which the
-   * object is an instance, the at-sign character `{@code @}', and
-   * the unsigned hexadecimal representation of the hash code of the
-   * object. In other words, this method returns a string equal to the
-   * value of:
-   * <blockquote>
-   * <pre>
-   * getClass().getName() + '@' + Integer.toHexString(hashCode())
-   * </pre></blockquote>
-   *
-   * @return a string representation of the object.
-   */
-  @Override
-  public String toString() {
-    return "User{" +
-        "uid=" + uid +
-        ", username='" + username + '\'' +
-        ", headPic='" + headPic + '\'' +
-        ", headPicThumb='" + headPicThumb + '\'' +
-        ", des='" + des + '\'' +
-        ", sex=" + sex +
-        ", birthday=" + birthday +
-        ", avatarColor='" + avatarColor + '\'' +
-        ", phone='" + phone + '\'' +
-        ", grade=" + grade +
-        '}';
+  public Timestamp getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Timestamp createTime) {
+    this.createTime = createTime;
+  }
+
+  public Timestamp getUpdateTime() {
+    return updateTime;
+  }
+
+  public void setUpdateTime(Timestamp updateTime) {
+    this.updateTime = updateTime;
   }
 }

@@ -32,4 +32,33 @@ public interface GameService {
    * @return serverResponse
    */
   ServerResponse<Game> getGameInfoByGameId(long gameId);
+
+  /**
+   * 添加游戏
+   * @param game 游戏信息对象
+   * @return serverResponse
+   */
+  ServerResponse addGame(Game game);
+
+  /**
+   * 根据游戏名删除游戏
+   * @param name 游戏名
+   * @return serverResponse
+   */
+  ServerResponse deleteGameByGameName(String name);
+
+  /**
+   * 修改游戏信息
+   * @param game 修改后的游戏信息
+   * @return serverResponse
+   */
+  ServerResponse modifyGame(Game game);
+
+  /**
+   * 分页查询所有游戏
+   * @param pageNum 页码
+   * @param pageSize 分页大小
+   * @return serverResponse
+   */
+  ServerResponse<PageInfo<Game>> pageQueryAll(int pageNum, int pageSize);
 }
