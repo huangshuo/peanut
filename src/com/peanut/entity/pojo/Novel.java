@@ -1,6 +1,7 @@
 package com.peanut.entity.pojo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.peanut.common.Constant;
 
 import java.sql.Date;
 
@@ -52,7 +53,7 @@ public class Novel {
   /**
    * 最后更新日期
    */
-  @JSONField(format = "yyyy-MM-dd")
+  @JSONField(format = Constant.DEFAULT_DATE_FORMAT)
   private Date updateDate;
 
   /**
