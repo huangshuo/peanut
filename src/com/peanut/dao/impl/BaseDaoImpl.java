@@ -41,6 +41,11 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     entityFields = entityClass.getDeclaredFields();
   }
 
+  public BaseDaoImpl(Class<?> entityClass) {
+    this.entityClass = entityClass;
+    this.entityFields = entityClass.getDeclaredFields();
+  }
+
   /**
    * 新增entity对象
    *
