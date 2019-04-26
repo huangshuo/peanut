@@ -1,5 +1,8 @@
 package com.peanut.entity.pojo;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.peanut.common.Constant;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -72,10 +75,12 @@ public class Game implements Serializable {
   /**
    * 创建时间.
    */
+  @JSONField(format = Constant.DEFAULT_DATE_TIME_FORMAT)
   private Timestamp createTime;
   /**
    * 更新时间.
    */
+  @JSONField(format = Constant.DEFAULT_DATE_TIME_FORMAT)
   private Timestamp updateTime;
 
   public Long getGameId() {

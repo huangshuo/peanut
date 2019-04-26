@@ -48,13 +48,15 @@
           inputAlert.show();
           button.addClass('am-disabled');
         } else {
+          // 加载
+          button.html('<i class="am-icon-spinner am-icon-spin"></i>');
           $.ajax({
             url: '${pageContext.request.contextPath}/backend/login',
             type: 'POST',
             data: myForm.serialize(),
             dataType: 'json',
             success: function (data) {
-              console.log(data);
+              button.html('登录');
               // 登录失败
               if (data.code !== 200) {
                 inputAlert.html(data.msg);

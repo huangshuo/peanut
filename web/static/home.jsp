@@ -40,11 +40,9 @@
     $('.am-panel ul').on('open.collapse.amui', function() {
       $(this).prev().children("i:first").next().removeClass();
       $(this).prev().children("i:first").next().addClass("am-icon-angle-down am-fr am-margin-right");
-      console.log('折叠菜单打开了！');
     }).on('close.collapse.amui', function() {
       $(this).prev().children("i:first").next().removeClass();
       $(this).prev().children("i:first").next().addClass("am-icon-angle-right am-fr am-margin-right");
-      console.log('折叠菜单关闭鸟！');
     });
   }
   //返回主菜单（刷新页面）
@@ -54,26 +52,26 @@
     });
   }
   //隐藏左侧菜单具体动作
-    function moveii() {
-      console.log(clickNum);
+    function moveii(){
       if(clickNum % 2 !== 0){
+
         document.getElementById("bodyLeft").style.left="-14%";
         document.getElementById("change").style.left="-14%";
         document.getElementsByClassName("bodyRight")[0].style.width="93%";
-        $("#change").html('<a class="am-icon-angle-double-left am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px"></a>');
+        $("#change").html('<a class="am-icon-angle-double-left am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px" onclick="moveii()"></a>');
       }else{
         document.getElementsByClassName("bodyLeft")[0].style.left="0px";
         document.getElementById("change").style.left="0px";
         document.getElementsByClassName("bodyRight")[0].style.width="80%";
         // $(".bodyRight").css("width","80%");
-        $("#change").html('<a class="am-icon-angle-double-right am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px"></a>');
+        $("#change").html('<a class="am-icon-angle-double-right am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px" onclick="moveii()"></a>');
       }
       clickNum++;
     }
   //隐藏左侧菜单
   var clickNum = 0;
   function hiddenMenu() {
-      moveii();
+    $("#change").on("click", moveii());
   }
   //面包屑导航
   function breadCrumb() {
@@ -389,7 +387,7 @@
     background-color: rgb(41, 60, 85);
     box-shadow: 2px 2px 2px 2px darkgray;
   }
-  .bodyLeft li, .bodyLeft ul {
+  .bodyLeft li,.bodyLeft ul {
     background-color: rgb(41, 60, 85);
     border: 0px;
   }
@@ -503,7 +501,7 @@
           <a href="###" id="authorityManagement"><i class="am-icon-qq am-margin-left-lg" ></i> 权限管理 </a>
         </li>
         <li>
-          <a href="###" id="menuManagement"><i class="am-icon-qq  am-margin-left-lg"></i> 菜单管理 </a>
+          <a href="###" id="menuManage"><i class="am-icon-qq  am-margin-left-lg"></i> 菜单管理 </a>
         </li>
       </ul>
     </li>
@@ -643,7 +641,7 @@
   </ul>
 </div>
 <%--显示隐藏标签--%>
-<button class="bodyLeftLable" id="change" type="button" onclick="moveii()">
+<button class="bodyLeftLable" id="change" type="button">
   <a class="am-icon-angle-double-right am-secondary am-fr am-margin-bottom-xs" style="position: relative; top: 2px"></a>
 </button>
 <%--页面主要内容--%>

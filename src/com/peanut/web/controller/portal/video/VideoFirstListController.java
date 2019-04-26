@@ -24,7 +24,7 @@ import java.io.PrintWriter;
 public class VideoFirstListController extends HttpServlet {
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     ServerResponse serverResponse = new VideoServiceImpl().videoFirstList();
     PrintWriter pw = resp.getWriter();
     pw.write(JSON.toJSONString(serverResponse));

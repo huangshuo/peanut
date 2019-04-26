@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 public class VideoDetailController extends HttpServlet {
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     String vid = req.getParameter("vid");
     ServerResponse<VideoDetail> serverResponse = new VideoServiceImpl().videoDetail(vid);
     PrintWriter printWriter = resp.getWriter();

@@ -22,6 +22,7 @@ public final class PropertyUtil {
   public static final String JDBC_PASSWORD = "jdbc.password";
   public static final String JDBC_DRIVER = "jdbc.driver";
   public static final String MD5_SALT = "md5.salt";
+  public static final String DRUID_MAX_ACTIVE = "druid.maxActive";
 
   private PropertyUtil() {
   }
