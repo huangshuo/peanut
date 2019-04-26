@@ -63,7 +63,6 @@
         document.getElementsByClassName("bodyLeft")[0].style.left="0px";
         document.getElementById("change").style.left="0px";
         document.getElementsByClassName("bodyRight")[0].style.width="80%";
-        // $(".bodyRight").css("width","80%");
         $("#change").html('<a class="am-icon-angle-double-right am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px" onclick="moveii()"></a>');
       }
       clickNum++;
@@ -351,9 +350,6 @@
     height: 50px;
     border-bottom: 1px lightgray solid;
     background-color: whitesmoke;
-    font-size: x-large;
-    font-weight: 500;
-    color: rgb(41, 60, 85);
     line-height: 45px;
     padding-left: 50px;
   }
@@ -371,7 +367,6 @@
     border-radius: 0px 5px 5px 0px;
     font-size: 23px;
     text-align: center;
-    /*color: rgba(237,63,20,1);*/
     font-weight: 700;
     border: 0;
     outline:none;
@@ -468,7 +463,6 @@
     line-height: 65px;
     font-size: 2.5em;
     font-weight: 500;
-
   }
   .numberTitle{
     font-size: small;
@@ -482,7 +476,22 @@
 <body>
 <%--顶部页面(标题)--%>
 <div class="header">
-  花生娱乐管理平台
+    <h1 class="am-topbar-brand">
+      <a href="#">花生娱乐管理平台</a>
+    </h1>
+    <div class="am-topbar-right">
+      <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
+        <button class="am-btn am-btn-secondary am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle>账户<span class="am-icon-caret-down"></span></button>
+        <ul class="am-dropdown-content">
+          <li>
+            <a href="#">修改密码</a>
+          </li>
+          <li>
+            <a href="#">注销</a>
+          </li>
+        </ul>
+      </div>
+    </div>
 </div>
 <%--页面左侧(折叠菜单)--%>
 <div class="bodyLeft" id="bodyLeft">
@@ -565,7 +574,7 @@
       </a>
       <ul class="am-list am-collapse " id="channel">
         <li>
-          <a href="###"><span class="am-icon-exchange am-margin-left-lg"></span> 渠道管理 </a>
+          <a href="###" id="channelManage"><span class="am-icon-exchange am-margin-left-lg"></span> 渠道管理 </a>
         </li>
         <li>
           <a href="###"><span class="am-icon-exchange am-margin-left-lg"></span> 渠道分类管理 </a>

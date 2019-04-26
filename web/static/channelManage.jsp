@@ -84,7 +84,8 @@
           $("#prev").after('<li id="page' + i + '"><a href="###">' + i + '</a></li>');
         }
         $("li[id*='page']").on("click",function () {
-          pageData($(this).children().html());
+          console.log(123131321);
+          pageData($(this).children().html(),pageSize);
           $("#currentPage").val($(this).children().html());
         });
       }
@@ -149,6 +150,7 @@
   }
 </style>
 <div class="border" style="height: 600px;">
+
   <%--菜单管理表单--%>
   <table class="am-table  am-table-centered am-table-hover am-table-striped">
     <thead>
