@@ -21,8 +21,7 @@ public class MenuServiceImpl implements MenuService {
   @Override
   public ServerResponse<PageInfo<MenuManage>> menuList(int page) {
     BaseDao<MenuManage> bd=new BaseDaoImpl<>(MenuManage.class);
-    MenuManage menuManage=new MenuManage();
-    PageInfo<MenuManage>  pageInfo=bd.pageQueryByTemplate(page,10,menuManage);
+    PageInfo<MenuManage>  pageInfo=bd.pageQueryByTemplate(page,10,null);
     return ServerResponse.successWithData(pageInfo);
   }
 }

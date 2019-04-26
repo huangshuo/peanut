@@ -1,4 +1,4 @@
-package com.peanut.web.controller.portal.menu;
+package com.peanut.web.controller.backend.menu;
 
 import com.peanut.common.http.ServletUrl;
 import com.peanut.dao.impl.BaseDaoImpl;
@@ -16,7 +16,7 @@ import java.io.IOException;
  *
  * @author JAVASM
  * @date 2019-04-25
- * @see com.peanut.web.controller.portal.menu
+ * @see com.peanut.web.controller.backend.menu
  * @since 1.0
  */
 @WebServlet(urlPatterns = ServletUrl.Portal.MENU_UPDATE)
