@@ -19,6 +19,16 @@ public final class DbUtil {
 
   private static final ThreadLocal<Connection> LOCAL_CONNECTION = new ThreadLocal<>();
 
+  private static DruidDataSource dataSource = new DruidDataSource();
+
+  static {
+    dataSource.setUrl(PropertyUtil.getProperty(PropertyUtil.JDBC_URL));
+    dataSource.setUsername(PropertyUtil.getProperty(PropertyUtil.JDBC_USERNAME));
+    dataSource.setPassword(PropertyUtil.getProperty(PropertyUtil.JDBC_PASSWORD));
+    dataSource.setDriverClassName(PropertyUtil.getProperty(PropertyUtil.JDBC_DRIVER));
+    dataSource.setMaxActive(Integer.parseInt(PropertyUtil.getProperty(PropertyUtil.DRUID_MAX_ACTIVE)));
+  }
+
   /**
    * 获取数据库连接
    *
@@ -27,11 +37,6 @@ public final class DbUtil {
   public static Connection getConnection() {
     Connection connection = LOCAL_CONNECTION.get();
     if (connection == null) {
-      DruidDataSource dataSource = new DruidDataSource();
-      dataSource.setUrl(PropertyUtil.getProperty(PropertyUtil.JDBC_URL));
-      dataSource.setUsername(PropertyUtil.getProperty(PropertyUtil.JDBC_USERNAME));
-      dataSource.setPassword(PropertyUtil.getProperty(PropertyUtil.JDBC_PASSWORD));
-      dataSource.setDriverClassName(PropertyUtil.getProperty(PropertyUtil.JDBC_DRIVER));
       try {
         connection = dataSource.getConnection();
         LOCAL_CONNECTION.set(connection);

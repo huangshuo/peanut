@@ -34,7 +34,7 @@ public class LoginController extends HttpServlet {
       req.getSession().setAttribute(Constant.SESSION_USER_KEY, JSON.toJSONString(serverResponse.getData()));
     }
     PrintWriter printWriter = resp.getWriter();
-    printWriter.println(serverResponse);
+    printWriter.println(JSON.toJSONString(serverResponse));
     printWriter.flush();
     printWriter.close();
   }
