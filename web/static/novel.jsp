@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<div id="holePage">
 <title>小说信息管理</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>
@@ -16,6 +17,9 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>
 <script>
     $(function () {
+
+        var novelId;
+        var novelName;
 
         $("#primarySelect").on("change", function () {
             if($("#primarySelect>option[value='0']").prop("selected") === false){
@@ -34,6 +38,24 @@
         $("table tr:gt(0)").on("click", function () {
             $("table tr").attr("class", null);
             $(this).attr("class", "am-primary");
+            console.log($(this).children());
+            novelId = $(this).children()[0].innerText;
+            novelName = $(this).children()[1].innerText;
+            console.log(novelId+" : "+novelName);
+        });
+        $("#update").on("click", function () {
+            if(novelId !== null) {
+                $.ajax({
+                    url: "/peanut/static/novelUpdate.jsp",
+                    type: "GET",
+                    data: {"novelId": novelId, "novelName": novelName},
+                    dataType: "html",
+                    success: function (data) {
+                        console.log(data);
+                        $("#holePage").html(data);
+                    }
+                })
+            }
         })
     })
 </script>
@@ -80,6 +102,7 @@
     #tableRow{margin-left: 0px; margin-right: 0px}
     #update{float: right}
 </style>
+
 <div class="am-container" id="charm">
     <div class="am-g am-g-collapse am-panel-group" id="accordion1" >
         <div class="am-panel-hd">
@@ -139,9 +162,9 @@
                                 <div class="am-u-md-12">
                                     <table class="am-table am-table-striped am-table-hover am-table-centered am-table-bordered am-table-radius">
                                         <tr id="tableHead">
-                                            <th>书籍ID</th>
-                                            <th>书籍名称</th>
-                                            <th>书籍作者</th>
+                                            <th>小说ID</th>
+                                            <th>小说名称</th>
+                                            <th>小说作者</th>
                                             <th>一级分类ID</th>
                                             <th>一级分类名称</th>
                                             <th>二级分类ID</th>
@@ -149,24 +172,24 @@
                                             <th>更新状态</th>
                                         </tr>
                                         <tr>
-                                            <td>书籍ID</td>
-                                            <td>书籍名称</td>
-                                            <td>书籍作者</td>
-                                            <td>一级分类ID</td>
-                                            <td>一级分类名称</td>
+                                            <td>1</td>
+                                            <td>咩霸之死</td>
+                                            <td>俺</td>
+                                            <td>1</td>
+                                            <td>沙雕选摘</td>
                                             <td>二级分类ID</td>
                                             <td>二级分类名称</td>
-                                            <td>更新状态</td>
+                                            <td>完结</td>
                                         </tr>
                                         <tr>
-                                            <td>书籍ID</td>
-                                            <td>书籍名称</td>
-                                            <td>书籍作者</td>
-                                            <td>一级分类ID</td>
-                                            <td>一级分类名称</td>
-                                            <td>二级分类ID</td>
-                                            <td>二级分类名称</td>
-                                            <td>更新状态</td>
+                                            <td>2</td>
+                                            <td>冷枭的专属宝贝</td>
+                                            <td>夜未晚</td>
+                                            <td>9</td>
+                                            <td>都市言情</td>
+                                            <td>89</td>
+                                            <td>总裁豪门</td>
+                                            <td>完结</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -202,4 +225,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>
