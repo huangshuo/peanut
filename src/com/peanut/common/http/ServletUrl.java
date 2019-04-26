@@ -53,5 +53,7 @@ public final class ServletUrl {
     String MENU_MANAGE = "/menu/manage";
     String MENU_UPDATE = "/menu/update";
     String CHANNEL_MANAGE = "/channel/manage";
+    String CHANNEL_INSERT = "/channel/insert";
+    String CHANNEL_DELETE = "/channel/delete";
   }
 }

@@ -2,7 +2,8 @@ package com.peanut.entity.pojo;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-import java.util.Date;
+import java.sql.Timestamp;
+
 
 /**
  * description: .
@@ -13,7 +14,7 @@ import java.util.Date;
  * @since 1.0
  */
 public class BackendChannelManage {
-  @JSONField(serialize = false)
+
   private Long id;
   private String firstClass;
   private String secondClass;
@@ -21,7 +22,7 @@ public class BackendChannelManage {
   private String channelDownloadLink;
   private String productName;
   private String showName;
-  private Date createDate;
+  private Timestamp createDate;
 
   public Long getId() {
     return id;
@@ -79,11 +80,11 @@ public class BackendChannelManage {
     this.showName = showName;
   }
 
-  public Date getCreateDate() {
+  public Timestamp getCreateDate() {
     return createDate;
   }
 
-  public void setCreateDate(Date createDate) {
+  public void setCreateDate(Timestamp createDate) {
     this.createDate = createDate;
   }
 }

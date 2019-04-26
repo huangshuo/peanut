@@ -14,7 +14,7 @@
     pageData(page,pageSize);
     pageBtnLoad(page,pageSize);
   });
-  //点击换页按钮切换页面
+  //頁面固定換頁按鈕
   function changePageBtn(page,pageSize) {
     $("#first").on("click",function () {
       page=1;
@@ -51,25 +51,56 @@
         $(".content").html("");
         $.each(data.data.pageData,function (i,d) {
           $(".content").append('<tr class="am-animation-scale-up">' +
-            '      <td>'+d.firstClass+'</td>' +
-            '      <td>'+d.secondClass+'</td>' +
-            '      <td>'+d.channelNum+'</td>' +
-            '      <td>'+d.channelDownloadLink+'</td>' +
-            '      <td>'+d.productName+'</td>' +
-            '      <td>'+d.showName+'</td>' +
-            '      <td>'+d.createDate+'</td>' +
-            '      <td> <button type="button" ' +
-            '                         class="am-btn am-btn-primary am-radius doc-prompt-toggle" ' +
-            '                         id="" ' +
-            '                         data-am-modal="{target: #dmy-prompt}">修改' +
-            '           </button>' +
-            '           <button type="button" class="am-btn am-btn-danger am-radius">删除</button>' +
+            '      <td>'+dataType(d.firstClass)+'</td>' +
+            '      <td>'+dataType(d.secondClass)+'</td>' +
+            '      <td>'+dataType(d.channelNum)+'</td>' +
+            '      <td>'+dataType(d.channelDownloadLink)+'</td>' +
+            '      <td>'+dataType(d.productName)+'</td>' +
+            '      <td>'+dataType(d.showName)+'</td>' +
+            '      <td>'+dateFormat(d.createDate)+'</td>' +
+            '      <td> ' +
+            '         <button type="button" class="am-btn am-btn-danger am-radius deleteBtn">删除</button>' +
             '      </td>' +
             '    </tr>')
         });
         modifyMenu(page,pageSize);
+        deleteChannel(page,pageSize);
       }
     });
+  }
+  //日期转换函数
+  function dateFormat(strLongTime) {
+    if(typeof(strLongTime) == "undefined"){
+      return "";
+    }else{
+      var oDate=new Date(strLongTime);
+      var year=oDate.getFullYear();
+      var month=oDate.getMonth()+1;
+      var date=oDate.getDate();
+      var hours=oDate.getHours();
+      var minutes=oDate.getMinutes();
+      var seconds=oDate.getSeconds();
+      return year+"年"+
+        addZero(month)+"月"+
+        addZero(date)+"日 "+
+        addZero(hours)+"h"+
+        addZero(minutes)+"m"+
+        addZero(seconds)+"s";
+    }
+  }
+  //日期补零
+  function addZero(data) {
+    if(data<10){
+      data="0"+data;
+    }
+    return data;
+  }
+  //判断数据类型是否为空、为undefined
+  function dataType(data) {
+    if (typeof(data) == "undefined") {
+      data="";
+    }
+    return data;
   }
   //页面加载根据总页码数 生成页码按钮
   function pageBtnLoad(page,pageSize) {
@@ -84,32 +115,39 @@
           $("#prev").after('<li id="page' + i + '"><a href="###">' + i + '</a></li>');
         }
         $("li[id*='page']").on("click",function () {
-          console.log(123131321);
           pageData($(this).children().html(),pageSize);
           $("#currentPage").val($(this).children().html());
         });
       }
     })
   }
-  //更新菜单内容 待完成
+  //添加新渠道
   function  modifyMenu(page,pageSize){
-
-    $('.doc-prompt-toggle').on('click', function() {
-      $("#first_class").val($(this).parent().prev().prev().prev().prev().prev().html());
-      $("#second_class").val($(this).parent().prev().prev().prev().prev().html());
-      $("#channel_num").val($(this).parent().prev().prev().prev().html());
-      $("#channel_download_link").val($(this).parent().prev().prev().html());
-      $("#product_name").val($(this).parent().prev().html());
-      $("#show_name").val($(this).parent().prev().html());
-      $("#create_date").val($(this).parent().prev().html());
+    $('#addChannel').on('click', function() {
       $('#my-prompt').modal({
         relatedTarget: this,
         onConfirm: function(e) {
+          var channelData=[
+            $("#first_class").val(),
+            $("#second_class").val(),
+            $("#channel_num").val(),
+            $("#channel_download_link").val(),
+            $("#product_name").val(),
+            $("#show_name").val()
+          ];
+          console.log(channelData);
           //确认：向数据库发送请求
           $.ajax({
-            url:"${pageContext.request.contextPath}/channel/update",
+            url:"${pageContext.request.contextPath}/channel/insert",
             type:"get",
-            data:{"id":$("#id").val(),"menuName":$("#menuName").val(),"fid": $("#fid").val(),"isShow": $("#isShow").val(),"icon": $("#icon").val()},
+            data:{
+              "first_class":channelData[0],
+              "second_class":channelData[1],
+              "channel_num": channelData[2],
+              "channel_download_link": channelData[3],
+              "product_name": channelData[4],
+              "show_name":channelData[5]
+            },
             dataType:"text",
             success:function(data){
               pageData(page,pageSize);
@@ -121,8 +159,26 @@
     })
   }
   //删除菜单内容
-  function deleteMenu() {
-
+  function deleteChannel(page,pageSize) {
+    $(".deleteBtn").on("click",function () {
+      var first_class=$(this).parent().parent().children("td:first").html();
+      console.log(first_class);
+      $('#my-confirm').modal({
+        relatedTarget: this,
+        onConfirm: function(options) {
+          $.ajax({
+            url:"${pageContext.request.contextPath}/channel/delete",
+            type:"get",
+            data:{"first_class":first_class},
+            dataType:"text",
+            success:function (data) {
+              console.log(data);
+              pageData(page,pageSize);
+            }
+         })
+        }
+      })
+    })
   }
 </script>
 <style>
@@ -142,16 +198,22 @@
     font-size: 25px;
   }
   .changeMenu{
-    height: 510px;
+    height: 460px;
     width: 700px;
   }
   .changeMenu input{
     margin: 20px 0;
   }
+  .addChannel{
+    display: block;
+    float: right;
+    margin: 0 100px 15px 0;
+  }
 </style>
 <div class="border" style="height: 600px;">
-
-  <%--菜单管理表单--%>
+  <%--渠道添加添加功能--%>
+  <button type="button" class="am-btn am-btn-warning am-round addChannel" id="addChannel" >添加渠道</button>
+  <%--渠道管理 表单--%>
   <table class="am-table  am-table-centered am-table-hover am-table-striped">
     <thead>
     <tr class="am-primary">
@@ -176,17 +238,15 @@
     <li id="last"><a href="###" >尾页</a></li>
   </ul>
 </div>
-
 <%--隐藏域、放总页数\当前页数--%>
 <input type="hidden" value="" id="totalPage">
 <input type="hidden" value="1" id="currentPage">
-<%--模态框，改变内容--%>
+<%--添加渠道 模态框--%>
 <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt" >
   <div class="am-modal-dialog changeMenu">
-    <div class="am-modal-hd menuName" >修改菜单</div>
+    <div class="am-modal-hd menuName" >添加菜单</div>
     <div class="am-modal-bd">
       <input type="hidden" class="am-modal-prompt-input" id="id">
-
 
       <label class="label">一级目录</label><input type="text" class="am-modal-prompt-input" id="first_class">
       <label class="label">二级目录</label><input type="text" class="am-modal-prompt-input" id="second_class">
@@ -194,11 +254,24 @@
       <label class="label">渠道下载地址</label><input type="text" class="am-modal-prompt-input" id="channel_download_link">
       <label class="label">产品名称</label><input type="text" class="am-modal-prompt-input" id="product_name">
       <label class="label">显示名称</label><input type="text" class="am-modal-prompt-input" id="show_name">
-      <label class="label">创建时间</label><input type="text" class="am-modal-prompt-input" id="create_date">
+
     </div>
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>取消</span>
       <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+    </div>
+  </div>
+</div>
+<%--删除渠道 模态框--%>
+<div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd">花生娱乐</div>
+    <div class="am-modal-bd">
+      你，确定要删除这个渠道吗？
+    </div>
+    <div class="am-modal-footer">
+      <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+      <span class="am-modal-btn" data-am-modal-confirm>确定</span>
     </div>
   </div>
 </div>
