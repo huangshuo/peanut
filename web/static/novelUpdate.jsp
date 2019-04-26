@@ -5,22 +5,60 @@
   Time: 19:37
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <title>小说信息修改页面</title>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css" />
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js" ></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js" ></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>--%>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>--%>
+<%--<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css" />--%>
+<%--<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css" />--%>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js" ></script>--%>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js" ></script>--%>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>--%>
+<div id="holePage">
 <script>
     $(function () {
         var prepUpdateNovelId = "${param.novelId}";
         var prepUpdateNovelName = "${param.novelName}";
-        // var prepUpdateAuthorName = $
-        $("#novelId").prop("placeholder", prepUpdateNovelId);
+        var prepUpdateAuthorName = "${param.authorName}";
+        var prepUpdateNovelTypeIdSecondary = "${param.novelTypeIdSecondary}";
+
+        // $("#novelId").prop("placeholder", prepUpdateNovelId);
         $("#novelName").prop("placeholder", prepUpdateNovelName);
+        $("#authorName").prop("placeholder", prepUpdateAuthorName);
+        $("#novelStatus>option[value=${param.novelStatus}]").attr("selected", true);
+        console.log(JSON.parse(JSON.stringify(serializeObject($("form"))).replace("}", ", \"novelId\": \"" + prepUpdateNovelId + "\"}")));
+
+        //表单序列化字符串转换为JSON(代码来源网络)
+        function serializeObject(form)
+        {
+            var o = {};
+            var a = form.serializeArray();
+            $.each(a, function() {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        }
+
+        $("#upDate").on("click", function () {
+            $.ajax({
+                url: "/peanut/backend/novel/update",
+                type: "GET",
+                data: JSON.parse(JSON.stringify(serializeObject($("form"))).replace("}", ", \"novelId\": \"" +
+                    prepUpdateNovelId + ", \"novelTypeSecondary\": \"" + prepUpdateNovelTypeIdSecondary+ "\"}")),
+                dataType: "html",
+                success: function (data) {
+                    console.log(data);
+                    $("#holePage").html(data);
+                }
+            })
+        })
     })
 </script>
 <style>
@@ -33,7 +71,7 @@
         width:100%;
         height:30px;
         background-color: #0E9EE2;}
-    #novelState{
+    #novelStatus{
         font-size: 12pt;
         font-weight: lighter;
         padding-right: 80px;
@@ -41,6 +79,7 @@
         height: 40px;
     }
     input{
+        text-align: center;
         font-size: 15pt;
         font-weight: lighter;
         padding-right: 80px;
@@ -60,16 +99,16 @@
         </p>
     </div>
     <form class="am-form" role="form">
-        <div class="am-g">
-            <div class="am-u-md-3">&nbsp;</div>
-            <div class="am-u-md-6">
-                <div class="am-form-group">
-                    <label for="novelId">小说ID</label>
-                    <input type="text" id="novelId" name="novelId" class="am-form-group am-round">
-                </div>
-            </div>
-            <div class="am-u-md-3">&nbsp;</div>
-        </div>
+<%--        <div class="am-g">--%>
+<%--            <div class="am-u-md-3">&nbsp;</div>--%>
+<%--            <div class="am-u-md-6">--%>
+<%--                <div class="am-form-group">--%>
+<%--                    <label for="novelId">小说ID</label>--%>
+<%--                    <input type="text" id="novelId" name="novelId" class="am-form-group am-round">--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--            <div class="am-u-md-3">&nbsp;</div>--%>
+<%--        </div>--%>
         <div class="am-g">
             <div class="am-u-md-3">&nbsp;</div>
             <div class="am-u-md-6">
@@ -90,34 +129,34 @@
             </div>
             <div class="am-u-md-3">&nbsp;</div>
         </div>
-        <div class="am-g">
-            <div class="am-u-md-3">&nbsp;</div>
-            <div class="am-u-md-3">
-                <div class="am-form-group">
-                    <label for="primarySelect">一级分类</label><br/>
-                    <select id="primarySelect" name="primaryClassification">
-                        <option value="0">连载中</option>
-                        <option value="1">完结</option>
-                    </select>
-                </div>
-            </div>
-            <div class="am-u-md-3">
-            <div class="am-form-group">
-                <label for="secondarySelect">二级分类</label><br/>
-                <select id="secondarySelect" name="secondaryClassification">
-                    <option value="0">连载中</option>
-                    <option value="1">完结</option>
-                </select>
-            </div>
-        </div>
-            <div class="am-u-md-3">&nbsp;</div>
-        </div>
+<%--        <div class="am-g">--%>
+<%--            <div class="am-u-md-3">&nbsp;</div>--%>
+<%--            <div class="am-u-md-3">--%>
+<%--                <div class="am-form-group">--%>
+<%--                    <label for="primarySelect">一级分类</label><br/>--%>
+<%--                    <select id="primarySelect" name="primaryClassification">--%>
+<%--                        <option value="0">连载中</option>--%>
+<%--                        <option value="1">完结</option>--%>
+<%--                    </select>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--            <div class="am-u-md-3">--%>
+<%--            <div class="am-form-group">--%>
+<%--                <label for="secondarySelect">二级分类</label><br/>--%>
+<%--                <select id="secondarySelect" name="secondaryClassification">--%>
+<%--                    <option value="0">连载中</option>--%>
+<%--                    <option value="1">完结</option>--%>
+<%--                </select>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--            <div class="am-u-md-3">&nbsp;</div>--%>
+<%--        </div>--%>
         <div class="am-g">
             <div class="am-u-md-3">&nbsp;</div>
             <div class="am-u-md-6">
                 <div class="am-form-group">
-                    <label for="novelState">小说状态</label><br/>
-                    <select id="novelState" name="novelState">
+                    <label for="novelStatus">小说状态</label><br/>
+                    <select id="novelStatus" name="novelStatus">
                         <option value="0">连载中</option>
                         <option value="1">完结</option>
                     </select>
@@ -136,4 +175,4 @@
         </div>
     </form>
 </div>
-
+</div>

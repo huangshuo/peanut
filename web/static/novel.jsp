@@ -8,18 +8,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div id="holePage">
 <title>小说信息管理</title>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css" />
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js" ></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js" ></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>--%>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>--%>
+<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css" />--%>
+<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css" />--%>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js" ></script>--%>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js" ></script>--%>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>--%>
 <script>
     $(function () {
 
         var novelId;
         var novelName;
+        var authorName;
+        var novelStatus;
+        var novelTypeIdSecondary;
 
         $("#primarySelect").on("change", function () {
             if($("#primarySelect>option[value='0']").prop("selected") === false){
@@ -38,17 +41,22 @@
         $("table tr:gt(0)").on("click", function () {
             $("table tr").attr("class", null);
             $(this).attr("class", "am-primary");
-            console.log($(this).children());
             novelId = $(this).children()[0].innerText;
             novelName = $(this).children()[1].innerText;
-            console.log(novelId+" : "+novelName);
+            authorName= $(this).children()[2].innerText;
+            novelTypeIdSecondary = $(this).children()[5].innerText;
+            novelStatus = $(this).children()[7].innerText;
+            console.log(novelId+" : "+novelStatus);
+            console.log((novelStatus.match("连载")? "0":"1"));
+
         });
         $("#update").on("click", function () {
             if(novelId !== null) {
                 $.ajax({
                     url: "/peanut/static/novelUpdate.jsp",
                     type: "GET",
-                    data: {"novelId": novelId, "novelName": novelName},
+                    data: {"novelId": novelId, "novelName": novelName,
+                        "authorName": authorName, "novelStatus": (novelStatus.match("连载")? "0":"1"), "novelTypeSecondary": novelTypeIdSecondary},
                     dataType: "html",
                     success: function (data) {
                         console.log(data);
