@@ -29,5 +29,6 @@ public class channelDeleteController extends HttpServlet {
     backendChannelManage.setFirstClass(req.getParameter("first_class"));
     backendChannelManage=baseDao.selectOneByTemplate(backendChannelManage);
     baseDao.deleteByPrimaryKey(backendChannelManage.getId());
+    
   }
 }

@@ -44,7 +44,7 @@
     $.ajax({
       url:"${pageContext.request.contextPath}/menu/manage",
       type:"get",
-      data:{"page":page},
+      data:{"page":page,"pageSize":10},
       dataType:"json",
       success:function (data) {
         $(".content").html("");
@@ -73,7 +73,7 @@
     $.ajax({
       url:"${pageContext.request.contextPath}/menu/manage",
       type:"get",
-      data:{"page":page},
+      data:{"page":page,"pageSize":10},
       dataType:"json",
       success:function (data) {
         $("#totalPage").val(data.data.totalPage);

@@ -31,6 +31,18 @@ public class MenuManage {
    *菜单图标
    * */
   private String icon;
+  /*
+   *jsp文件名
+   * */
+  private String jspName;
+
+  public String getJspName() {
+    return jspName;
+  }
+
+  public void setJspName(String jspName) {
+    this.jspName = jspName;
+  }
 
   public Long getId() {
     return id;

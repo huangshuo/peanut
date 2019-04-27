@@ -25,8 +25,9 @@ public class MenuManageController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     int page = Integer.parseInt(req.getParameter("page"));
+    int pageSize = Integer.parseInt(req.getParameter("pageSize"));
     PrintWriter pw=resp.getWriter();
-    ServerResponse serverResponse=new MenuServiceImpl().menuList(page);
+    ServerResponse serverResponse=new MenuServiceImpl().menuList(page,pageSize);
     pw.print(JSON.toJSONString(serverResponse));
     pw.flush();
     pw.close();

@@ -15,6 +15,6 @@ import java.util.List;
  * @since 1.0
  */
 public interface MenuService {
-  ServerResponse<PageInfo<MenuManage>> menuList(int page);
+  ServerResponse<PageInfo<MenuManage>> menuList(int page,int pageSize);
 
 }
