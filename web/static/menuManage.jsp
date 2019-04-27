@@ -54,7 +54,7 @@
             '      <td>'+d.mname+'</td>' +
             '      <td>'+d.fid+'</td>' +
             '      <td>'+d.isShow+'</td>' +
-            '      <td>'+d.icon+'</td>' +
+            '      <td><i class="'+d.icon+' am-margin-left-sm" style="font-size: 30px"></i></td>' +
             '      <td> <button type="button" ' +
             '                         class="am-btn am-btn-primary am-radius doc-prompt-toggle" ' +
             '                         id="" ' +
