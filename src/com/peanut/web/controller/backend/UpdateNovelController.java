@@ -1,5 +1,7 @@
 package com.peanut.web.controller.backend;
 
+import com.alibaba.fastjson.JSON;
+import com.peanut.common.http.ServerResponse;
 import com.peanut.dao.BaseDao;
 import com.peanut.dao.impl.BaseDaoImpl;
 import com.peanut.entity.pojo.BackendNovel;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import static com.peanut.common.http.ServletUrl.Backend.UPDATE_NOVEL;
 
@@ -41,5 +44,9 @@ public class UpdateNovelController extends HttpServlet {
 		novelBean.setNovelStatus(novelStatus);
 		BackendNovelService service = new BackendNovelServiceImpl();
 
+		ServerResponse<BackendNovel> response = service.updateNovelInfoByTemplate(novelBean);
+		PrintWriter printWriter = resp.getWriter();
+		printWriter.print(JSON.toJSONString(response));
+		printWriter.close();
 	}
 }

@@ -52,5 +52,9 @@ public final class ServletUrl {
     String VIDEO_FIRST_LIST = "/video/list/first";
     String VIDEO_SECOND_LIST = "/video/list/second";
     String MENU_MANAGE = "/menu/manage";
+    String MENU_UPDATE = "/menu/update";
+    String CHANNEL_MANAGE = "/channel/manage";
+    String CHANNEL_INSERT = "/channel/insert";
+    String CHANNEL_DELETE = "/channel/delete";
   }
 }

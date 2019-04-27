@@ -52,10 +52,18 @@
                 type: "GET",
                 data: JSON.parse(JSON.stringify(serializeObject($("form"))).replace("}", ", \"novelId\": \"" +
                     prepUpdateNovelId + ", \"novelTypeSecondary\": \"" + prepUpdateNovelTypeIdSecondary+ "\"}")),
-                dataType: "html",
+                dataType: "json",
                 success: function (data) {
-                    console.log(data);
-                    $("#holePage").html(data);
+                  var json = JSON.parse(data);
+                  var bottomButton = $("#unDate");
+                  bottomButton.addClass("am-disabled");
+                  if(json.code === 200){
+                      bottomButton.html("更新成功");
+                      bottomButton.css("color", "#71FF97");
+                  }else{
+                      bottomButton.html("更新失败");
+                      bottomButton.css("color", "#FF79C5");
+                  }
                 }
             })
         })
@@ -168,7 +176,7 @@
             <div class="am-u-md-3">&nbsp;</div>
             <div class="am-u-md-6">
                 <div class="am-form-group">
-                    <button class="am-btn am-btn-block am-badge-secondary" id="unDate">提交</button>
+                    <button class="am-btn am-btn-block am-badge-secondary"  id="unDate">提交</button>
                 </div>
             </div>
             <div class="am-u-md-3">&nbsp;</div>
