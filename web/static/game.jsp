@@ -197,6 +197,10 @@
       operationMsgModal.find('.am-modal-bd').html(msg);
       operationMsgModal.modal();
     }
+    // 搜索按钮
+    function searchGame(gameName, gameType, platform, recommendType) {
+
+    }
     // main
     $(function () {
       var currentPage = 1;
@@ -357,77 +361,114 @@
     .am-fr {
       height: 70px;
     }
-    .searchGame {
-      /*margin: 0;*/
-      /*padding: 0;*/
+    .gameHeader {
+      height: 5%;
+      margin-top: 1%;
+    }
+    .gameBody {
+      margin-top: 1%;
+      height: 93%;
+    }
+    .gameHeader .am-selected-btn {
+      width: 60%;
+    }
+    .gameHeader .am-btn-block {
+      width: 40%;
+      float: right;
     }
   </style>
 </head>
 <body>
 <%--搜索选项--%>
-<div class="am-inline-block" style="width: 100%">
-  <label for="searchGameName">游戏名称: </label>
-  <input id="searchGameName" type="text" placeholder="游戏名称">
-  <label for="searchGameGameType">分类:</label>
-  <select id="searchGameGameType" data-am-selected="{btnWidth: '8%', btnStyle: 'secondary'}">
-    <option value="1">休闲益智</option>
-    <option value="2">网络游戏</option>
-    <option value="3">动作冒险</option>
-    <option value="4">棋牌中心</option>
-    <option value="5">飞行射击</option>
-    <option value="6">经营策略</option>
-    <option value="7">角色扮演</option>
-    <option value="8">体育竞技</option>
-  </select>
-  <label for="searchGamePlatform">平台:</label>
-  <select id="searchGamePlatform" data-am-selected="{btnWidth: '5%', btnStyle: 'secondary'}">
-    <option value="1">iOS</option>
-    <option value="2">Android</option>
-    <option value="3">全部</option>
-  </select>
-  <label for="searchGameRecommendType" >推荐类别:</label>
-  <select id="searchGameRecommendType" data-am-selected="{btnWidth: '5%', btnStyle: 'secondary'}">
-    <option value="1">普通</option>
-    <option value="2">最新</option>
-    <option value="3">推荐</option>
-  </select>
-</div>
-<%--表格--%>
-<table
-    class="am-table am-table-bordered am-table-centered am-table-radius am-table-striped am-table-hover .am-text-nowrap">
-  <tr class="am-primary">
-    <th class="table-lg">名称</th>
-    <th class="table-md">标题</th>
-    <th class="table-md">下载量</th>
-    <th class="table-sm">大小(M)</th>
-    <th class="table-sm">状态</th>
-    <th class="table-md">分类</th>
-    <th class="table-sm">平台</th>
-    <th class="table-sm">推荐类型</th>
-    <th class="table-lg">操作</th>
-  </tr>
-  <tbody id="tbody">
-  </tbody>
-</table>
-<%--分页--%>
-<div class="am-cf">
-  <div class="am-fr">
-    <div id="gamePagination"></div>
-  </div>
-  <div class="am-fr am-vertical-align">
-    <div id="gamePaginationOption" hidden="hidden" class="am-vertical-align-middle">
-      <label for="pageSize">&nbsp;每页&nbsp;</label>
-      <select id="pageSize" data-am-selected="{btnWidth: '25%', btnStyle: 'secondary'}">
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-        <option value="20">20</option>
-        <option value="40">40</option>
-      </select>&nbsp;条
-      &nbsp;共&nbsp;<span id="totalRow"></span>&nbsp;条
+<div class="gameHeader">
+  <div class="am-g">
+    <div class="am-u-md-3">
+      <div class="am-input-group am-input-group-primary">
+        <span class="am-input-group-label">游戏名称</span>
+        <input id="searchGameName" type="text" placeholder="游戏名称" class="am-form-field">
+      </div>
+    </div>
+    <div class="am-u-md-2">
+      <div class="am-input-group am-input-group-primary">
+        <span class="am-input-group-label">分类</span>
+        <select id="searchGameGameType" data-am-selected>
+          <option value="1">休闲益智</option>
+          <option value="2">网络游戏</option>
+          <option value="3">动作冒险</option>
+          <option value="4">棋牌中心</option>
+          <option value="5">飞行射击</option>
+          <option value="6">经营策略</option>
+          <option value="7">角色扮演</option>
+          <option value="8">体育竞技</option>
+        </select>
+      </div>
+    </div>
+    <div class="am-u-md-2">
+      <div class="am-input-group am-input-group-primary">
+        <span class="am-input-group-label">平台</span>
+        <select id="searchGamePlatform" data-am-selected>
+          <option value="1">iOS</option>
+          <option value="2">Android</option>
+          <option value="3">全部</option>
+        </select>
+      </div>
+    </div>
+    <div class="am-u-md-2">
+      <div class="am-input-group am-input-group-primary">
+        <span class="am-input-group-label">推荐类别</span>
+        <select id="searchGameRecommendType" data-am-selected>
+          <option value="1">普通</option>
+          <option value="2">最新</option>
+          <option value="3">推荐</option>
+        </select>
+      </div>
+    </div>
+    <div class="am-u-md-3">
+      <button type="button" id="searchGameButton" class="am-btn am-btn-primary am-btn-block am-btn-xl">搜索</button>
     </div>
   </div>
 </div>
+
+<div class="gameBody">
+  <%--表格--%>
+  <table
+      class="am-table am-table-bordered am-table-centered am-table-radius am-table-striped am-table-hover .am-text-nowrap">
+    <tr class="am-primary">
+      <th class="table-lg">名称</th>
+      <th class="table-md">标题</th>
+      <th class="table-md">下载量</th>
+      <th class="table-sm">大小(M)</th>
+      <th class="table-sm">状态</th>
+      <th class="table-md">分类</th>
+      <th class="table-sm">平台</th>
+      <th class="table-sm">推荐类型</th>
+      <th class="table-lg">操作</th>
+    </tr>
+    <tbody id="tbody">
+    </tbody>
+  </table>
+  <%--分页--%>
+  <div class="am-cf">
+    <div class="am-fr">
+      <div id="gamePagination"></div>
+    </div>
+    <div class="am-fr am-vertical-align">
+      <div id="gamePaginationOption" hidden="hidden" class="am-vertical-align-middle">
+        <label for="pageSize">&nbsp;每页&nbsp;</label>
+        <select id="pageSize" data-am-selected="{btnWidth: '25%', btnStyle: 'secondary'}">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="40">40</option>
+        </select>&nbsp;条
+        &nbsp;共&nbsp;<span id="totalRow"></span>&nbsp;条
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <%--编辑框--%>
 <div class="am-modal am-modal-confirm" tabindex="-1" id="modifyGameModal">
   <div class="am-modal-dialog">
