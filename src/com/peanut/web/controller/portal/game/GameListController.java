@@ -1,5 +1,7 @@
 package com.peanut.web.controller.portal.game;
 
+import com.alibaba.fastjson.JSON;
+import com.peanut.common.http.ServerResponse;
 import com.peanut.common.http.ServletUrl;
 import com.peanut.web.service.impl.GameServiceImpl;
 
@@ -27,7 +29,8 @@ public class GameListController extends HttpServlet {
     int pageSize = Integer.parseInt(req.getParameter("pageSize"));
     int typeId = Integer.parseInt(req.getParameter("typeId"));
     int platform = Integer.parseInt(req.getParameter("platform"));
-    printWriter.println(new GameServiceImpl().pageQueryByTypeIdPlatform(pageNum, pageSize, typeId, platform));
+    ServerResponse serverResponse = new GameServiceImpl().pageQueryByTypeIdPlatform(pageNum, pageSize, typeId, platform);
+    printWriter.println(JSON.toJSONString(serverResponse));
     printWriter.flush();
     printWriter.close();
   }

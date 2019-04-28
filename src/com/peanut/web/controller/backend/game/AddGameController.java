@@ -37,8 +37,8 @@ public class AddGameController extends HttpServlet {
   static Game getGameFromParameter(HttpServletRequest req) {
     Game game = new Game();
 
-    game.setName(req.getParameter("name"));
-    game.setTitle(req.getParameter("title"));
+    game.setName(req.getParameter("gameName"));
+    game.setTitle(req.getParameter("gameTitle"));
     game.setGameStatus(Integer.parseInt(req.getParameter("gameStatus")));
     game.setGameSize(Float.parseFloat(req.getParameter("gameSize")));
     game.setGameIcon(req.getParameter("gameIcon"));
@@ -46,7 +46,7 @@ public class AddGameController extends HttpServlet {
     game.setIosUrl(req.getParameter("iosUrl"));
     game.setAndroidUrl(req.getParameter("androidUrl"));
     game.setRecommendType(Integer.parseInt(req.getParameter("recommendType")));
-    game.setGameTypeId(Integer.parseInt(req.getParameter("gameTypeId")));
+    game.setGameTypeId(Integer.parseInt(req.getParameter("gameType")));
     game.setPlatform(Integer.parseInt(req.getParameter("platform")));
     game.setDescription(req.getParameter("description"));
     return game;

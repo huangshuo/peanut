@@ -50,13 +50,16 @@ public class GameServiceImpl implements GameService {
    * 根据游戏id查询游戏详情信息
    *
    * @param gameId 游戏id
+   * @param backend 是否显示下线游戏
    * @return serverResponse
    */
   @Override
-  public ServerResponse<Game> getGameInfoByGameId(long gameId) {
+  public ServerResponse<Game> getGameInfoByGameId(long gameId, boolean backend) {
     Game game = gameDao.selectOneByPrimaryKey(gameId);
-    if (game.getGameId() == null || game.getGameStatus() != 1) {
-      return ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(), "游戏不存在");
+    if (!backend) {
+      if (game.getGameId() == null || game.getGameStatus() != 1) {
+        return ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(), "游戏不存在");
+      }
     }
     return ServerResponse.successWithData(game);
   }
@@ -112,11 +115,12 @@ public class GameServiceImpl implements GameService {
   public ServerResponse modifyGame(Game game) {
     Game gameForName = new Game();
     gameForName.setName(game.getName());
-    if (gameDao.selectOneByTemplate(gameForName).getGameId() != null) {
+    gameForName = gameDao.selectOneByTemplate(gameForName);
+    if (gameForName.getGameId() != null && !gameForName.getGameId().equals(game.getGameId())) {
       return ServerResponse.failWithMsg(ServerStatusCodeEnum.DUPLICATE_KEY.getCode(), "游戏名已存在");
     }
     game.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-    boolean succeed = gameDao.insert(game);
+    boolean succeed = gameDao.updateByTemplate(game);
     if (succeed) {
       return ServerResponse.success();
     }

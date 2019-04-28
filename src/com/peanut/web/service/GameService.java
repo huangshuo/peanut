@@ -29,9 +29,10 @@ public interface GameService {
    * 根据游戏id查询游戏详情信息
    *
    * @param gameId 游戏id
+   * @param backend 是否显示下线游戏
    * @return serverResponse
    */
-  ServerResponse<Game> getGameInfoByGameId(long gameId);
+  ServerResponse<Game> getGameInfoByGameId(long gameId, boolean backend);
 
   /**
    * 添加游戏
