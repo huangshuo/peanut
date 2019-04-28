@@ -218,6 +218,7 @@
       var $modifyGameModal = $('#modifyGameModal');
       var $deleteGameModal = $('#deleteGameModal');
       var $searchGameButton = $('#searchGameButton');
+      var $addGameButton = $('#addGameButton');
       var $pageSize = $('#pageSize');
       var pageNum = 1;
       var pageSize = $pageSize.val();
@@ -257,22 +258,43 @@
         var pageInfo = pageQueryGame(pageNum, pageSize);
         loadGameList(pageInfo, $tbody, $gamePagination);
       });
-      // 确认编辑
-      $modifyGameModal.find('[data-am-modal-confirm]').off('click.confirm.modal.amui').on('click', function() {
-        var modifyGameFormData = $('#modifyGameForm').serialize();
-        $.ajax({
-          url: '${pageContext.request.contextPath}/backend/game/modify',
-          type: 'POST',
-          data: modifyGameFormData,
-          dataType: 'json',
-          success: function (serverResponse) {
-            showOperationMsg(serverResponse.msg);
-            pageInfo = pageQueryGame(pageNum, pageSize);
-            loadGameList(pageInfo, $tbody, $gamePagination);
-          }
-        })
+      // 添加按钮
+      $addGameButton.on('click', function () {
+        $('#modifyGameModalTitle').html('添加');
+        $modifyGameModal.modal();
       });
-      // 取消编辑
+      // 确认编辑/添加
+      $modifyGameModal.find('[data-am-modal-confirm]').off('click.confirm.modal.amui').on('click', function() {
+        var $modifyGameForm = $('#modifyGameForm');
+        var modifyGameFormData = $modifyGameForm.serialize();
+        if ($('#modifyGameModalTitle').html() === '添加') {
+          $.ajax({
+            url: '${pageContext.request.contextPath}/backend/game/add',
+            type: 'POST',
+            data: modifyGameFormData,
+            dataType: 'json',
+            success: function (serverResponse) {
+              showOperationMsg(serverResponse.msg);
+              pageInfo = pageQueryGame(pageNum, pageSize);
+              loadGameList(pageInfo, $tbody, $gamePagination);
+            }
+          });
+        } else {
+          $modifyGameForm.reset();
+          $.ajax({
+            url: '${pageContext.request.contextPath}/backend/game/modify',
+            type: 'POST',
+            data: modifyGameFormData,
+            dataType: 'json',
+            success: function (serverResponse) {
+              showOperationMsg(serverResponse.msg);
+              pageInfo = pageQueryGame(pageNum, pageSize);
+              loadGameList(pageInfo, $tbody, $gamePagination);
+            }
+          });
+        }
+      });
+      // 取消编辑/添加
       $modifyGameModal.find('[data-am-modal-cancel]').off('click.cancel.modal.amui').on('click', function() {
         showOperationMsg('已取消');
       });
@@ -410,7 +432,6 @@
       width: 60%;
     }
     .gameHeader .am-btn-block {
-      width: 40%;
       float: right;
     }
   </style>
@@ -419,7 +440,7 @@
 <%--搜索--%>
 <div class="gameHeader">
   <div class="am-g">
-    <div class="am-u-md-3">
+    <div class="am-u-md-4">
       <div class="am-input-group am-input-group-primary">
         <span class="am-input-group-label">游戏名称</span>
         <input id="searchGameName" type="text" class="am-form-field">
@@ -463,8 +484,11 @@
         </select>
       </div>
     </div>
-    <div class="am-u-md-3">
+    <div class="am-u-md-1">
       <button type="button" id="searchGameButton" class="am-btn am-btn-primary am-btn-block am-btn-lg btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...'}">搜索</button>
+    </div>
+    <div class="am-u-md-1">
+      <button type="button" id="addGameButton" class="am-btn am-btn-success am-btn-block am-btn-lg">添加</button>
     </div>
   </div>
 </div>
