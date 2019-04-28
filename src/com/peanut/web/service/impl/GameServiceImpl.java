@@ -128,15 +128,32 @@ public class GameServiceImpl implements GameService {
   }
 
   /**
-   * 分页查询所有游戏
+   * 分页查询游戏
    *
    * @param pageNum  页码
    * @param pageSize 分页大小
+   * @param gameName 游戏名称
+   * @param gameType 游戏分类
+   * @param recommendType 推荐类型
+   * @param platform 游戏平台
    * @return serverResponse
    */
   @Override
-  public ServerResponse<PageInfo<Game>> pageQueryAll(int pageNum, int pageSize) {
-    PageInfo<Game> pageInfo = gameDao.pageQueryByTemplate(pageNum, pageSize, null);
+  public ServerResponse<PageInfo<Game>> pageQueryGame(int pageNum, int pageSize, String gameName, int gameType, int recommendType, int platform) {
+    Game gameTemplate = new Game();
+    if (gameName != null && !gameName.equals("")) {
+      gameTemplate.setName(gameName);
+    }
+    if (gameType != 0) {
+      gameTemplate.setGameTypeId(gameType);
+    }
+    if (recommendType != 0) {
+      gameTemplate.setRecommendType(recommendType);
+    }
+    if (platform != 0) {
+      gameTemplate.setPlatform(platform);
+    }
+    PageInfo<Game> pageInfo = gameDao.pageQueryByTemplate(pageNum, pageSize, gameTemplate, "name");
     return ServerResponse.successWithData(pageInfo);
   }
 }

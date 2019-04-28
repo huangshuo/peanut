@@ -23,111 +23,96 @@
   <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.chosen.min.js"></script>
   <script type="text/javascript">
     // 加载表格
-    function loadGameList(pageNum, pageSize, $tbody) {
+    function loadGameList(pageInfo, $tbody, $gamePagination) {
       $tbody.empty();
-      var gameListPageInfo = {totalPage: null, totalRow: null};
-      $.ajax({
-        url: "${pageContext.request.contextPath}/backend/game/list",
-        type: 'GET',
-        data: {
-          'pageNum': pageNum,
-          'pageSize': pageSize
-        },
-        dataType: 'json',
-        async: false,
-        success: function (serverResponse) {
-          if (serverResponse.code === 200) {
-            var pageInfo = serverResponse.data;
-            var gameList = pageInfo.pageData;
-            for (var index in gameList) {
-              var game = gameList[index];
-              var platform;
-              var gameStatus;
-              var gameType;
-              var recommendType;
-              if (game.platform === 1) {
-                platform = '<span class="am-icon-apple am-vertical-align-middle"></span>'
-              } else if (game.platform === 2) {
-                platform = '<span class="am-icon-android am-vertical-align-middle"></span>'
-              } else {
-                platform = '<span class="am-icon-apple am-vertical-align-middle">&nbsp;</span><span class="am-icon-android am-vertical-align-middle"></span>'
-              }
-              if (game.gameStatus === 1) {
-                gameStatus = '<span class="am-badge am-badge-success am-radius am-vertical-align-middle">启用</span>'
-              } else {
-                gameStatus = '<span class="am-badge am-badge-danger am-radius am-vertical-align-middle">下线</span>'
-              }
-              switch (parseInt(game.gameTypeId)) {
-                case 1:
-                  gameType = '休闲益智';
-                  break;
-                case 2:
-                  gameType = '网络游戏';
-                  break;
-                case 3:
-                  gameType = '动作冒险';
-                  break;
-                case 4:
-                  gameType = '棋牌中心';
-                  break;
-                case 5:
-                  gameType = '飞行设计';
-                  break;
-                case 6:
-                  gameType = '经营策略';
-                  break;
-                case 7:
-                  gameType = '角色扮演';
-                  break;
-                case 8:
-                  gameType = '体育竞技';
-                  break;
-                default:
-                  gameType = '未知类型';
-                  break;
-              }
-              if (parseInt(game.recommendType) === 1) {
-                recommendType = '普通';
-              } else if (parseInt(game.recommendType) === 2) {
-                recommendType = '最新';
-              } else if (parseInt(game.recommendType) === 3) {
-                recommendType = '推荐';
-              } else {
-                recommendType = '未知';
-              }
-              $tbody.append($('<tr>' +
-                '<td class="table-lg am-vertical-align"><span class="am-vertical-align-middle">' + game.name + '</span></td>' +
-                '<td class="table-lg am-vertical-align"><span class="am-vertical-align-middle">' + game.title + '</span></td>' +
-                '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + game.downloadCount + '</span></td>' +
-                '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + game.gameSize + '</span></td>' +
-                '<td class="table-sm am-vertical-align">' + gameStatus + '</td>' +
-                '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + gameType + '</span></td>' +
-                '<td class="table-sm am-vertical-align">' + platform + '</td>' +
-                '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + recommendType + '</span></td>' +
-                '<td>' +
-                '<div class="am-btn-group">' +
-                '<button type="button" class="am-btn am-btn-primary" name="' + game.gameId + '">' +
-                '<span class="am-icon-pencil-square-o"></span> 编辑</button>' +
-                '<button type="button" class="am-btn am-btn-danger am-hide-sm-only" name="' + game.gameId + '">' +
-                '<span class="am-icon-trash-o"></span> 删除</button>' +
-                '</div>' +
-                '</td>' +
-                '</tr>'));
-            }
-            gameListPageInfo.totalPage = pageInfo.totalPage;
-            gameListPageInfo.totalRow = pageInfo.totalRow;
-          }
+      var pageData = pageInfo.pageData;
+      var pageNum = pageInfo.pageNum;
+      var totalPage = pageInfo.totalPage;
+      var totalRow = pageInfo.totalRow;
+      var isFirstPage = pageInfo.firstPage;
+      var isLastPage = pageInfo.lastPage;
+      // 填充表格
+      for (var index in pageData) {
+        var game = pageData[index];
+        var platform;
+        var gameStatus;
+        var gameType;
+        var recommendType;
+        if (game.platform === 1) {
+          platform = '<span class="am-icon-apple am-vertical-align-middle"></span>'
+        } else if (game.platform === 2) {
+          platform = '<span class="am-icon-android am-vertical-align-middle"></span>'
+        } else {
+          platform = '<span class="am-icon-apple am-vertical-align-middle">&nbsp;</span><span class="am-icon-android am-vertical-align-middle"></span>'
         }
-      });
-      return gameListPageInfo;
-    }
-    // 加载分页
-    function loadPagination(totalPage, $gamePagination, currentPage, totalRow) {
+        if (game.gameStatus === 1) {
+          gameStatus = '<span class="am-badge am-badge-success am-radius am-vertical-align-middle">启用</span>'
+        } else {
+          gameStatus = '<span class="am-badge am-badge-danger am-radius am-vertical-align-middle">下线</span>'
+        }
+        switch (parseInt(game.gameTypeId)) {
+          case 1:
+            gameType = '休闲益智';
+            break;
+          case 2:
+            gameType = '网络游戏';
+            break;
+          case 3:
+            gameType = '动作冒险';
+            break;
+          case 4:
+            gameType = '棋牌中心';
+            break;
+          case 5:
+            gameType = '飞行设计';
+            break;
+          case 6:
+            gameType = '经营策略';
+            break;
+          case 7:
+            gameType = '角色扮演';
+            break;
+          case 8:
+            gameType = '体育竞技';
+            break;
+          default:
+            gameType = '未知类型';
+            break;
+        }
+        if (parseInt(game.recommendType) === 1) {
+          recommendType = '普通';
+        } else if (parseInt(game.recommendType) === 2) {
+          recommendType = '最新';
+        } else if (parseInt(game.recommendType) === 3) {
+          recommendType = '推荐';
+        } else {
+          recommendType = '未知';
+        }
+        $tbody.append($('<tr>' +
+          '<td class="table-lg am-vertical-align"><span class="am-vertical-align-middle">' + game.name + '</span></td>' +
+          '<td class="table-lg am-vertical-align"><span class="am-vertical-align-middle">' + game.title + '</span></td>' +
+          '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + game.downloadCount + '</span></td>' +
+          '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + game.gameSize + '</span></td>' +
+          '<td class="table-sm am-vertical-align">' + gameStatus + '</td>' +
+          '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + gameType + '</span></td>' +
+          '<td class="table-sm am-vertical-align">' + platform + '</td>' +
+          '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + recommendType + '</span></td>' +
+          '<td>' +
+          '<div class="am-btn-group">' +
+          '<button type="button" class="am-btn am-btn-primary" name="' + game.gameId + '">' +
+          '<span class="am-icon-pencil-square-o"></span> 编辑</button>' +
+          '<button type="button" class="am-btn am-btn-danger am-hide-sm-only" name="' + game.gameId + '">' +
+          '<span class="am-icon-trash-o"></span> 删除</button>' +
+          '</div>' +
+          '</td>' +
+          '</tr>'));
+      }
+      // 显示分页信息
       var template = Handlebars.compile('{{>pagination}}');
       var page = [];
       for (var i = 1; i <= totalPage; i++) {
         var className = "pagination-index";
-        if (i === parseInt(currentPage)) {
+        if (i === parseInt(pageNum)) {
           className += ' am-active';
         }
         page.push({
@@ -147,7 +132,6 @@
             "firstLink": "#",
             "lastTitle": "末页",
             "lastLink": "#",
-            "total": "3",
             "page": page
           }
         }
@@ -157,20 +141,50 @@
       $('#totalRow').html(totalRow);
       $('#gamePaginationOption').show();
       // 禁用相应的按钮
-      if (1 === parseInt(currentPage)) {
+      if (isFirstPage) {
         $gamePagination.find('li.am-pagination-first').addClass('am-disabled');
         $gamePagination.find('li.am-pagination-prev').addClass('am-disabled');
       } else {
         $gamePagination.find('li.am-pagination-first').removeClass('am-disabled');
         $gamePagination.find('li.am-pagination-prev').removeClass('am-disabled');
       }
-      if (totalPage === parseInt(currentPage)) {
+      if (isLastPage) {
         $gamePagination.find('li.am-pagination-last').addClass('am-disabled');
         $gamePagination.find('li.am-pagination-next').addClass('am-disabled');
       } else {
         $gamePagination.find('li.am-pagination-last').removeClass('am-disabled');
         $gamePagination.find('li.am-pagination-next').removeClass('am-disabled');
       }
+      // 恢复按钮加载状态
+      $('#searchGameButton').button('reset');
+    }
+    // 获取游戏分页列表
+    function pageQueryGame(pageNum, pageSize) {
+      var gameName = $('#searchGameName').val().trim();
+      var gameType = $('#searchGameGameType').val();
+      var platform = $('#searchGamePlatform').val();
+      var recommendType = $('#searchGameRecommendType').val();
+      var pageInfo = null;
+      $.ajax({
+        url: '${pageContext.request.contextPath}/backend/game/list',
+        type: 'POST',
+        data: {
+          "pageNum": pageNum,
+          "pageSize": pageSize,
+          "gameName": gameName,
+          "gameType": gameType,
+          "platform": platform,
+          "recommendType": recommendType
+        },
+        dataType: 'json',
+        async: false,
+        success: function (serverResponse) {
+          if (serverResponse.code === 200) {
+            pageInfo = serverResponse.data;
+          }
+        }
+      });
+      return pageInfo;
     }
     // 获取游戏信息
     function getGameInfo(gameId) {
@@ -188,7 +202,7 @@
             gameInfo = serverResponse.data;
           }
         }
-      })
+      });
       return gameInfo;
     }
     // 操作信息提示
@@ -197,30 +211,51 @@
       operationMsgModal.find('.am-modal-bd').html(msg);
       operationMsgModal.modal();
     }
-    // 搜索按钮
-    function searchGame(gameName, gameType, platform, recommendType) {
-
-    }
     // main
     $(function () {
-      var currentPage = 1;
-      var pageNum = 1;
       var $tbody = $('#tbody');
       var $gamePagination = $('#gamePagination');
       var $modifyGameModal = $('#modifyGameModal');
       var $deleteGameModal = $('#deleteGameModal');
+      var $searchGameButton = $('#searchGameButton');
       var $pageSize = $('#pageSize');
+      var pageNum = 1;
       var pageSize = $pageSize.val();
-      var pageInfo = loadGameList(pageNum, pageSize, $tbody);
-      var totalPage = pageInfo.totalPage;
-      var totalRow = pageInfo.totalRow;
-      loadPagination(totalPage, $gamePagination, currentPage, totalRow);
+
+      var pageInfo = pageQueryGame(pageNum, pageSize);
+      loadGameList(pageInfo, $tbody, $gamePagination);
+
       // 修改页面大小
       $pageSize.on('change', function () {
+        pageNum = 1;
         pageSize = $(this).val();
-        totalPage = loadGameList(currentPage, pageSize, $tbody).totalPage;
-        currentPage = 1;
-        loadPagination(totalPage, $gamePagination, currentPage, totalRow);
+        pageInfo = pageQueryGame(pageNum, pageSize);
+        loadGameList(pageInfo, $tbody, $gamePagination);
+      });
+      // 游戏分类
+      $('#searchGameGameType').on('change', function () {
+        $searchGameButton.button('loading');
+        var pageInfo = pageQueryGame(pageNum, pageSize);
+        loadGameList(pageInfo, $tbody, $gamePagination);
+      });
+      // 推荐类别
+      $('#searchGameRecommendType').on('change', function () {
+        $searchGameButton.button('loading');
+        var pageInfo = pageQueryGame(pageNum, pageSize);
+        loadGameList(pageInfo, $tbody, $gamePagination);
+      });
+      // 游戏平台
+      $('#searchGamePlatform').on('change', function () {
+        $searchGameButton.button('loading');
+        var pageInfo = pageQueryGame(pageNum, pageSize);
+        loadGameList(pageInfo, $tbody, $gamePagination);
+      });
+      // 搜索按钮
+      $searchGameButton.on('click', function () {
+        // 显示为加载状态
+        $searchGameButton.button('loading');
+        var pageInfo = pageQueryGame(pageNum, pageSize);
+        loadGameList(pageInfo, $tbody, $gamePagination);
       });
       // 确认编辑
       $modifyGameModal.find('[data-am-modal-confirm]').off('click.confirm.modal.amui').on('click', function() {
@@ -232,8 +267,8 @@
           dataType: 'json',
           success: function (serverResponse) {
             showOperationMsg(serverResponse.msg);
-            loadGameList(currentPage, pageSize, $tbody);
-            loadPagination(totalPage, $gamePagination, currentPage, totalRow);
+            pageInfo = pageQueryGame(pageNum, pageSize);
+            loadGameList(pageInfo, $tbody, $gamePagination);
           }
         })
       });
@@ -252,17 +287,15 @@
           },
           dataType: 'json',
           success: function (serverResponse) {
-            if (serverResponse.code === 200) {
-              totalRow--;
-            }
             showOperationMsg(serverResponse.msg);
-            // 当前删除的是此页的最后一条记录
-            if (totalRow === (totalPage - 1) * pageSize) {
-              currentPage--;
-              totalPage--;
+            if (serverResponse.code === 200) {
+              // 当前删除的是此页的最后一条记录
+              if (pageInfo.totalRow === (pageInfo.totalPage - 1) * pageSize) {
+                pageNum--;
+              }
+              pageInfo = loadGameList(pageNum, pageSize, $tbody);
+              loadGameList(pageInfo, $tbody, $gamePagination);
             }
-            pageInfo = loadGameList(currentPage, pageSize, $tbody);
-            loadPagination(totalPage, $gamePagination, currentPage, totalRow);
           }
         })
       });
@@ -270,7 +303,6 @@
       $deleteGameModal.find('[data-am-modal-cancel]').off('click.cancel.modal.amui').on('click', function() {
         showOperationMsg('已取消');
       });
-
       // 编辑
       $tbody.on('click', 'button.am-btn-primary', function () {
         var gameId = $(this).prop('name');
@@ -299,43 +331,48 @@
       });
       // 首页
       $gamePagination.on('click', 'li.am-pagination-first', function () {
-        if (currentPage === 1) {
+        if (pageNum === 1) {
           return;
         }
-        currentPage = 1;
-        loadPagination(loadGameList(currentPage, pageSize, $tbody).totalPage, $gamePagination, currentPage, totalRow);
+        pageNum = 1;
+        pageInfo = pageQueryGame(pageNum, pageSize);
+        loadGameList(pageInfo, $tbody, $gamePagination);
       });
       // 末页
       $gamePagination.on('click', 'li.am-pagination-last', function () {
-        if (currentPage === totalPage) {
+        if (pageNum === pageInfo.totalPage) {
           return;
         }
-        currentPage = pageInfo.totalPage;
-        loadPagination(loadGameList(currentPage, pageSize, $tbody).totalPage, $gamePagination, currentPage, totalRow);
+        pageNum = pageInfo.totalPage;
+        pageInfo = pageQueryGame(pageNum, pageSize);
+        loadGameList(pageInfo, $tbody, $gamePagination);
       });
       // 上一页
       $gamePagination.on('click', 'li.am-pagination-prev', function () {
-        if (currentPage === 1) {
+        if (pageNum === 1) {
           return;
         }
-        currentPage--;
-        loadPagination(loadGameList(currentPage, pageSize, $tbody).totalPage, $gamePagination, currentPage, totalRow)
+        pageNum--;
+        pageInfo = pageQueryGame(pageNum, pageSize);
+        loadGameList(pageInfo, $tbody, $gamePagination);
       });
       // 下一页
       $gamePagination.on('click', 'li.am-pagination-next', function () {
-        if (currentPage === totalPage) {
+        if (pageNum === pageInfo.totalPage) {
           return;
         }
-        currentPage++;
-        loadPagination(loadGameList(currentPage, pageSize, $tbody).totalPage, $gamePagination, currentPage, totalRow);
+        pageNum++;
+        pageInfo = pageQueryGame(pageNum, pageSize);
+        loadGameList(pageInfo, $tbody, $gamePagination);
       });
       // 指定页码
       $gamePagination.on('click', 'a.pagination-index', function () {
-        if (parseInt($(this).html()) === currentPage) {
+        if (parseInt($(this).html()) === pageNum) {
           return;
         }
-        currentPage = parseInt($(this).html());
-        loadPagination(loadGameList(currentPage, pageSize, $tbody).totalPage, $gamePagination, currentPage, totalRow);
+        pageNum = $(this).html();
+        pageInfo = pageQueryGame(pageNum, pageSize);
+        loadGameList(pageInfo, $tbody, $gamePagination);
       })
     })
   </script>
@@ -379,19 +416,20 @@
   </style>
 </head>
 <body>
-<%--搜索选项--%>
+<%--搜索--%>
 <div class="gameHeader">
   <div class="am-g">
     <div class="am-u-md-3">
       <div class="am-input-group am-input-group-primary">
         <span class="am-input-group-label">游戏名称</span>
-        <input id="searchGameName" type="text" placeholder="游戏名称" class="am-form-field">
+        <input id="searchGameName" type="text" class="am-form-field">
       </div>
     </div>
     <div class="am-u-md-2">
       <div class="am-input-group am-input-group-primary">
         <span class="am-input-group-label">分类</span>
         <select id="searchGameGameType" data-am-selected>
+          <option value="0" selected>全部</option>
           <option value="1">休闲益智</option>
           <option value="2">网络游戏</option>
           <option value="3">动作冒险</option>
@@ -407,9 +445,10 @@
       <div class="am-input-group am-input-group-primary">
         <span class="am-input-group-label">平台</span>
         <select id="searchGamePlatform" data-am-selected>
+          <option value="0" selected>全部</option>
           <option value="1">iOS</option>
           <option value="2">Android</option>
-          <option value="3">全部</option>
+          <option value="3">iOS/Android</option>
         </select>
       </div>
     </div>
@@ -417,6 +456,7 @@
       <div class="am-input-group am-input-group-primary">
         <span class="am-input-group-label">推荐类别</span>
         <select id="searchGameRecommendType" data-am-selected>
+          <option value="0" selected>全部</option>
           <option value="1">普通</option>
           <option value="2">最新</option>
           <option value="3">推荐</option>
@@ -424,7 +464,7 @@
       </div>
     </div>
     <div class="am-u-md-3">
-      <button type="button" id="searchGameButton" class="am-btn am-btn-primary am-btn-block am-btn-xl">搜索</button>
+      <button type="button" id="searchGameButton" class="am-btn am-btn-primary am-btn-block am-btn-lg btn-loading-example" data-am-loading="{spinner: 'circle-o-notch', loadingText: '加载中...'}">搜索</button>
     </div>
   </div>
 </div>
@@ -455,7 +495,7 @@
     <div class="am-fr am-vertical-align">
       <div id="gamePaginationOption" hidden="hidden" class="am-vertical-align-middle">
         <label for="pageSize">&nbsp;每页&nbsp;</label>
-        <select id="pageSize" data-am-selected="{btnWidth: '25%', btnStyle: 'secondary'}">
+        <select id="pageSize" data-am-selected="{btnWidth: '25%'}">
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="15">15</option>

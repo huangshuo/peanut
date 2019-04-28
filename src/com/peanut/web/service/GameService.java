@@ -59,7 +59,11 @@ public interface GameService {
    * 分页查询所有游戏
    * @param pageNum 页码
    * @param pageSize 分页大小
+   * @param gameName 游戏名称
+   * @param gameType 游戏分类
+   * @param recommendType 推荐类型
+   * @param platform 游戏平台
    * @return serverResponse
    */
-  ServerResponse<PageInfo<Game>> pageQueryAll(int pageNum, int pageSize);
+  ServerResponse<PageInfo<Game>> pageQueryGame(int pageNum, int pageSize, String gameName, int gameType, int recommendType, int platform);
 }

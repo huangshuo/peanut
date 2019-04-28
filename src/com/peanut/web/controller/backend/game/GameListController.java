@@ -25,11 +25,14 @@ import java.io.PrintWriter;
 public class GameListController extends HttpServlet {
 
   @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     int pageNum = Integer.parseInt(req.getParameter("pageNum"));
     int pageSize = Integer.parseInt(req.getParameter("pageSize"));
-
-    ServerResponse serverResponse = new GameServiceImpl().pageQueryAll(pageNum, pageSize);
+    String gameName = req.getParameter("gameName");
+    int gameType = req.getParameter("gameType") == null ? 0 : Integer.parseInt(req.getParameter("gameType"));
+    int recommendType = req.getParameter("recommendType") == null ? 0 : Integer.parseInt(req.getParameter("recommendType"));
+    int platform = req.getParameter("platform") == null ? 0 : Integer.parseInt(req.getParameter("platform"));
+    ServerResponse serverResponse = new GameServiceImpl().pageQueryGame(pageNum, pageSize, gameName, gameType, recommendType, platform);
     PrintWriter printWriter = resp.getWriter();
     printWriter.println(JSON.toJSONString(serverResponse));
     printWriter.flush();
