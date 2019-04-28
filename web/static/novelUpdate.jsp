@@ -14,7 +14,6 @@
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js" ></script>--%>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js" ></script>--%>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>--%>
-<div id="holePage">
 <script>
     $(function () {
         var prepUpdateNovelId = "${param.novelId}";
@@ -22,6 +21,7 @@
         var prepUpdateAuthorName = "${param.authorName}";
         var prepUpdateNovelTypeIdSecondary = "${param.novelTypeIdSecondary}";
 
+        console.log(prepUpdateNovelTypeIdSecondary);
         // $("#novelId").prop("placeholder", prepUpdateNovelId);
         $("#novelName").prop("placeholder", prepUpdateNovelName);
         $("#authorName").prop("placeholder", prepUpdateAuthorName);
@@ -46,26 +46,65 @@
             return o;
         }
 
+        function checkEmpty(data){
+            return $(data).val() * 1 ===0;
+        }
+
+        function checkAllEmpty(){
+            return $("novelName").val() * $("authorName").val() ===0;
+        }
+
+        $("#novelName, #authorName").on("focus", function () {
+
+            if(this.id.match("novel")) {
+                $(this).prop("placeholder", prepUpdateNovelName);
+            }else{
+                $(this).prop("placeholder", prepUpdateAuthorName);
+            }
+        });
+
+        $("#novelName, #authorName").on("blur", function () {
+
+            console.log('#' + this.name + "::-webkit-input-placeholder");
+            console.log($(this));
+            var tempText = $(this).attr("placeholder");
+            console.log(tempText);
+            console.log(checkEmpty());
+            if(checkEmpty(this)){
+                $(this).prop("placeholder", "请输入要更改的内容！");
+                $(this).css("backgroundColor", "pink");
+            }else
+            {
+                $(this).css("backgroundColor", "white");
+            }
+        });
+
         $("#upDate").on("click", function () {
-            $.ajax({
-                url: "/peanut/backend/novel/update",
-                type: "GET",
-                data: JSON.parse(JSON.stringify(serializeObject($("form"))).replace("}", ", \"novelId\": \"" +
-                    prepUpdateNovelId + ", \"novelTypeSecondary\": \"" + prepUpdateNovelTypeIdSecondary+ "\"}")),
-                dataType: "json",
-                success: function (data) {
-                  var json = JSON.parse(data);
-                  var bottomButton = $("#unDate");
-                  bottomButton.addClass("am-disabled");
-                  if(json.code === 200){
-                      bottomButton.html("更新成功");
-                      bottomButton.css("color", "#71FF97");
-                  }else{
-                      bottomButton.html("更新失败");
-                      bottomButton.css("color", "#FF79C5");
-                  }
-                }
-            })
+            var bottomButton = $("#upDate");
+            console.log(JSON.parse(JSON.stringify(serializeObject($("form"))).replace("}", ", \"novelId\": \"" +
+                prepUpdateNovelId + "\", \"novelTypeIdSecondary\": \"" + prepUpdateNovelTypeIdSecondary + "\"}")));
+
+            if(checkAllEmpty()) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/backend/novel/update",
+                    type: "GET",
+                    data: JSON.parse(JSON.stringify(serializeObject($("form"))).replace("}", ", \"novelId\": \"" +
+                        prepUpdateNovelId + "\", \"novelTypeIdSecondary\": \"" + prepUpdateNovelTypeIdSecondary + "\"}")),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code === 200) {
+                            bottomButton.addClass("am-disabled");
+                            bottomButton.html("更新成功");
+                            bottomButton.css("color", "#71FF97");
+                        } else {
+                            bottomButton.html("更新失败");
+                            bottomButton.css("color", "#8B436A");
+                        }
+                    }
+                })
+            }
+
+            // bottomButton.prop("data-am-popover", "{content: 'Am I a joke to you?', trigger: 'hover focus'}");
         })
     })
 </script>
@@ -94,7 +133,7 @@
         margin:5px 10px 5px 0px;
         height: 40px;
     }
-    #unDate{
+    #upDate{
         font-size: 15pt;
         color: whitesmoke;
 
@@ -122,7 +161,8 @@
             <div class="am-u-md-6">
                 <div class="am-form-group">
                     <label for="novelName">小说名称</label>
-                    <input type="text" id="novelName" name="novelName" class="am-form-group am-round">
+                    <input type="text" id="novelName" name="novelName" class="am-form-group am-round"
+                           >
                 </div>
             </div>
             <div class="am-u-md-3">&nbsp;</div>
@@ -176,11 +216,10 @@
             <div class="am-u-md-3">&nbsp;</div>
             <div class="am-u-md-6">
                 <div class="am-form-group">
-                    <button class="am-btn am-btn-block am-badge-secondary"  id="unDate">提交</button>
+                    <button class="am-btn am-btn-block am-badge-secondary" type="button" id="upDate">提交</button>
                 </div>
             </div>
             <div class="am-u-md-3">&nbsp;</div>
         </div>
     </form>
-</div>
 </div>

@@ -72,7 +72,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     StringBuilder sqlBuilder = new StringBuilder();
     sqlBuilder.append("DELETE FROM ").append(getTableName())
         .append(" WHERE ")
-        .append(entityFields[0].getName()).append(" = ");
+        .append(getColumnName(entityFields[0])).append(" = ");
     if (String.class.equals(entityFields[0].getType())) {
       sqlBuilder.append("'").append(primaryKey).append("'");
     } else {
@@ -104,7 +104,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     // 去掉最后一个,
     sqlBuilder.deleteCharAt(sqlBuilder.lastIndexOf(","));
     sqlBuilder.append(" WHERE ")
-        .append(entityFields[0].getName()).append(" = ").append(getFieldValue(entityTemplate, entityFields[0]));
+        .append(getColumnName(entityFields[0])).append(" = ").append(getFieldValue(entityTemplate, entityFields[0]));
     return executeSql(sqlBuilder);
   }
 
@@ -249,6 +249,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
       e.printStackTrace();
     }
+    sqlBuilder.append(" ORDER BY ").append(getColumnName(entityFields[0])).append(" ASC");
     return sqlBuilder;
   }
 

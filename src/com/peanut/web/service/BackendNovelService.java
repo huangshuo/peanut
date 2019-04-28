@@ -19,10 +19,18 @@ public interface BackendNovelService {
 	 * @return serverResponse
 	 */
 	ServerResponse<BackendNovel> updateNovelInfoByTemplate(BackendNovel bean);
+
 	/**
 	 * 通过小说ID查询小说基本信息
 	 * @param key 小说ID
 	 * @return serverResponse
 	 */
 	ServerResponse<BackendNovel> selectNovelInfoById(Long key);
+
+	/**
+	 * 通过小说名查询小说基本信息
+	 *  @param novelName 小说名称
+	 * 	 * @return serverResponse
+	 */
+	ServerResponse<BackendNovel> selectNovelInfoByName(String novelName);
 }

@@ -56,7 +56,7 @@
                     url: "/peanut/static/novelUpdate.jsp",
                     type: "GET",
                     data: {"novelId": novelId, "novelName": novelName,
-                        "authorName": authorName, "novelStatus": (novelStatus.match("连载")? "0":"1"), "novelTypeSecondary": novelTypeIdSecondary},
+                        "authorName": authorName, "novelStatus": (novelStatus.match("连载")? "0":"1"), "novelTypeIdSecondary": novelTypeIdSecondary},
                     dataType: "html",
                     success: function (data) {
                         console.log(data);
@@ -185,7 +185,7 @@
                                             <td>俺</td>
                                             <td>1</td>
                                             <td>沙雕选摘</td>
-                                            <td>二级分类ID</td>
+                                            <td>1</td>
                                             <td>二级分类名称</td>
                                             <td>完结</td>
                                         </tr>
@@ -207,10 +207,10 @@
                             <div class="am-panel-bd">
                             <div class="am-u-md-10">
                                 <form class="am-form-inline" role="form">
-                                    <button class="am-btn am-btn-primary">首页</button>
-                                    <button class="am-btn am-btn-primary">上一页</button>
-                                    <button class="am-btn am-btn-primary">下一页</button>
-                                    <button class="am-btn am-btn-primary">尾页</button>
+                                    <button class="am-btn am-btn-primary" type="button">首页</button>
+                                    <button class="am-btn am-btn-primary" type="button">上一页</button>
+                                    <button class="am-btn am-btn-primary" type="button">下一页</button>
+                                    <button class="am-btn am-btn-primary" type="button">尾页</button>
                                     <div class="am-form-group" id="page">
                                         第<input type="text" class="am-form-field am-round" name="pageIndex">页
                                     </div>
