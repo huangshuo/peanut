@@ -27,8 +27,10 @@ public class UserListController extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     int pageNum = Integer.parseInt(req.getParameter("pageNum"));
     int pageSize = Integer.parseInt(req.getParameter("pageSize"));
-
-    ServerResponse serverResponse = new PermissionServiceImpl().pageQueryAll(pageNum, pageSize);
+    String username = req.getParameter("username");
+    int role = req.getParameter("role") == null ? 0 : Integer.parseInt(req.getParameter("role"));
+    int status = req.getParameter("status") == null ? 0 : Integer.parseInt(req.getParameter("status"));
+    ServerResponse serverResponse = new PermissionServiceImpl().pageQueryUser(pageNum, pageSize, username, role, status);
     PrintWriter printWriter = resp.getWriter();
     printWriter.println(JSON.toJSONString(serverResponse));
     printWriter.flush();

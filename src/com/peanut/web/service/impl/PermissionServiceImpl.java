@@ -54,11 +54,24 @@ public class PermissionServiceImpl implements PermissionService {
    *
    * @param pageNum  页码
    * @param pageSize 分页大小
+   * @param username 用户名
+   * @param role 用户角色(1普通用户 2合作公司 3管理员)
+   * @param status 账户状态(1可用 2不可用)
    * @return serverResponse
    */
   @Override
-  public ServerResponse<PageInfo<BackendUser>> pageQueryAll(int pageNum, int pageSize) {
-    PageInfo<BackendUser> pageInfo = backendUserDao.pageQueryByTemplate(pageNum, pageSize, null);
+  public ServerResponse<PageInfo<BackendUser>> pageQueryUser(int pageNum, int pageSize, String username, int role, int status) {
+    BackendUser userTemplate = new BackendUser();
+    if (username != null && !username.equals("")) {
+      userTemplate.setUsername(username);
+    }
+    if (role != 0) {
+      userTemplate.setRole(role);
+    }
+    if (status != 0) {
+      userTemplate.setStatus(status);
+    }
+    PageInfo<BackendUser> pageInfo = backendUserDao.pageQueryByTemplate(pageNum, pageSize, userTemplate, "username");
     return ServerResponse.successWithData(pageInfo);
   }
 
@@ -124,5 +137,17 @@ public class PermissionServiceImpl implements PermissionService {
       return ServerResponse.failWithMsg(ServerStatusCodeEnum.FAIL.getCode(), ServerStatusCodeEnum.FAIL.getMsg());
     }
     return ServerResponse.success();
+  }
+
+  /**
+   * 根据用户uid获取用户信息
+   *
+   * @param uid 用户id
+   * @return serverResponse
+   */
+  @Override
+  public ServerResponse<BackendUser> getUserInfoByUid(long uid) {
+    BackendUser backendUser = backendUserDao.selectOneByPrimaryKey(uid);
+    return ServerResponse.successWithData(backendUser);
   }
 }

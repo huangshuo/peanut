@@ -97,7 +97,7 @@
           '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + gameType + '</span></td>' +
           '<td class="table-sm am-vertical-align">' + platform + '</td>' +
           '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + recommendType + '</span></td>' +
-          '<td>' +
+          '<td class="table-lg">' +
           '<div class="am-btn-group">' +
           '<button type="button" class="am-btn am-btn-primary" name="' + game.gameId + '">' +
           '<span class="am-icon-pencil-square-o"></span> 编辑</button>' +
@@ -167,7 +167,7 @@
       var pageInfo = null;
       $.ajax({
         url: '${pageContext.request.contextPath}/backend/game/list',
-        type: 'POST',
+        type: 'GET',
         data: {
           "pageNum": pageNum,
           "pageSize": pageSize,
@@ -315,7 +315,7 @@
               if (pageInfo.totalRow === (pageInfo.totalPage - 1) * pageSize) {
                 pageNum--;
               }
-              pageInfo = loadGameList(pageNum, pageSize, $tbody);
+              pageInfo = pageQueryGame(pageNum, pageSize);
               loadGameList(pageInfo, $tbody, $gamePagination);
             }
           }
@@ -540,60 +540,60 @@
     <div class="am-modal-bd">
       <form class="am-form am-form-horizontal" id="modifyGameForm">
         <input type="hidden" name="gameId" id="gameId">
-        <div class="am-form-group">
-          <label for="gameName" class="am-u-md-3">游戏名称:</label>
-          <div class="am-u-md-9">
+        <div class="am-form-group am-g">
+          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
+            <span class="am-input-group-label">游戏名称</span>
             <input type="text" id="gameName" name="gameName" placeholder="游戏名称" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group">
-          <label for="gameTitle" class="am-u-md-3">游戏标题:</label>
-          <div class="am-u-md-9">
+        <div class="am-form-group am-g">
+          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
+            <span class="am-input-group-label">游戏标题</span>
             <input type="text" id="gameTitle" name="gameTitle" placeholder="游戏标题" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group">
-          <label for="gameSize" class="am-u-md-3">游戏大小:</label>
-          <div class="am-u-md-9"><input type="text" id="gameSize" name="gameSize" placeholder="游戏大小(单位: Mb)"
-                                        class="am-form-field" required/>
+        <div class="am-form-group am-g">
+          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
+            <span class="am-input-group-label">游戏大小</span>
+            <input type="text" id="gameSize" name="gameSize" placeholder="游戏大小(单位 M)" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group">
-          <label for="gameIcon" class="am-u-md-3">游戏图标:</label>
-          <div class="am-u-md-9">
+        <div class="am-form-group am-g">
+          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
+            <span class="am-input-group-label">游戏图标</span>
             <input type="text" id="gameIcon" name="gameIcon" placeholder="游戏图标" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group">
-          <label for="gamePictures" class="am-u-md-3">详情图片:</label>
-          <div class="am-u-md-9">
+        <div class="am-form-group am-g">
+          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
+            <span class="am-input-group-label">游戏图片</span>
             <input type="text" id="gamePictures" name="gamePictures" placeholder="游戏详情图片" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group">
-          <label for="iosUrl" class="am-u-md-3">ios:</label>
-          <div class="am-u-md-9">
-            <input type="text" id="iosUrl" name="iosUrl" placeholder="ios下载地址" class="am-form-field" required/>
+        <div class="am-form-group am-g">
+          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
+            <span class="am-input-group-label">下载地址</span>
+            <input type="text" id="iosUrl" name="iosUrl" placeholder="iOS下载地址" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group">
-          <label for="androidUrl" class="am-u-md-3">android:</label>
-          <div class="am-u-md-9">
-            <input type="text" id="androidUrl" name="androidUrl" placeholder="android下载地址" class="am-form-field" required/>
+        <div class="am-form-group am-g">
+          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
+            <span class="am-input-group-label">下载地址</span>
+            <input type="text" id="androidUrl" name="androidUrl" placeholder="Android下载地址" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group">
-          <label for="recommendType" class="am-u-md-3">推荐类型:</label>
-          <div class="am-u-md-4">
-            <select id="recommendType" name="recommendType" data-placeholder="推荐类型" class="chosen-select-width">
+        <div class="am-form-group am-g">
+          <div class="am-input-group am-input-group-primary am-u-md-6 am-u-md-offset-1">
+            <span class="am-input-group-label">推荐类型</span>
+            <select id="recommendType" name="recommendType" data-placeholder="推荐类型" data-am-selected>
               <option value="1">普通</option>
               <option value="2">最新</option>
               <option value="3">推荐</option>
             </select>
           </div>
-          <label for="gameStatus" class="am-u-md-2">状态:</label>
-          <div class="am-u-md-3">
-            <select id="gameStatus" name="gameStatus" data-placeholder="游戏状态" class="chosen-select-width">
+          <div class="am-input-group am-input-group-primary am-u-md-3 am-u-md-offset-1">
+            <span class="am-input-group-label">状态</span>
+            <select id="gameStatus" name="gameStatus" data-placeholder="游戏状态" data-am-selected>
               <option value="1">启用</option>
               <option value="2">下线</option>
             </select>

@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 public class GameListController extends HttpServlet {
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     int pageNum = Integer.parseInt(req.getParameter("pageNum"));
     int pageSize = Integer.parseInt(req.getParameter("pageSize"));
     String gameName = req.getParameter("gameName");

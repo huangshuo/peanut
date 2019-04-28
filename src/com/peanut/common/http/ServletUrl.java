@@ -26,6 +26,7 @@ public final class ServletUrl {
     String MODIFY_GAME = "/backend/game/modify";
     String GAME_LIST = "/backend/game/list";
     String GAME_INFO = "/backend/game/info";
+    String USER_INFO = "/backend/user/info";
   }
 
   /**
