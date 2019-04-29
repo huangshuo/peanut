@@ -9,21 +9,21 @@
 <html>
 <head>
   <title>权限管理</title>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css"/>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css"/>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css"/>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.chosen.css"/>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/zTreeStyle.css"/>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/handlebars.min.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.widgets.helper.min.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.chosen.min.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.ztree.all.min.js"></script>
-  <script type="text/javascript">
+<%--  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>--%>
+<%--  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>--%>
+<%--  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css"/>--%>
+<%--  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css"/>--%>
+<%--  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css"/>--%>
+<%--  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.chosen.css"/>--%>
+<%--  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/zTreeStyle.css"/>--%>
+<%--  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js"></script>--%>
+<%--  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js"></script>--%>
+<%--  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js"></script>--%>
+<%--  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/handlebars.min.js"></script>--%>
+<%--  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.widgets.helper.min.js"></script>--%>
+<%--  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.chosen.min.js"></script>--%>
+<%--  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.ztree.all.min.js"></script>--%>
+  <script>
     // 加载表格
     function loadUserList(pageInfo, $tbody, $userPagination) {
       $tbody.empty();
@@ -64,11 +64,17 @@
           '<div class="am-btn-group">' +
           '<button type="button" class="am-btn am-btn-primary" name="' + user.uid + '">' +
           '<span class="am-icon-pencil-square-o"></span> 编辑</button>' +
-          '<button type="button" class="am-btn am-btn-danger am-hide-sm-only" name="' + user.uid + '">' +
+          '<button type="button" class="am-btn am-btn-danger am-hide-sm-only deleteUser" name="' + user.uid + '">' +
           '<span class="am-icon-trash-o"></span> 删除</button>' +
           '</div>' +
           '</td>' +
           '</tr>'));
+        $tbody.on('click', '.deleteUser', function () {
+          var name = getUserInfo($(this).prop('name')).username;
+          $('#deleteUserModal').find('.hiddenSpan').html(name);
+          $('#deleteUserModal').find('.am-modal-bd').html(name);
+          $('#deleteUserModal').modal();
+        });
       }
       // 显示分页信息
       var template = Handlebars.compile('{{>pagination}}');
@@ -239,6 +245,7 @@
     }
     // main
     $(function () {
+
       var $tbody = $('#tbody');
       var $userPagination = $('#userPagination');
       var $modifyUserModal = $('#modifyUserModal');
@@ -254,7 +261,14 @@
       loadUserList(pageInfo, $tbody, $userPagination);
       loadPermissionTree();
       var permissionTree = $.fn.zTree.getZTreeObj("permission");
-
+      // 删除
+      $tbody.on('click', '.deleteUser', function () {
+        alert("13213");
+        // var name = getUserInfo($(this).prop('name')).username;
+        // $deleteUserModal.find('.hiddenSpan').html(name);
+        // $deleteUserModal.find('.am-modal-bd').html(name);
+        // $deleteUserModal.modal();
+      });
       // 修改页面大小
       $pageSize.on('change', function () {
         pageNum = 1;
@@ -389,13 +403,7 @@
         }
         $modifyUserModal.modal();
       });
-      // 删除
-      $tbody.on('click', 'button.am-btn-danger', function () {
-        var name = getUserInfo($(this).prop('name')).username;
-        $deleteUserModal.find('.hiddenSpan').html(name);
-        $deleteUserModal.find('.am-modal-bd').html(name);
-        $deleteUserModal.modal();
-      });
+
       // 首页
       $userPagination.on('click', 'li.am-pagination-first', function () {
         if (pageNum === 1) {
@@ -444,9 +452,9 @@
     })
   </script>
   <style>
-    body {
-      overflow: auto;
-    }
+    /*body {*/
+    /*  overflow: auto;*/
+    /*}*/
     #tbody td {
       height: 30px;
     }
@@ -459,9 +467,9 @@
     .table-lg {
       width: 15%;
     }
-    .am-fr {
-      height: 70px;
-    }
+    /*.am-fr {*/
+    /*  height: 70px;
+    }*/
     .userHeader {
       height: 5%;
       margin-top: 1%;
@@ -477,8 +485,7 @@
       float: right;
     }
   </style>
-</head>
-<body>
+
 <%--搜索--%>
 <div class="userHeader">
   <div class="am-g">
@@ -634,5 +641,3 @@
     </div>
   </div>
 </div>
-</body>
-</html>

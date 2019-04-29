@@ -13,6 +13,7 @@
     pageData(page);
     pageBtnLoad(page);
     changeIcon();
+    addMenu();
   });
   //点击换页按钮切换页面
   function changePageBtn(page) {
@@ -67,7 +68,6 @@
             '      </td>' +
             '    </tr>')
         });
-        addMenu(page);
         modifyMenu(page);
         deleteMenu(page);
       }
@@ -95,6 +95,7 @@
   //更新菜单内容
   function  modifyMenu(page){
     $("button[id*='menuId']").on('click', function() {
+      $(".menuName").html("修改菜单");
       $.each(iconArr,function (i,d) {
         $("#iconList").append('<li><a href="#"><i class="'+d+' am-margin-left-sm" style="font-size: 30px"></i></a></li>');
       });
@@ -160,8 +161,6 @@
       $('#my-prompt').modal({
         relatedTarget: this,
         onConfirm: function(e) {
-          // icon=icon==""?'':icon.split(" ")[0];
-
           //确认：向数据库发送请求
           $.ajax({
             url:"${pageContext.request.contextPath}/menu/insert",
@@ -988,12 +987,13 @@
     height: 50px;
     width: 80px;
    }
-  .addMenu{
-  }
+.addMenu{
+  margin:0 0 10px 30px;
+}
 </style>
 <div class="border" style="height: 600px;">
   <%--渠道添加添加功能--%>
-  <button type="button" class="am-btn am-btn-warning am-round addChannel" id="addMenu" >添加菜单</button>
+  <button type="button" class="am-btn am-btn-warning am-round addMenu" id="addMenu" >添加菜单</button>
   <%--菜单管理表单--%>
   <table class="am-table  am-table-centered am-table-hover am-table-striped">
     <thead>
@@ -1055,7 +1055,7 @@
 <%--模态框:删除菜单--%>
 <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm-delete">
   <div class="am-modal-dialog">
-    <div class="am-modal-hd">Amaze UI</div>
+    <div class="am-modal-hd">花生娱乐</div>
     <div class="am-modal-bd">
       你，确定要删除这个菜单吗？
     </div>

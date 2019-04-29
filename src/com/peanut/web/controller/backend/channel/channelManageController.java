@@ -35,22 +35,34 @@ public class channelManageController extends HttpServlet {
     String action=req.getParameter("action");
     PrintWriter pw=resp.getWriter();
     BackendChannelManage backendChannelManage=new BackendChannelManage();
+    ServerResponse<PageInfo<BackendChannelManage>> serverResponse=null;
+    System.out.println(action);
     if ("init".equals(action)) {
-      ServerResponse<PageInfo<BackendChannelManage>> serverResponse = new ChannelServiceImpl().channelManage(page, pageSize);
+      serverResponse = new ChannelServiceImpl().channelManage(page, pageSize);
       pw.write(JSON.toJSONString(serverResponse));
     }else if("selectOne".equals(action)){
-      backendChannelManage.setFirstClass(firstClass);
-      ServerResponse<PageInfo<BackendChannelManage>> serverResponse = new ChannelServiceImpl().channelManage(page, pageSize,backendChannelManage);
-      pw.write(JSON.toJSONString(serverResponse));
+      if(firstClass==null||"".equals(firstClass)){
+        serverResponse = new ChannelServiceImpl().channelManage(page, pageSize,null);
+        pw.write(JSON.toJSONString(serverResponse));
+      }else {
+        backendChannelManage.setFirstClass(firstClass);
+        serverResponse = new ChannelServiceImpl().channelManage(page, pageSize,backendChannelManage);
+        pw.write(JSON.toJSONString(serverResponse));
+      }
     }else if("selectTwo".equals(action)){
+
       backendChannelManage.setFirstClass(firstClass);
-      backendChannelManage.setSecondClass(secondClass);
-      ServerResponse<PageInfo<BackendChannelManage>> serverResponse = new ChannelServiceImpl().channelManage(page, pageSize,backendChannelManage);
-      pw.write(JSON.toJSONString(serverResponse));
+      if(secondClass==null||"".equals(secondClass)){
+        serverResponse = new ChannelServiceImpl().channelManage(page, pageSize,backendChannelManage);
+        pw.write(JSON.toJSONString(serverResponse));
+      }else {
+        backendChannelManage.setSecondClass(secondClass);
+        serverResponse = new ChannelServiceImpl().channelManage(page, pageSize,backendChannelManage);
+        pw.write(JSON.toJSONString(serverResponse));
+      }
     }else if("search".equals(action)){
-      System.out.println("search");
       backendChannelManage.setChannelNum(searchContent);
-      ServerResponse<PageInfo<BackendChannelManage>> serverResponse = new ChannelServiceImpl().channelManage(page, pageSize,backendChannelManage);
+      serverResponse = new ChannelServiceImpl().channelManage(page, pageSize,backendChannelManage);
       pw.write(JSON.toJSONString(serverResponse));
     }
     pw.flush();

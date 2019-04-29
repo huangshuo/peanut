@@ -10,44 +10,45 @@
 <script>
   $(function () {
     var page=1;
-    var pageSize=10;
-    changePageBtn(page,pageSize);
+    var pageSize=$(".pageSizeNum").val();
+    changePageBtn("init",page,pageSize);
     pageData("init",page,pageSize);
-    pageBtnLoad(page,pageSize);
     addMenu(page,pageSize);
-    select(page,pageSize);
+    select(page,pageSize);//生成一、二级下拉菜单数据
     search(page,pageSize);
-    pageSize1(page,$("#pageSize").val());
+    //???????????显示数据条数
+    $(".pageSizeNum").on("change",function () {
+      pageData("init",page,$(".pageSizeNum").val());
+    })
   });
-  //頁面固定換頁按鈕
-  function changePageBtn(page,pageSize) {
+  //頁面固定換頁按鈕Ok
+  function changePageBtn(action,page,pageSize) {
     $("#first").on("click",function () {
-      page=1;
-      pageData("init",page,pageSize);
+      var currentPage=1;
+      $("#currentPage").val(1);
+      pageData(action,currentPage,pageSize);
     });
     $("#last").on("click",function () {
-      page= $("#totalPage").val();
+      var totalPage= $("#totalPage").val();
       $("#currentPage").val(page);
-      pageData("init",page,pageSize);
+      $("#currentPage").val(totalPage);
+      pageData(action,totalPage,pageSize);
     });
     $("#next").on("click",function () {
       if($("#currentPage").val()!=$("#totalPage").val()){
-        page=parseInt($("#currentPage").val()) +1;
-        $("#currentPage").val(page);
-        pageData("init",page,pageSize);
+        var currentPage=parseInt($("#currentPage").val()) +1;
+        pageData(action,currentPage,pageSize);
       }
     });
     $("#prev").on("click",function () {
       if($("#currentPage").val()!=1){
-        page=$("#currentPage").val()-1;
-        $("#currentPage").val(page);
-        pageData("init",page,pageSize);
+        var currentPage=$("#currentPage").val()-1;
+        pageData(action,currentPage,pageSize);
+        $("#currentPage").val(currentPage);
       }
     });
   }
   //生成页面数据
-  var n=1;//页面第一次加载时，selectOne下拉菜单 从数据库获得一级菜单添加入option,第二次不添加
-  var m=0;//页面第一次加载时，selectTwo下拉菜单 不获得数据、单点击selectOne时m=1;从数据库获得数据
   function pageData(action,page,pageSize,firstClass,secondClass,searchContent) {
     $.ajax({
       url:"${pageContext.request.contextPath}/channel/manage",
@@ -56,11 +57,7 @@
       dataType:"json",
       success:function (data) {
         $(".content").html("");
-        if(n==1) $("#selectOne").html("");
-        if(n==1) $("#selectOne").append('<option>请选择一级目录</option>');
         $.each(data.data.pageData,function (i,d) {
-          if(n==1) $("#selectOne").append('<option>'+dataType(d.firstClass)+'</option>');
-          if(m==1) $("#selectTwo").append('<option>'+dataType(d.secondClass)+'</option>');
           $(".content").append('<tr class="am-animation-scale-up">' +
             '      <td style="display: none">'+d.id+'</td>' +
             '      <td id="firstClass'+i+'">'+dataType(d.firstClass)+'</td>' +
@@ -75,8 +72,21 @@
             '      </td>' +
             '    </tr>');
         });
+
+        $("li[id*='page']").remove();//每次 清空数字按钮
+
+        for (var i = data.data.totalPage; i > 0; i--) {
+          $("#prev").after('<li id="page' + i + '"><a href="###">' + i + '</a></li>');
+        }
+        //绑定事件
+        $("li[id*='page']").on("click",function () {
+          pageData(action,$(this).children().html(),pageSize,firstClass,secondClass,searchContent);
+        });
+        //在页面暂存totalPage、currentPage
+        $("#totalPage").val(data.data.totalPage);
+        $("#currentPage").val(data.data.pageNum);
+        $("#currentPage-totalPage").html( data.data.pageNum+"/"+data.data.totalPage+"页");
         deleteChannel(page,pageSize);
-        n=2;//防止selectOne下拉菜单重复添加
       }
     });
   }
@@ -84,87 +94,51 @@
   function search(page,pageSize) {
     $("#search").on("click",function () {
       var action="search";
-      pageData(action,page,pageSize,null,null,$("#searchContent").val());
+      pageData(action,1,pageSize,null,null,$("#searchContent").val());
     });
     $("#searchContent").on("keyup",function (event) {
       if(event.keyCode==13){
         var action="search";
-        pageData(action,page,pageSize,null,null,$("#searchContent").val());
+        pageData(action,1,pageSize,null,null,$("#searchContent").val());
       }
     })
   }
-
+  //一、二级下拉菜单功能
   function select(page,pageSize) {
-    $(".border").on("change",'#selectOne',function(){
-      var firstClass=$(this).children('option:selected').html();
-      $("#selectTwo").html("");
-      $("#selectTwo").append('<option>请选择二级目录</option>');
-      m=1;//selectOne变化时，selectTwo添加内容
-      var action="selectOne";
-      pageData(action,page,pageSize,firstClass,null,null);
-      $("#searchContent").val("");
-      $(".border").on("change",'#selectTwo',function(){
-        var secondClass=$(this).children('option:selected').html();
-        m=0;//防止selectTwo下拉菜单重复添加
-        var action="selectTwo";
-        pageData(action,page,pageSize,firstClass,secondClass,null);
-        $("#searchContent").val("");
-      })
-    })
-  }
-  //日期转换函数
-  function dateFormat(strLongTime) {
-    if(typeof(strLongTime) == "undefined"){
-      return "";
-    }else{
-      var oDate=new Date(strLongTime);
-      var year=oDate.getFullYear();
-      var month=oDate.getMonth()+1;
-      var date=oDate.getDate();
-      var hours=oDate.getHours();
-      var minutes=oDate.getMinutes();
-      var seconds=oDate.getSeconds();
-      return year+"年"+
-        addZero(month)+"月"+
-        addZero(date)+"日 "+
-        addZero(hours)+"h"+
-        addZero(minutes)+"m"+
-        addZero(seconds)+"s";
-    }
-  }
-  //日期补零
-  function addZero(data) {
-    if(data<10){
-      data="0"+data;
-    }
-    return data;
-  }
-  //判断数据类型是否为空、为undefined
-  function dataType(data) {
-    if (typeof(data) == "undefined") {
-      data="";
-    }
-    return data;
-  }
-  //页面加载根据总页码数 生成页码按钮
-  function pageBtnLoad(page,pageSize) {
     $.ajax({
       url:"${pageContext.request.contextPath}/channel/manage",
       type:"get",
-      data:{"action":"init","page":page,"pageSize":pageSize},
+      data:{"action":"selectOne","page":1,"pageSize":1000},
       dataType:"json",
       success:function (data) {
-        $("#totalPage").val(data.data.totalPage);
-        for (var i = data.data.totalPage; i > 0; i--) {
-          $("#prev").after('<li id="page' + i + '"><a href="###">' + i + '</a></li>');
-        }
-        $("li[id*='page']").on("click",function () {
-          pageData("init",$(this).children().html(),pageSize);
-          $("#currentPage").val($(this).children().html());
-        });
+        $("#selectOne").append('<option>选择全部</option>');
+        $.each(data.data.pageData,function (i,d) {
+          $("#selectOne").append('<option>'+d.firstClass+'</option>')
+        })
       }
+    });
+    $("#selectOne").on("change",function () {
+      var firstClass=$(this).val()==="选择全部"?null:$(this).val();
+      pageData("selectOne",page,pageSize,firstClass,null,null);
+      $.ajax({
+        url:"${pageContext.request.contextPath}/channel/manage",
+        type:"get",
+        data:{"action":"selectTwo","page":1,"pageSize":1000,"firstClass":$(this).val()},
+        dataType:"json",
+        success:function (data) {
+          $("#selectTwo").html('<option>选择全部</option>');
+          $.each(data.data.pageData,function (i,d) {
+            $("#selectTwo").append('<option>'+d.secondClass+'</option>')
+          })
+        }
+      })
+    });
+    $("#selectTwo").on("change",function () {
+      var secondClass=$(this).val()==="选择全部"?null:$(this).val();
+      pageData("selectTwo",page,pageSize,$("#selectOne").val(),secondClass,null);
     })
   }
+
   //添加新渠道
   function  addMenu(page,pageSize){
     $('#addChannel').on('click', function() {
@@ -220,13 +194,41 @@
       })
     })
   }
-
-  function pageSize1(page,pageSize) {
-    $("#pageSize").on("change",function () {
-      pageData("init",page,pageSize,null,null,null);
-    })
+  //日期转换函数
+  function dateFormat(strLongTime) {
+    if(typeof(strLongTime) == "undefined"){
+      return "";
+    }else{
+      var oDate=new Date(strLongTime);
+      var year=oDate.getFullYear();
+      var month=oDate.getMonth()+1;
+      var date=oDate.getDate();
+      var hours=oDate.getHours();
+      var minutes=oDate.getMinutes();
+      var seconds=oDate.getSeconds();
+      return year+"年"+
+        addZero(month)+"月"+
+        addZero(date)+"日 "+
+        addZero(hours)+"h"+
+        addZero(minutes)+"m"+
+        addZero(seconds)+"s";
+    }
   }
-</script>
+  //日期补零
+  function addZero(data) {
+    if(data<10){
+      data="0"+data;
+    }
+    return data;
+  }
+  //判断数据类型是否为空、为undefined
+  function dataType(data) {
+    if (typeof(data) == "undefined") {
+      data="";
+    }
+    return data;
+  }
+  </script>
 <style>
   .border{
     margin: 20px;
@@ -255,10 +257,7 @@
     float: right;
     margin: 0 100px 15px 0;
   }
-  /*.border *{*/
-  /*  border: 1px red solid;*/
-  /*}*/
-  select{
+   select{
     float: left;
     width: 180px;
     height: 30px;
@@ -269,6 +268,12 @@
     float: left;
     width: 300px;
     margin-left: 20px;
+  }
+  .pageSizeNum{
+    float: right;
+    height: 32px;
+    width: 50px;
+    margin:2px 0 0 20px ;
   }
 </style>
 <div class="border" style="height: 600px;">
@@ -309,21 +314,23 @@
     </tbody>
   </table>
   <%--分页--%>
-  <ul class="am-pagination am-pagination-right am-table-striped" id="page" style="float: left">
+  <ul class="am-pagination am-pagination-right am-table-striped" id="page" style="float: right">
     <li id="first"><a href="###" >首页</a></li>
     <li id="prev"><a href="###">上一页</a></li>
     <li id="next"><a href="###" >下一页</a></li>
     <li id="last"><a href="###" >尾页</a></li>
+    <li id="currentPage-totalPage"></li>
+    <input type="hidden" value="" id="totalPage"/>
+    <input type="hidden" value="" id="currentPage"/>
+    <select class="pageSizeNum">
+      <option>5</option>
+      <option>10</option>
+    </select>
   </ul>
-  <select style="width: 50px;float: left;margin:20px 0 0 20px" id="pageSize">
-    <option>5</option>
-    <option>10</option>
-    <option>20</option>
-  </select>
+
 </div>
 <%--隐藏域、放总页数\当前页数--%>
-<input type="hidden" value="" id="totalPage">
-<input type="hidden" value="1" id="currentPage">
+
 <%--添加渠道 模态框--%>
 <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt" >
   <div class="am-modal-dialog changeMenu">
