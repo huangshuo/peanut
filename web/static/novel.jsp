@@ -6,9 +6,24 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<div id="holePage">
 <title>小说信息管理</title>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>--%>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>--%>
+<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css" />--%>
+<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css" />--%>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js" ></script>--%>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js" ></script>--%>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>--%>
 <script>
     $(function () {
+
+        var novelId;
+        var novelName;
+        var authorName;
+        var novelStatus;
+        var novelTypeIdSecondary;
+
         $("#primarySelect").on("change", function () {
             if($("#primarySelect>option[value='0']").prop("selected") === false){
                 $("#primarySelect").css("color", "#3c3c3c");
@@ -23,6 +38,33 @@
                 $("#secondarySelect").css("color", "#f5cecd");
             }
         });
+        $("table tr:gt(0)").on("click", function () {
+            $("table tr").attr("class", null);
+            $(this).attr("class", "am-primary");
+            novelId = $(this).children()[0].innerText;
+            novelName = $(this).children()[1].innerText;
+            authorName= $(this).children()[2].innerText;
+            novelTypeIdSecondary = $(this).children()[5].innerText;
+            novelStatus = $(this).children()[7].innerText;
+            console.log(novelId+" : "+novelStatus);
+            console.log((novelStatus.match("连载")? "0":"1"));
+
+        });
+        $("#update").on("click", function () {
+            if(novelId !== null) {
+                $.ajax({
+                    url: "/peanut/static/novelUpdate.jsp",
+                    type: "GET",
+                    data: {"novelId": novelId, "novelName": novelName,
+                        "authorName": authorName, "novelStatus": (novelStatus.match("连载")? "0":"1"), "novelTypeIdSecondary": novelTypeIdSecondary},
+                    dataType: "html",
+                    success: function (data) {
+                        console.log(data);
+                        $("#holePage").html(data);
+                    }
+                })
+            }
+        })
     })
 </script>
 <style>
@@ -68,6 +110,7 @@
     #tableRow{margin-left: 0px; margin-right: 0px}
     #update{float: right}
 </style>
+
 <div class="am-container" id="charm">
     <div class="am-g am-g-collapse am-panel-group" id="accordion1" >
         <div class="am-panel-hd">
@@ -126,10 +169,10 @@
                             <div class="am-panel-bd">
                                 <div class="am-u-md-12">
                                     <table class="am-table am-table-striped am-table-hover am-table-centered am-table-bordered am-table-radius">
-                                        <tr>
-                                            <th>书籍ID</th>
-                                            <th>书籍名称</th>
-                                            <th>书籍作者</th>
+                                        <tr id="tableHead">
+                                            <th>小说ID</th>
+                                            <th>小说名称</th>
+                                            <th>小说作者</th>
                                             <th>一级分类ID</th>
                                             <th>一级分类名称</th>
                                             <th>二级分类ID</th>
@@ -137,24 +180,24 @@
                                             <th>更新状态</th>
                                         </tr>
                                         <tr>
-                                            <td>书籍ID</td>
-                                            <td>书籍名称</td>
-                                            <td>书籍作者</td>
-                                            <td>一级分类ID</td>
-                                            <td>一级分类名称</td>
-                                            <td>二级分类ID</td>
+                                            <td>1</td>
+                                            <td>咩霸之死</td>
+                                            <td>俺</td>
+                                            <td>1</td>
+                                            <td>沙雕选摘</td>
+                                            <td>1</td>
                                             <td>二级分类名称</td>
-                                            <td>更新状态</td>
+                                            <td>完结</td>
                                         </tr>
                                         <tr>
-                                            <td>书籍ID</td>
-                                            <td>书籍名称</td>
-                                            <td>书籍作者</td>
-                                            <td>一级分类ID</td>
-                                            <td>一级分类名称</td>
-                                            <td>二级分类ID</td>
-                                            <td>二级分类名称</td>
-                                            <td>更新状态</td>
+                                            <td>2</td>
+                                            <td>冷枭的专属宝贝</td>
+                                            <td>夜未晚</td>
+                                            <td>9</td>
+                                            <td>都市言情</td>
+                                            <td>89</td>
+                                            <td>总裁豪门</td>
+                                            <td>完结</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -164,10 +207,10 @@
                             <div class="am-panel-bd">
                             <div class="am-u-md-10">
                                 <form class="am-form-inline" role="form">
-                                    <button class="am-btn am-btn-primary">首页</button>
-                                    <button class="am-btn am-btn-primary">上一页</button>
-                                    <button class="am-btn am-btn-primary">下一页</button>
-                                    <button class="am-btn am-btn-primary">尾页</button>
+                                    <button class="am-btn am-btn-primary" type="button">首页</button>
+                                    <button class="am-btn am-btn-primary" type="button">上一页</button>
+                                    <button class="am-btn am-btn-primary" type="button">下一页</button>
+                                    <button class="am-btn am-btn-primary" type="button">尾页</button>
                                     <div class="am-form-group" id="page">
                                         第<input type="text" class="am-form-field am-round" name="pageIndex">页
                                     </div>
@@ -190,4 +233,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

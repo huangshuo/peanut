@@ -59,13 +59,13 @@
         document.getElementById("bodyLeft").style.left="-14%";
         document.getElementById("change").style.left="-14%";
         document.getElementsByClassName("bodyRight")[0].style.width="93%";
-        $("#change").html('<a class="am-icon-angle-double-left am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px" onclick="moveii()"></a>');
+            $("#change").html('<a class="am-icon-angle-double-right am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px"></a>');
       }else{
         document.getElementsByClassName("bodyLeft")[0].style.left="0px";
         document.getElementById("change").style.left="0px";
         document.getElementsByClassName("bodyRight")[0].style.width="80%";
-        $("#change").html('<a class="am-icon-angle-double-right am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px" onclick="moveii()"></a>');
-      }
+            $("#change").html('<a class="am-icon-angle-double-left am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px"></a>');
+        }
       clickNum++;
     }
   //隐藏左侧菜单
@@ -535,8 +535,8 @@
 </div>
 
 <%--显示隐藏标签--%>
-<button class="bodyLeftLable" id="change" type="button">
-  <a class="am-icon-angle-double-right am-secondary am-fr am-margin-bottom-xs" style="position: relative; top: 2px"></a>
+<button class="bodyLeftLable" id="change" type="button" onclick="moveii()">
+    <a class="am-icon-angle-double-right am-secondary am-fr am-margin-bottom-xs" style="position: relative; top: 2px"></a>
 </button>
 <%--页面主要内容--%>
 <div class="bodyRight">
