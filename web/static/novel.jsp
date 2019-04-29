@@ -55,7 +55,6 @@
                     if(key.split("ID:")[1].match($("#novelTypeIdPrimary").val()))
                     {
                         tempSecondary = value;
-                        console.log(tempSecondary);
                     }
                 });
 
@@ -65,16 +64,16 @@
                 });
             });
 
-            $("table tr:gt(0)").on("click", function () {
-                $("table tr").attr("class", null);
-                $(this).attr("class", "am-primary");
-                novelId = $(this).children()[0].innerText;
-                novelName = $(this).children()[1].innerText;
-                authorName= $(this).children()[2].innerText;
-                novelTypeIdSecondary = $(this).children()[5].innerText;
-                novelStatus = $(this).children()[7].innerText;
-                console.log(novelId+" : "+novelStatus);
-                console.log((novelStatus.match("连载")? "0":"1"));
+            $("table").on("click","tr", function () {
+                if(this.id !== "tableHead") {
+                    $("table tr").attr("class", null);
+                    $(this).attr("class", "am-primary");
+                    novelId = $(this).children()[0].innerText;
+                    novelName = $(this).children()[1].innerText;
+                    authorName = $(this).children()[2].innerText;
+                    novelTypeIdSecondary = $(this).children()[5].innerText;
+                    novelStatus = $(this).children()[7].innerText;
+                }
             });
 
             $("#novelTypeIdSecondary").on("change", function () {
@@ -122,13 +121,14 @@
                             "authorName": authorName, "novelStatus": (novelStatus.match("连载")? "0":"1"), "novelTypeIdSecondary": novelTypeIdSecondary},
                         dataType: "html",
                         success: function (data) {
-                            console.log(data);
                             $("#holePage").html(data);
                         }
                     })
                 }
             });
-            $("#search").on("click", function () {
+
+            var totalPage;
+            function flushTable () {
                 var novelTypeIdPrimary;
                 var novelTypeNamePrimary;
                 var novelTypeNameSecondary;
@@ -136,39 +136,94 @@
                 $.ajax({
                     url: "${pageContext.request.contextPath}/backend/novel/select",
                     type: "GET",
-                    data: $.mergeJsonObject(serializeObject($("#form1"), serializeObject($("#form2")))),
+                    data: $.mergeJsonObject(serializeObject($("#form1")), serializeObject($("#form2"))),
                     dataType: "json",
                     success: function (result) {
                         if(result.code === 200){
+                            totalPage = result.data.totalPage;
+                            $("#totalPage").text("共" + totalPage + "页");
+                            var rowIndex1=0;
+                            var rowIndex2=0;
                             $("table tr:gt(0)").remove();
                             $.each(result.data.pageData, function () {
+                                rowIndex1++;
+                                var novelTypeIdSecondary = this.secondaryTypeId;
                                 $.ajax({
                                     url: "${pageContext.request.contextPath}/backend/novel/select/type",
                                     type: "GET",
-                                    data: {"novelTypeIdPrimary": $("#novelTypeIdPrimary").val().toString(), "novelTypeIdSecondary": $("#novelTypeIdSecondary").val().toString()},
+                                    data: {"novelTypeIdSecondary":novelTypeIdSecondary},
                                     dataType: "json",
                                     success: function (result) {
-                                        novelTypeIdPrimary = result.novelTypeIdPrimary;
-                                        novelTypeNamePrimary = result.novelTypeNamePrimary;
-                                        novelTypeNameSecondary = result.novelTypeNameSecondary;
+                                        rowIndex2++;
+
+                                        $("#typeIdPrimary" + rowIndex2).text(result.novelTypeIdPrimary);
+                                        $("#typeNamePrimary" + rowIndex2).text(result.novelTypeNamePrimary);
+                                        $("#typeNameSecondary" + rowIndex2).text(result.novelTypeNameSecondary);
                                     }
                                 });
                                 $("table").append($("<tr>" +
                                     "<td>" + this.novelId + "</td>" +
                                     "<td>" + this.novelName + "</td>" +
                                     "<td>" + this.authorName + "</td>" +
-                                    "<td>" + novelTypeIdPrimary + "</td>" +
-                                    "<td>" + novelTypeNamePrimary + "</td>" +
-                                    "<td>" + this.novelTypeIdSecondary + "</td>" +
-                                    "<td>" + novelTypeNameSecondary + "</td>" +
+                                    "<td id='typeIdPrimary" + rowIndex1 + "'></td>" +
+                                    "<td id='typeNamePrimary" + rowIndex1 + "'></td>" +
+                                    "<td>" + novelTypeIdSecondary + "</td>" +
+                                    "<td id='typeNameSecondary" + rowIndex1 + "'></td>" +
                                     "<td>" + this.novelStatus + "</td>"
                                     + "</td></tr>"));
                             })
                         }
                     }
                 });
-            })
-        })
+            }
+            var pageIndex = $("#pageIndex");
+            pageIndex.val(1);
+            pageIndex.on("keyup", function (fn) {
+                if(fn === 13){
+                    var index = parseInt(this.value);
+                    if(index<1) {
+                        this.value = "1";
+                    }
+                    if(index > parseInt(totalPage)){
+                        this.value = totalPage;
+                    }
+                    buttonConfig();
+                 flushTable();
+                }
+            });
+            function buttonConfig() {
+                $("#previousPage").removeClass("am-disabled");
+                $("#nextPage").removeClass("am-disabled");
+                if(pageIndex.val() === "1"){
+                    $("#previousPage").addClass("am-disabled");
+                }
+                if(pageIndex.val() === totalPage){
+                    $("#nextPage").addClass("am-disabled");
+                }
+            }
+            flushTable();
+            $("#search").on("click", function (){flushTable()});
+            $("#nextPage").on("click", function () {
+                pageIndex.val("" + (parseInt(pageIndex.val()) + 1));
+                buttonConfig();
+                flushTable();
+            });
+            $("#previousPage").on("click", function () {
+                pageIndex.val("" + (parseInt(pageIndex.val()) - 1));
+                buttonConfig();
+                flushTable();
+            });
+            $("#firstPage").on("click", function () {
+                pageIndex.val("1");
+                buttonConfig();
+                flushTable();
+            });
+            $("#lastPage").on("click", function () {
+                pageIndex.val(totalPage);
+                buttonConfig();
+                flushTable();
+            });
+        });
     </script>
     <style>
         .decorativeStrip{background-color: #0e90d2}
@@ -293,9 +348,9 @@
                                                 <td>2</td>
                                                 <td>冷枭的专属宝贝</td>
                                                 <td>夜未晚</td>
-                                                <td>9</td>
+                                                <td>2</td>
                                                 <td>都市言情</td>
-                                                <td>89</td>
+                                                <td>2</td>
                                                 <td>总裁豪门</td>
                                                 <td>完结</td>
                                             </tr>
@@ -307,19 +362,19 @@
                                 <div class="am-panel-bd">
                                     <form id="form2" class="am-form-inline" role="form">
                                         <div class="am-u-md-5" style="padding-right: 30px">
-                                            <button class="am-btn am-btn-primary" type="button">首页</button>
-                                            <button class="am-btn am-btn-primary" type="button">上一页</button>
-                                            <button class="am-btn am-btn-primary" type="button">下一页</button>
-                                            <button class="am-btn am-btn-primary" type="button">尾页</button>
+                                            <button class="am-btn am-btn-primary" id="firstPage" type="button">首页</button>
+                                            <button class="am-btn am-btn-primary" id="previousPage" type="button">上一页</button>
+                                            <button class="am-btn am-btn-primary" id="nextPage" type="button">下一页</button>
+                                            <button class="am-btn am-btn-primary" id="lastPage" type="button">尾页</button>
 
                                         </div>
                                         <div class="am-u-md-5">
 
                                             <span id="totalPage">共1页</span>
                                             <div class="am-form-group" id="page">
-                                                第<input type="text" class="am-form-field am-round" name="pageIndex">页
+                                                第<input id="pageIndex" type="text" class="am-form-field am-round" name="pageIndex">页
                                             </div>
-                                            <%--                                    当表单当中存在多个输入框时，只有最后一个有回车提交，利用这一点来禁用这之前的回车提交--%>
+                                            <%-- 当表单当中存在多个输入框时，只有最后一个有回车提交，利用这一点来禁用这之前的回车提交--%>
                                             <input style="display:none;">
                                             <label for="rowNumberSelect">行数</label>
                                             <select id="rowNumberSelect" name="pageSize" class="am-form-group" data-am-selected>
@@ -328,9 +383,9 @@
                                                 <option value="20">20</option>
                                             </select>
                                         </div>
-                                    <div class="am-u-md-2">
-                                        <button class="am-btn am-btn-warning am-round" type="button" id="update">修改</button>
-                                    </div>
+                                        <div class="am-u-md-2">
+                                            <button class="am-btn am-btn-warning am-round" type="button" id="update">修改</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
