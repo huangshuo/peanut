@@ -18,6 +18,7 @@
     <script>
         $(function () {
 
+            console.log("tag");
             var novelId;
             var novelName;
             var authorName;
@@ -65,8 +66,8 @@
             });
 
             $("table").on("click","tr", function () {
+                $("table tr").attr("class", null);
                 if(this.id !== "tableHead") {
-                    $("table tr").attr("class", null);
                     $(this).attr("class", "am-primary");
                     novelId = $(this).children()[0].innerText;
                     novelName = $(this).children()[1].innerText;
@@ -172,37 +173,41 @@
                                     "<td>" + this.novelStatus + "</td>"
                                     + "</td></tr>"));
                             })
+                        }else{
+                            $("#totalPage").text("共0页");
+                            $("table tr:gt(0)").remove();
                         }
                     }
+
                 });
             }
             var pageIndex = $("#pageIndex");
             pageIndex.val(1);
             pageIndex.on("keyup", function (fn) {
-                if(fn === 13){
-                    var index = parseInt(this.value);
-                    if(index<1) {
-                        this.value = "1";
-                    }
-                    if(index > parseInt(totalPage)){
-                        this.value = totalPage;
-                    }
+                if(fn.keyCode === 13){
+
                     buttonConfig();
-                 flushTable();
+                    flushTable();
                 }
             });
             function buttonConfig() {
+                console.log(typeof totalPage);
                 $("#previousPage").removeClass("am-disabled");
                 $("#nextPage").removeClass("am-disabled");
-                if(pageIndex.val() === "1"){
+                if(parseInt(pageIndex.val()) <= 1){
+                    pageIndex.val("1");
                     $("#previousPage").addClass("am-disabled");
                 }
-                if(pageIndex.val() === totalPage){
+                if(parseInt(pageIndex.val()) >= totalPage){
+                    pageIndex.val("" + totalPage);
                     $("#nextPage").addClass("am-disabled");
                 }
             }
             flushTable();
-            $("#search").on("click", function (){flushTable()});
+            $("#search").on("click", function (){
+                pageIndex.val("1");
+                flushTable();
+            });
             $("#nextPage").on("click", function () {
                 pageIndex.val("" + (parseInt(pageIndex.val()) + 1));
                 buttonConfig();
@@ -300,9 +305,6 @@
                             <div class="am-form-group">
                                 <select id="novelTypeIdSecondary" name="novelTypeIdSecondary" data-am-selected>
                                     <option value="0" >二级分类</option>
-                                    <option value="1" >fadfasdf</option>
-                                    <option value="2" >fadfasdf</option>
-                                    <option value="3" >fadfasdf</option>
                                 </select>
                             </div>
 
