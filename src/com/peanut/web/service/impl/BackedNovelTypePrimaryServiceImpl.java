@@ -9,6 +9,8 @@ import com.peanut.entity.pojo.BackendNovelTypePrimary;
 import com.peanut.entity.pojo.BackendNovelTypeSecondary;
 import com.peanut.web.service.BackedNovelTypePrimaryService;
 
+import java.util.List;
+
 /**
  * description: 后台novel 二级分类service接口实现类.
  *
@@ -41,4 +43,11 @@ public class BackedNovelTypePrimaryServiceImpl implements BackedNovelTypePrimary
 		BackendNovelTypePrimary bean = dao.selectOneByPrimaryKey(sonBean.getFatherTypeId());
 		return bean.getTypeId() == null ? ServerResponse.failWithMsg(404, ServerStatusCodeEnum.NOT_FOUND.getMsg()): ServerResponse.successWithData(bean);
 	}
+
+	@Override
+	public ServerResponse<List<BackendNovelTypePrimary>> selectAllPrimaryType() {
+		List<BackendNovelTypePrimary> resultList = dao.selectListByTemplate(new BackendNovelTypePrimary());
+		return resultList.isEmpty() ? ServerResponse.failWithMsg(404, ServerStatusCodeEnum.NOT_FOUND.getMsg()) : ServerResponse.successWithData(resultList);
+	}
+
 }

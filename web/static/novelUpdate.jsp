@@ -84,7 +84,7 @@
             console.log(JSON.parse(JSON.stringify(serializeObject($("form"))).replace("}", ", \"novelId\": \"" +
                 prepUpdateNovelId + "\", \"novelTypeIdSecondary\": \"" + prepUpdateNovelTypeIdSecondary + "\"}")));
 
-            if(checkAllEmpty()) {
+            if(!checkAllEmpty()) {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/backend/novel/update",
                     type: "GET",

@@ -2,6 +2,7 @@ package com.peanut.web.service;
 
 import com.peanut.common.http.ServerResponse;
 import com.peanut.entity.pojo.BackendNovel;
+import com.peanut.entity.vo.PageInfo;
 
 /**
  * description: 后台Novel Service接口类.
@@ -28,9 +29,12 @@ public interface BackendNovelService {
 	ServerResponse<BackendNovel> selectNovelInfoById(Long key);
 
 	/**
-	 * 通过小说名查询小说基本信息
-	 *  @param novelName 小说名称
-	 * 	 * @return serverResponse
+	 * 通过小说信息模板查询小说基本信息
+	 * @param pageNum 当前页数
+	 * @param pageSize 行数
+	 * @param bean 小说信息模板
+	 * @return serverResponse
 	 */
-	ServerResponse<BackendNovel> selectNovelInfoByName(String novelName);
+	ServerResponse<PageInfo<BackendNovel>> selectNovelInfoByTemplate(int pageNum, int pageSize,BackendNovel bean);
+
 }

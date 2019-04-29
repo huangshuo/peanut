@@ -5,6 +5,7 @@ import com.peanut.common.http.ServerStatusCodeEnum;
 import com.peanut.dao.BaseDao;
 import com.peanut.dao.impl.BaseDaoImpl;
 import com.peanut.entity.pojo.BackendNovel;
+import com.peanut.entity.vo.PageInfo;
 import com.peanut.web.service.BackendNovelService;
 
 /**
@@ -41,5 +42,17 @@ public class BackendNovelServiceImpl implements BackendNovelService {
 	public ServerResponse<BackendNovel> selectNovelInfoById(Long key) {
 		BackendNovel bean = dao.selectOneByPrimaryKey(key);
 		return bean.getNovelId() == null ? ServerResponse.failWithMsg(404, ServerStatusCodeEnum.NOT_FOUND.getMsg()): ServerResponse.successWithData(bean);
+	}
+
+	/**
+	 * 通过小说信息模板查询小说基本信息
+	 *  @param bean 小说信息模板
+	 * 	 * @return serverResponse
+	 */
+	@Override
+	public ServerResponse<PageInfo<BackendNovel>> selectNovelInfoByTemplate(int pageNum, int pageSize, BackendNovel bean) {
+		PageInfo<BackendNovel> pageInfo = dao.pageQueryByTemplate(pageNum, pageSize, bean);
+		return pageInfo.getTotalPage() == 0 ? ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(), ServerStatusCodeEnum.NOT_FOUND.getMsg()) :
+				ServerResponse.successWithData(pageInfo);
 	}
 }
