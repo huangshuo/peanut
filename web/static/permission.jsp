@@ -64,11 +64,17 @@
           '<div class="am-btn-group">' +
           '<button type="button" class="am-btn am-btn-primary" name="' + user.uid + '">' +
           '<span class="am-icon-pencil-square-o"></span> 编辑</button>' +
-          '<button type="button" class="am-btn am-btn-danger am-hide-sm-only" name="' + user.uid + '">' +
+          '<button type="button" class="am-btn am-btn-danger am-hide-sm-only deleteUser" name="' + user.uid + '">' +
           '<span class="am-icon-trash-o"></span> 删除</button>' +
           '</div>' +
           '</td>' +
           '</tr>'));
+        $tbody.on('click', '.deleteUser', function () {
+          var name = getUserInfo($(this).prop('name')).username;
+          $('#deleteUserModal').find('.hiddenSpan').html(name);
+          $('#deleteUserModal').find('.am-modal-bd').html(name);
+          $('#deleteUserModal').modal();
+        });
       }
       // 显示分页信息
       var template = Handlebars.compile('{{>pagination}}');
@@ -239,9 +245,7 @@
     }
     // main
     $(function () {
-      $("#zhao").on("click",function () {
-        alert(123);
-      });
+
       var $tbody = $('#tbody');
       var $userPagination = $('#userPagination');
       var $modifyUserModal = $('#modifyUserModal');
@@ -257,7 +261,14 @@
       loadUserList(pageInfo, $tbody, $userPagination);
       loadPermissionTree(checkedPermission);
       var permissionTree = $.fn.zTree.getZTreeObj("permission");
-
+      // 删除
+      $tbody.on('click', '.deleteUser', function () {
+        alert("13213");
+        // var name = getUserInfo($(this).prop('name')).username;
+        // $deleteUserModal.find('.hiddenSpan').html(name);
+        // $deleteUserModal.find('.am-modal-bd').html(name);
+        // $deleteUserModal.modal();
+      });
       // 修改页面大小
       $pageSize.on('change', function () {
         pageNum = 1;
@@ -378,14 +389,7 @@
         $('#role').val(user.role);
         $modifyUserModal.modal();
       });
-      // 删除
-      $tbody.on('click', 'button.am-btn-danger', function () {
-        alert("13213");
-        var name = getUserInfo($(this).prop('name')).username;
-        $deleteUserModal.find('.hiddenSpan').html(name);
-        $deleteUserModal.find('.am-modal-bd').html(name);
-        $deleteUserModal.modal();
-      });
+
       // 首页
       $userPagination.on('click', 'li.am-pagination-first', function () {
         if (pageNum === 1) {
@@ -434,9 +438,9 @@
     })
   </script>
   <style>
-    body {
-      overflow: auto;
-    }
+    /*body {*/
+    /*  overflow: auto;*/
+    /*}*/
     #tbody td {
       height: 30px;
     }
@@ -449,9 +453,9 @@
     .table-lg {
       width: 15%;
     }
-    .am-fr {
-      height: 70px;
-    }
+    /*.am-fr {*/
+    /*  height: 70px;
+    }*/
     .userHeader {
       height: 5%;
       margin-top: 1%;
@@ -617,5 +621,3 @@
     </div>
   </div>
 </div>
-
-  <button id="zhao">按钮</button>

@@ -25,8 +25,12 @@ public final class ServletUrl {
     String DELETE_GAME = "/backend/game/delete";
     String MODIFY_GAME = "/backend/game/modify";
     String GAME_LIST = "/backend/game/list";
+    String GAME_INFO = "/backend/game/info";
+    String USER_INFO = "/backend/user/info";
+    String USER_PERMISSION = "/backend/user/permission";
+    String USER_MENU_LIST = "/backend/user/menu/list";
     String UPDATE_NOVEL = "/backend/novel/update";
-    String SELECT_NOVEL = "/backend/novel/select/";
+    String SELECT_NOVEL = "/backend/novel/select";
     String SELECT_NOVEL_TYPE = "/backend/novel/select/type";
     String SELECT_NOVEL_TYPE_ALL = "/backend/novel/select/type/all";
   }
