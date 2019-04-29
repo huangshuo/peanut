@@ -6,52 +6,64 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <script>
   $(function () {
     var page=1;
     var pageSize=10;
     changePageBtn(page,pageSize);
-    pageData(page,pageSize);
+    pageData("init",page,pageSize);
     pageBtnLoad(page,pageSize);
+    addMenu(page,pageSize);
+    select(page,pageSize);
+    search(page,pageSize);
+    pageSize1(page,$("#pageSize").val());
   });
   //頁面固定換頁按鈕
   function changePageBtn(page,pageSize) {
     $("#first").on("click",function () {
       page=1;
-      pageData(page,pageSize);
+      pageData("init",page,pageSize);
     });
     $("#last").on("click",function () {
       page= $("#totalPage").val();
       $("#currentPage").val(page);
-      pageData(page,pageSize);
+      pageData("init",page,pageSize);
     });
     $("#next").on("click",function () {
       if($("#currentPage").val()!=$("#totalPage").val()){
         page=parseInt($("#currentPage").val()) +1;
         $("#currentPage").val(page);
-        pageData(page,pageSize);
+        pageData("init",page,pageSize);
       }
     });
     $("#prev").on("click",function () {
       if($("#currentPage").val()!=1){
         page=$("#currentPage").val()-1;
         $("#currentPage").val(page);
-        pageData(page,pageSize);
+        pageData("init",page,pageSize);
       }
     });
   }
   //生成页面数据
-  function pageData(page,pageSize) {
+  var n=1;//页面第一次加载时，selectOne下拉菜单 从数据库获得一级菜单添加入option,第二次不添加
+  var m=0;//页面第一次加载时，selectTwo下拉菜单 不获得数据、单点击selectOne时m=1;从数据库获得数据
+  function pageData(action,page,pageSize,firstClass,secondClass,searchContent) {
     $.ajax({
       url:"${pageContext.request.contextPath}/channel/manage",
       type:"get",
-      data:{"page":page,"pageSize":pageSize},
+      data:{"action":action,"page":page,"pageSize":pageSize,"firstClass":firstClass,"secondClass":secondClass,"searchContent":searchContent},
       dataType:"json",
       success:function (data) {
         $(".content").html("");
+        if(n==1) $("#selectOne").html("");
+        if(n==1) $("#selectOne").append('<option>请选择一级目录</option>');
         $.each(data.data.pageData,function (i,d) {
+          if(n==1) $("#selectOne").append('<option>'+dataType(d.firstClass)+'</option>');
+          if(m==1) $("#selectTwo").append('<option>'+dataType(d.secondClass)+'</option>');
           $(".content").append('<tr class="am-animation-scale-up">' +
-            '      <td>'+dataType(d.firstClass)+'</td>' +
+            '      <td style="display: none">'+d.id+'</td>' +
+            '      <td id="firstClass'+i+'">'+dataType(d.firstClass)+'</td>' +
             '      <td>'+dataType(d.secondClass)+'</td>' +
             '      <td>'+dataType(d.channelNum)+'</td>' +
             '      <td>'+dataType(d.channelDownloadLink)+'</td>' +
@@ -59,14 +71,46 @@
             '      <td>'+dataType(d.showName)+'</td>' +
             '      <td>'+dateFormat(d.createDate)+'</td>' +
             '      <td> ' +
-            '         <button type="button" class="am-btn am-btn-danger am-radius deleteBtn">删除</button>' +
+            '         <button type="button" class="am-btn am-btn-danger am-radius deleteBtn" name="'+d.id+'">删除</button>' +
             '      </td>' +
-            '    </tr>')
+            '    </tr>');
         });
-        modifyMenu(page,pageSize);
         deleteChannel(page,pageSize);
+        n=2;//防止selectOne下拉菜单重复添加
       }
     });
+  }
+  //搜素功能
+  function search(page,pageSize) {
+    $("#search").on("click",function () {
+      var action="search";
+      pageData(action,page,pageSize,null,null,$("#searchContent").val());
+    });
+    $("#searchContent").on("keyup",function (event) {
+      if(event.keyCode==13){
+        var action="search";
+        pageData(action,page,pageSize,null,null,$("#searchContent").val());
+      }
+    })
+  }
+
+  function select(page,pageSize) {
+    $(".border").on("change",'#selectOne',function(){
+      var firstClass=$(this).children('option:selected').html();
+      $("#selectTwo").html("");
+      $("#selectTwo").append('<option>请选择二级目录</option>');
+      m=1;//selectOne变化时，selectTwo添加内容
+      var action="selectOne";
+      pageData(action,page,pageSize,firstClass,null,null);
+      $("#searchContent").val("");
+      $(".border").on("change",'#selectTwo',function(){
+        var secondClass=$(this).children('option:selected').html();
+        m=0;//防止selectTwo下拉菜单重复添加
+        var action="selectTwo";
+        pageData(action,page,pageSize,firstClass,secondClass,null);
+        $("#searchContent").val("");
+      })
+    })
   }
   //日期转换函数
   function dateFormat(strLongTime) {
@@ -107,7 +151,7 @@
     $.ajax({
       url:"${pageContext.request.contextPath}/channel/manage",
       type:"get",
-      data:{"page":page,"pageSize":pageSize},
+      data:{"action":"init","page":page,"pageSize":pageSize},
       dataType:"json",
       success:function (data) {
         $("#totalPage").val(data.data.totalPage);
@@ -115,14 +159,14 @@
           $("#prev").after('<li id="page' + i + '"><a href="###">' + i + '</a></li>');
         }
         $("li[id*='page']").on("click",function () {
-          pageData($(this).children().html(),pageSize);
+          pageData("init",$(this).children().html(),pageSize);
           $("#currentPage").val($(this).children().html());
         });
       }
     })
   }
   //添加新渠道
-  function  modifyMenu(page,pageSize){
+  function  addMenu(page,pageSize){
     $('#addChannel').on('click', function() {
       $('#my-prompt').modal({
         relatedTarget: this,
@@ -135,7 +179,6 @@
             $("#product_name").val(),
             $("#show_name").val()
           ];
-          console.log(channelData);
           //确认：向数据库发送请求
           $.ajax({
             url:"${pageContext.request.contextPath}/channel/insert",
@@ -150,33 +193,37 @@
             },
             dataType:"text",
             success:function(data){
-              pageData(page,pageSize);
+              pageData("init",page,pageSize,null,null,null);
             }
           });
         }
       });
     })
   }
-  //删除菜单内容
+  //删除渠道内容
   function deleteChannel(page,pageSize) {
     $(".deleteBtn").on("click",function () {
-      var first_class=$(this).parent().parent().children("td:first").html();
-      console.log(first_class);
       $('#my-confirm').modal({
         relatedTarget: this,
         onConfirm: function(options) {
+          var id = $(this.relatedTarget).attr("name");
           $.ajax({
             url:"${pageContext.request.contextPath}/channel/delete",
             type:"get",
-            data:{"first_class":first_class},
+            data:{"id":id},
             dataType:"text",
             success:function (data) {
-              console.log(data);
-              pageData(page,pageSize);
+              pageData("init",page,pageSize,null,null,null);
             }
          })
         }
       })
+    })
+  }
+
+  function pageSize1(page,pageSize) {
+    $("#pageSize").on("change",function () {
+      pageData("init",page,pageSize,null,null,null);
     })
   }
 </script>
@@ -208,10 +255,42 @@
     float: right;
     margin: 0 100px 15px 0;
   }
+  /*.border *{*/
+  /*  border: 1px red solid;*/
+  /*}*/
+  select{
+    float: left;
+    width: 180px;
+    height: 30px;
+    border-radius: 5px;
+    margin-right: 20px;
+  }
+  .search{
+    float: left;
+    width: 300px;
+    margin-left: 20px;
+  }
 </style>
 <div class="border" style="height: 600px;">
+  <%--下拉菜单1--%>
+  <select data-am-selected="{searchBox: 1}" id="selectOne">
+
+  </select>
+    <%--下拉菜单2--%>
+  <select data-am-selected="{searchBox: 1}" id="selectTwo">
+
+  </select>
+  <%--搜索框--%>
+  <div class="am-input-group am-input-group-default search">
+    <input type="text" class="am-form-field" placeholder="请输入渠道号" id="searchContent">
+    <span class="am-input-group-btn">
+        		<button class="am-btn am-btn-primary" type="button" id="search">
+        			<span class="am-icon-search"></span>
+        		</button>
+      		</span>
+  </div>
   <%--渠道添加添加功能--%>
-  <button type="button" class="am-btn am-btn-warning am-round addChannel" id="addChannel" >添加渠道</button>
+  <button type="button" class="am-btn am-btn-primary  addChannel" id="addChannel" >添加渠道</button>
   <%--渠道管理 表单--%>
   <table class="am-table  am-table-centered am-table-hover am-table-striped">
     <thead>
@@ -230,12 +309,17 @@
     </tbody>
   </table>
   <%--分页--%>
-  <ul class="am-pagination am-pagination-right am-table-striped" id="page">
+  <ul class="am-pagination am-pagination-right am-table-striped" id="page" style="float: left">
     <li id="first"><a href="###" >首页</a></li>
     <li id="prev"><a href="###">上一页</a></li>
     <li id="next"><a href="###" >下一页</a></li>
     <li id="last"><a href="###" >尾页</a></li>
   </ul>
+  <select style="width: 50px;float: left;margin:20px 0 0 20px" id="pageSize">
+    <option>5</option>
+    <option>10</option>
+    <option>20</option>
+  </select>
 </div>
 <%--隐藏域、放总页数\当前页数--%>
 <input type="hidden" value="" id="totalPage">
@@ -267,6 +351,7 @@
     <div class="am-modal-hd">花生娱乐</div>
     <div class="am-modal-bd">
       你，确定要删除这个渠道吗？
+
     </div>
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>取消</span>

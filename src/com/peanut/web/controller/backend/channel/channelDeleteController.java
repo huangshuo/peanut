@@ -26,7 +26,7 @@ public class channelDeleteController extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     BaseDao<BackendChannelManage> baseDao=new BaseDaoImpl<>(BackendChannelManage.class);
     BackendChannelManage backendChannelManage=new BackendChannelManage();
-    backendChannelManage.setFirstClass(req.getParameter("first_class"));
+    backendChannelManage.setId(Long.parseLong(req.getParameter("id")));
     backendChannelManage=baseDao.selectOneByTemplate(backendChannelManage);
     baseDao.deleteByPrimaryKey(backendChannelManage.getId());
     
