@@ -32,14 +32,15 @@ public class SelectNovelTypeController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Map<String, String> resultMap = new HashMap<>(4);
+		String temp = req.getParameter("novelTypeIdSecondary");
 		Long novelTypeIdSecondary = Long.parseLong(req.getParameter("novelTypeIdSecondary"));
-		Long novelTypeIdPrimary = Long.parseLong(req.getParameter("novelTypeIdPrimary"));
 		resultMap.put("novelTypeIdSecondary", novelTypeIdSecondary.toString());
 		BackendNovelTypeSecondaryService secondaryService = new BackendNovelTypeSecondaryServiceImpl();
 		BackendNovelTypeSecondary backendNovelTypeSecondary = secondaryService.selectSecondaryTypeById(novelTypeIdSecondary).getData();
 		resultMap.put("novelTypeNameSecondary", backendNovelTypeSecondary.getTypeName());
 
 		BackedNovelTypePrimaryService primaryService = new BackedNovelTypePrimaryServiceImpl();
+		Long novelTypeIdPrimary = backendNovelTypeSecondary.getFatherTypeId();
 		BackendNovelTypePrimary backendNovelTypePrimary = primaryService.selectPrimaryTypeById(novelTypeIdPrimary).getData();
 		resultMap.put("novelTypeIdPrimary", novelTypeIdPrimary.toString());
 		resultMap.put("novelTypeNamePrimary", backendNovelTypePrimary.getTypeName());

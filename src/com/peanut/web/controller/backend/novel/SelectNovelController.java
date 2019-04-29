@@ -29,17 +29,27 @@ public class SelectNovelController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		BackendNovel bean = new BackendNovel();
-		bean.setSecondaryTypeId(Long.parseLong(req.getParameter("novelTypeIdSecondary")));
-		bean.setNovelName(req.getParameter("novelName"));
-		bean.setAuthorName(req.getParameter("authorName"));
-		bean.setNovelId(Long.parseLong(req.getParameter("novelId")));
+		if (!"0".equals(req.getParameter("novelTypeIdSecondary")) ) {
+			bean.setSecondaryTypeId(Long.parseLong(req.getParameter("novelTypeIdSecondary")));
+		}
+		if(req.getParameter("novelName").length()!=0) {
+			bean.setNovelName(req.getParameter("novelName"));
+		}
 
-		int pageNum = Integer.parseInt(req.getParameter("pageNum"));
-		int pageSize = Integer.parseInt(req.getParameter("pageSize"));
+		if(req.getParameter("novelId").length()!=0) {
+			bean.setNovelId(Long.parseLong(req.getParameter("novelId")));
+		}
+
+		String temp = req.getParameter("pageIndex") + "--" + req.getParameter("pageSize");
+			int pageNum = Integer.parseInt(req.getParameter("pageIndex"));
+
+
+			int pageSize = Integer.parseInt(req.getParameter("pageSize"));
 
 		BackendNovelService service = new BackendNovelServiceImpl();
 		ServerResponse<PageInfo<BackendNovel>> serverResponse = service.selectNovelInfoByTemplate(pageNum, pageSize, bean);
 		PrintWriter writer = resp.getWriter();
+		System.out.println(JSON.toJSONString(serverResponse));
 		writer.print(JSON.toJSONString(serverResponse));
 		writer.close();
 	}
