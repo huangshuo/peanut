@@ -216,20 +216,20 @@
           }
         }
       };
-      var permissionNodes = [];
+      var menuNodes = [];
       var menus = getMenuList();
       for (var i in menus) {
         var menuInfo = menus[i];
-        var permission = {
+        var menuNode = {
           id: menuInfo.id,
           pId: menuInfo.fid,
           name: menuInfo.mname,
           open: true,
           checked: false
         };
-        permissionNodes.push(permission);
+        menuNodes.push(menuNode);
       }
-      $.fn.zTree.init($('#permission'), setting, permissionNodes);
+      $.fn.zTree.init($('#permission'), setting, menuNodes);
     }
     // 操作信息提示
     function showOperationMsg(msg) {
@@ -247,12 +247,12 @@
       var $addUserButton = $('#addUserButton');
       var $pageSize = $('#pageSize');
       var $modifyUserForm = $('#modifyUserForm');
-      var checkedPermission = "";
+      var $passwordDiv = $('#passwordDiv');
       var pageNum = 1;
       var pageSize = $pageSize.val();
       var pageInfo = pageQueryUser(pageNum, pageSize);
       loadUserList(pageInfo, $tbody, $userPagination);
-      loadPermissionTree(checkedPermission);
+      loadPermissionTree();
       var permissionTree = $.fn.zTree.getZTreeObj("permission");
 
       // 修改页面大小
@@ -292,6 +292,7 @@
         $('#modifyUserModalTitle').html('添加');
         $modifyUserForm[0].reset();
         permissionTree.checkAllNodes(false);
+        $passwordDiv.show();
         $modifyUserModal.modal();
       });
       // 确认编辑/添加
@@ -373,6 +374,19 @@
         $('#username').val(user.username);
         $('#status').val(user.status);
         $('#role').val(user.role);
+        $passwordDiv.hide();
+        permissionTree.checkAllNodes(false);
+        // 勾选对应的权限菜单
+        var permissions = user.permission.split(',');
+        var menuNodes = permissionTree.getNodes();
+        for (var i in menuNodes) {
+          var node = menuNodes[i];
+          for (var j in permissions) {
+            if (parseInt(permissions[j]) === node.id) {
+              permissionTree.checkNode(node, true, true);
+            }
+          }
+        }
         $modifyUserModal.modal();
       });
       // 删除
@@ -556,6 +570,12 @@
           <label for="username" class="am-u-md-3">用户名:</label>
           <div class="am-u-md-9">
             <input type="text" id="username" name="username" placeholder="用户名" class="am-form-field" required/>
+          </div>
+        </div>
+        <div class="am-form-group" id="passwordDiv" hidden="hidden">
+          <label for="password" class="am-u-md-3">密码:</label>
+          <div class="am-u-md-9">
+            <input type="password" id="password" name="password" placeholder="密码" class="am-form-field" required/>
           </div>
         </div>
         <div class="am-form-group">
