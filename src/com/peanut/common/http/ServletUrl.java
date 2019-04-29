@@ -29,6 +29,10 @@ public final class ServletUrl {
     String USER_INFO = "/backend/user/info";
     String USER_PERMISSION = "/backend/user/permission";
     String USER_MENU_LIST = "/backend/user/menu/list";
+    String UPDATE_NOVEL = "/backend/novel/update";
+    String SELECT_NOVEL = "/backend/novel/select";
+    String SELECT_NOVEL_TYPE = "/backend/novel/select/type";
+    String SELECT_NOVEL_TYPE_ALL = "/backend/novel/select/type/all";
   }
 
   /**
@@ -55,5 +59,9 @@ public final class ServletUrl {
     String VIDEO_FIRST_LIST = "/video/list/first";
     String VIDEO_SECOND_LIST = "/video/list/second";
     String MENU_MANAGE = "/menu/manage";
+    String MENU_UPDATE = "/menu/update";
+    String CHANNEL_MANAGE = "/channel/manage";
+    String CHANNEL_INSERT = "/channel/insert";
+    String CHANNEL_DELETE = "/channel/delete";
   }
 }

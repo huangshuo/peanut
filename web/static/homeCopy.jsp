@@ -34,8 +34,358 @@
     userPart();
     //柱状图
     histogram();
-    //生成左侧折叠菜单栏
-    menuManage();
+
+    /*折叠菜单信息*/
+    //通过json动态生成菜单栏
+    // var foldMenu = {
+    //   "manageCenter":{
+    //     "firstListName":"管理中心",
+    //     "secondListName":{
+    //       //key存贮jsp文件名
+    //       "authorityManage":"权限管理",
+    //       "menuManage":"菜单管理"
+    //     },
+    //     //一二级菜单关联
+    //     "target":"manage",
+    //     //菜单图标样式
+    //     "icon":"am-icon-qq"
+    //   },
+    //   "templateManage":{
+    //     "firstListName":"模板管理",
+    //     "secondListName":{
+    //       //key存贮jsp文件名
+    //       "":"模板配置"
+    //     },
+    //     "target":"template",
+    //     "icon":"am-icon-th-large"
+    //   },
+    //   "advertisementManage":{
+    //     "firstListName":"广告管理",
+    //     "secondListName":{
+    //       //key存贮jsp文件名
+    //       "":"首页顶置广告",
+    //       "":"首页分类广告"
+    //     },
+    //     "target":"advertisement",
+    //     "icon":"am-icon-rss-square"
+    //   },
+    //   "gameManage":{
+    //     "firstListName":"游戏管理",
+    //     "secondListName":{
+    //       //key存贮jsp文件名
+    //       "":"游戏配置"
+    //     },
+    //     "target":"game",
+    //     "icon":"am-icon-gamepad"
+    //   },
+    //   "companyManage":{
+    //     "firstListName":"合作公司管理",
+    //     "secondListName":{
+    //       //key存贮jsp文件名
+    //       "":"合作公司管理",
+    //       "":"合作公司订单管理"
+    //     },
+    //     "target":"company",
+    //     "icon":"am-icon-building"
+    //   },
+    //   "channelManage":{
+    //     "firstListName":"渠道版本",
+    //     "secondListName":{
+    //       //key存贮jsp文件名
+    //       "":"渠道管理",
+    //       "":"渠道分类管理"
+    //     },
+    //     "target":"channel",
+    //     "icon":"am-icon-exchange"
+    //   },
+    //   "CP":{
+    //     "firstListName":"CP",
+    //     "secondListName":{
+    //       //key存贮jsp文件名
+    //       "":"CP查询"
+    //     },
+    //     "target":"CP",
+    //     "icon":"am-icon-money"
+    //   },
+    //   "bookManage":{
+    //     "firstListName":"图书管理",
+    //     "secondListName":{
+    //       //key存贮jsp文件名
+    //       "":"图书列表",
+    //       "":"菜单管理"
+    //     },
+    //     "target":"book",
+    //     "icon":"am-icon-book"
+    //   },
+    //   "labelManage":{
+    //     "firstListName":"标签管理",
+    //     "secondListName":{
+    //       //key存贮jsp文件名
+    //       "":"标签列表"
+    //     },
+    //     "target":"label",
+    //     "icon":"am-icon-tags"
+    //   },
+    //   "classificationManage":{
+    //     "firstListName":"分类管理",
+    //     "secondListName":{
+    //       //key存贮jsp文件名
+    //       "":"分类列表"
+    //     },
+    //     "target":"classification",
+    //     "icon":"am-icon-share-alt-square"
+    //   },
+    //   "recommendManage":{
+    //     "firstListName":"推荐管理",
+    //     "secondListName":{
+    //       //key存贮jsp文件名
+    //       "":"首页内容推荐"
+    //     },
+    //     "target":"recommend",
+    //     "icon":"am-icon-registered"
+    //   },
+    //   "CertificationManage":{
+    //     "firstListName":"认证管理",
+    //     "secondListName":{
+    //       //key存贮jsp文件名
+    //     },
+    //     "target":"Certification",
+    //     "icon":"am-icon-connectdevelop"
+    //   }
+    // };
+    var menuJson={
+      "code": 200,
+      "msg": "操作成功",
+      "data": {
+        "pageNum": 1,
+        "pageSize": 30,
+        "totalPage": 1,
+        "totalRow": 28,
+        "firstPage": true,
+        "lastPage": true,
+        "pageData": [
+          {
+            "fid": 0,
+            "icon": "am-icon-qq",
+            "id": 1,
+            "isShow": 1,
+            "mname": "管理中心"
+          },
+          {
+            "fid": 0,
+            "icon": "am-icon-th-large",
+            "id": 2,
+            "isShow": 1,
+            "mname": "模板管理"
+          },
+          {
+            "fid": 0,
+            "icon": "am-icon-rss-square",
+            "id": 3,
+            "isShow": 1,
+            "mname": "广告管理"
+          },
+          {
+            "fid": 0,
+            "icon": "am-icon-gamepad",
+            "id": 4,
+            "isShow": 1,
+            "mname": "游戏管理"
+          },
+          {
+            "fid": 0,
+            "icon": "am-icon-building",
+            "id": 5,
+            "isShow": 1,
+            "mname": "合作公司管理"
+          },
+          {
+            "fid": 0,
+            "icon": "am-icon-exchange",
+            "id": 6,
+            "isShow": 1,
+            "mname": "渠道版本"
+          },
+          {
+            "fid": 0,
+            "icon": "am-icon-money",
+            "id": 7,
+            "isShow": 1,
+            "mname": "CP"
+          },
+          {
+            "fid": 0,
+            "icon": "am-icon-book",
+            "id": 8,
+            "isShow": 1,
+            "mname": "图书管理"
+          },
+          {
+            "fid": 0,
+            "icon": "am-icon-tags",
+            "id": 9,
+            "isShow": 1,
+            "mname": "标签管理"
+          },
+          {
+            "fid": 0,
+            "icon": "am-icon-share-alt-square",
+            "id": 10,
+            "isShow": 1,
+            "mname": "分类管理"
+          },
+          {
+            "fid": 0,
+            "icon": "am-icon-registered",
+            "id": 11,
+            "isShow": 1,
+            "mname": "推荐管理"
+          },
+          {
+            "fid": 0,
+            "icon": "connectdevelop",
+            "id": 12,
+            "isShow": 1,
+            "mname": "认证管理"
+          },
+          {
+            "fid": 1,
+            "id": 13,
+            "isShow": 1,
+            "mname": "权限管理"
+          },
+          {
+            "fid": 1,
+            "id": 14,
+            "isShow": 1,
+            "jspName": "menuManage",
+            "mname": "菜单管理"
+          },
+          {
+            "fid": 2,
+            "id": 15,
+            "isShow": 1,
+            "mname": "模板配置 "
+          },
+          {
+            "fid": 2,
+            "id": 16,
+            "isShow": 1,
+            "mname": "模板列表"
+          },
+          {
+            "fid": 3,
+            "id": 17,
+            "isShow": 1,
+            "mname": "首页顶置广告"
+          },
+          {
+            "fid": 3,
+            "id": 18,
+            "isShow": 1,
+            "mname": "首页分类广告"
+          },
+          {
+            "fid": 4,
+            "id": 19,
+            "isShow": 1,
+            "mname": "游戏配置"
+          },
+          {
+            "fid": 5,
+            "id": 20,
+            "isShow": 1,
+            "mname": "合作公司管理"
+          },
+          {
+            "fid": 5,
+            "id": 21,
+            "isShow": 1,
+            "mname": "合作订单管理"
+          },
+          {
+            "fid": 6,
+            "id": 22,
+            "isShow": 1,
+            "mname": "渠道管理"
+          },
+          {
+            "fid": 6,
+            "id": 23,
+            "isShow": 1,
+            "mname": "渠道分类管理"
+          },
+          {
+            "fid": 7,
+            "id": 24,
+            "isShow": 1,
+            "mname": "CP查询"
+          },
+          {
+            "fid": 8,
+            "id": 25,
+            "isShow": 1,
+            "mname": "图书列表"
+          },
+          {
+            "fid": 9,
+            "id": 26,
+            "isShow": 1,
+            "mname": "标签列表"
+          },
+          {
+            "fid": 10,
+            "id": 27,
+            "isShow": 1,
+            "mname": "分类列表"
+          },
+          {
+            "fid": 11,
+            "id": 28,
+            "isShow": 1,
+            "mname": "首页内容推荐"
+          }
+        ]
+      }
+    }
+    for(var i in menuJson.data.pageData){
+      console.log(menuJson.data.pageData[i].isShow==1);
+      if(menuJson.data.pageData[i].fid===0&menuJson.data.pageData[i].isShow==1){
+        $("#bodyLeft>ul").append('<li class="am-panel">' +
+          '      <a data-am-collapse="{parent: \'#collapase-nav-1\', target: \'#target'+i+'\'}" style="color: white;">' +
+          '        <i class="'+menuJson.data.pageData[i].icon+' am-margin-left-sm"></i> '+menuJson.data.pageData[i].mname+' <i class="am-icon-angle-right am-fr am-margin-right" id="arrow"></i>' +
+          '      </a>' +
+          '      <ul class="am-list am-collapse menu'+i+'" id="target'+i+'">' +
+          '      </ul>' +
+          '    </li>');
+      }
+      for(var j in menuJson.data.pageData){
+        if(menuJson.data.pageData[j].fid===menuJson.data.pageData[i].id&menuJson.data.pageData[j].isShow==1){
+          $(".menu"+i).append('<li>' +
+                '          <a href="###" id="'+menuJson.data.pageData[j].jspName+'"><span class="'+menuJson.data.pageData[i].icon+' am-margin-left-lg"></span> '+menuJson.data.pageData[j].mname+' </a>' +
+                '        </li>')
+            }
+        }
+      }
+
+    // for(var i in foldMenu){
+    //   $("#bodyLeft>ul").append('<li class="am-panel">' +
+    //     '      <a data-am-collapse="{parent: \'#collapase-nav-1\', target: \'#'+foldMenu[i].target+'\'}" style="color: white;">' +
+    //     '        <i class="'+foldMenu[i].icon+' am-margin-left-sm"></i> '+foldMenu[i].firstListName+' <i class="am-icon-angle-right am-fr am-margin-right" id="arrow"></i>' +
+    //     '      </a>' +
+    //     '      <ul class="am-list am-collapse menu'+i+'" id="'+foldMenu[i].target+'">' +
+    //     '      </ul>' +
+    //     '    </li>');
+    //
+    //   for(var j in foldMenu[i].secondListName){
+    //     console.log(j);
+    //     $(".menu"+i).append('<li>' +
+    //       '          <a href="###" id="'+j+'"><span class="'+foldMenu[i].icon+' am-margin-left-lg"></span> '+foldMenu[i].secondListName[j]+' </a>' +
+    //       '        </li>')
+    //   }
+    // }
+    link();
+
   });
   //折叠菜单右侧小箭头图标样式改变
   function iconStyle() {
@@ -54,18 +404,19 @@
     });
   }
   //隐藏左侧菜单具体动作
-    function moveii(){
+  function moveii(){
       if(clickNum % 2 !== 0){
+
         document.getElementById("bodyLeft").style.left="-14%";
         document.getElementById("change").style.left="-14%";
         document.getElementsByClassName("bodyRight")[0].style.width="93%";
-            $("#change").html('<a class="am-icon-angle-double-right am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px"></a>');
+        $("#change").html('<a class="am-icon-angle-double-left am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px" onclick="moveii()"></a>');
       }else{
         document.getElementsByClassName("bodyLeft")[0].style.left="0px";
         document.getElementById("change").style.left="0px";
         document.getElementsByClassName("bodyRight")[0].style.width="80%";
-            $("#change").html('<a class="am-icon-angle-double-left am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px"></a>');
-        }
+        $("#change").html('<a class="am-icon-angle-double-right am-secondary am-fr  am-margin-bottom-xs" style="position: relative; top: 2px" onclick="moveii()"></a>');
+      }
       clickNum++;
     }
   //隐藏左侧菜单
@@ -87,36 +438,6 @@
     $(".bodyLeft>ul>li>ul>li>a").on("click",function () {
       $(".bodyRightContent").load($(this).attr("id")+".jsp");
     });
-  }
-  //动态生成左侧菜单
-  function menuManage() {
-    $.ajax({
-      url:"${pageContext.request.contextPath}/menu/manage",
-      type:"get",
-      data:{"page":1,"pageSize":50},
-      dataType:"json",
-      success:function (data) {
-        for(var i in data.data.pageData){
-          if(data.data.pageData[i].fid===0&data.data.pageData[i].isShow==1){
-            $("#bodyLeft>ul").append('<li class="am-panel">' +
-              '      <a data-am-collapse="{parent: \'#collapase-nav-1\', target: \'#target'+i+'\'}" style="color: white;">' +
-              '        <i class="'+data.data.pageData[i].icon+' am-margin-left-sm"></i> '+data.data.pageData[i].mname+' <i class="am-icon-angle-right am-fr am-margin-right" id="arrow"></i>' +
-              '      </a>' +
-              '      <ul class="am-list am-collapse menu'+i+'" id="target'+i+'">' +
-              '      </ul>' +
-              '    </li>');
-          }
-          for(var j in data.data.pageData){
-            if(data.data.pageData[j].fid===data.data.pageData[i].id&data.data.pageData[j].isShow==1){
-              $(".menu"+i).append('<li>' +
-                '          <a href="###" id="'+data.data.pageData[j].jspName+'"><span class="'+data.data.pageData[i].icon+' am-margin-left-lg"></span> '+data.data.pageData[j].mname+' </a>' +
-                '        </li>')
-            }
-          }
-        }
-        link();
-      }
-    })
   }
   //饼图
   function userPart(){
@@ -527,16 +848,16 @@
 <%--页面左侧(折叠菜单)--%>
 <div class="bodyLeft" id="bodyLeft">
   <ul class="am-list admin-sidebar-list" id="collapase-nav-1">
+
     <li class="am-panel">
       <a data-am-collapse="{parent: '#collapase-nav-1'}" href="" class="home"><i class="am-icon-home am-margin-left-sm"></i> 首页</a>
     </li>
 
   </ul>
 </div>
-
 <%--显示隐藏标签--%>
-<button class="bodyLeftLable" id="change" type="button" onclick="moveii()">
-    <a class="am-icon-angle-double-right am-secondary am-fr am-margin-bottom-xs" style="position: relative; top: 2px"></a>
+<button class="bodyLeftLable" id="change" type="button">
+  <a class="am-icon-angle-double-right am-secondary am-fr am-margin-bottom-xs" style="position: relative; top: 2px"></a>
 </button>
 <%--页面主要内容--%>
 <div class="bodyRight">
