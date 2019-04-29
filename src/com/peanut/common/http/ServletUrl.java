@@ -26,6 +26,9 @@ public final class ServletUrl {
     String MODIFY_GAME = "/backend/game/modify";
     String GAME_LIST = "/backend/game/list";
     String UPDATE_NOVEL = "/backend/novel/update";
+    String SELECT_NOVEL = "/backend/novel/select/";
+    String SELECT_NOVEL_TYPE = "/backend/novel/select/type";
+    String SELECT_NOVEL_TYPE_ALL = "/backend/novel/select/type/all";
   }
 
   /**

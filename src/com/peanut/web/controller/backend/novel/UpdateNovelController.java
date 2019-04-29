@@ -1,4 +1,4 @@
-package com.peanut.web.controller.backend;
+package com.peanut.web.controller.backend.novel;
 
 import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServerResponse;

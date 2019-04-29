@@ -3,6 +3,8 @@ package com.peanut.web.service;
 import com.peanut.common.http.ServerResponse;
 import com.peanut.entity.pojo.BackendNovelTypePrimary;
 
+import java.util.List;
+
 /**
  * description: 后台novel 二级分类service接口类.
  *
@@ -25,4 +27,9 @@ public interface BackedNovelTypePrimaryService {
 	 * @return serverResponse
 	 */
 	ServerResponse<BackendNovelTypePrimary> selectPrimaryTypeBySonTypeId(Long key);
+	/**
+	 * 查找所有一级分类信息
+	 * @return serverResponse
+	 */
+	ServerResponse<List<BackendNovelTypePrimary>> selectAllPrimaryType();
 }
