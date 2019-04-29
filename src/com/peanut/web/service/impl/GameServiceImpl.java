@@ -50,13 +50,16 @@ public class GameServiceImpl implements GameService {
    * 根据游戏id查询游戏详情信息
    *
    * @param gameId 游戏id
+   * @param backend 是否显示下线游戏
    * @return serverResponse
    */
   @Override
-  public ServerResponse<Game> getGameInfoByGameId(long gameId) {
+  public ServerResponse<Game> getGameInfoByGameId(long gameId, boolean backend) {
     Game game = gameDao.selectOneByPrimaryKey(gameId);
-    if (game.getGameId() == null || game.getGameStatus() != 1) {
-      return ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(), "游戏不存在");
+    if (!backend) {
+      if (game.getGameId() == null || game.getGameStatus() != 1) {
+        return ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(), "游戏不存在");
+      }
     }
     return ServerResponse.successWithData(game);
   }
@@ -112,11 +115,12 @@ public class GameServiceImpl implements GameService {
   public ServerResponse modifyGame(Game game) {
     Game gameForName = new Game();
     gameForName.setName(game.getName());
-    if (gameDao.selectOneByTemplate(gameForName).getGameId() != null) {
+    gameForName = gameDao.selectOneByTemplate(gameForName);
+    if (gameForName.getGameId() != null && !gameForName.getGameId().equals(game.getGameId())) {
       return ServerResponse.failWithMsg(ServerStatusCodeEnum.DUPLICATE_KEY.getCode(), "游戏名已存在");
     }
     game.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-    boolean succeed = gameDao.insert(game);
+    boolean succeed = gameDao.updateByTemplate(game);
     if (succeed) {
       return ServerResponse.success();
     }
@@ -124,15 +128,32 @@ public class GameServiceImpl implements GameService {
   }
 
   /**
-   * 分页查询所有游戏
+   * 分页查询游戏
    *
    * @param pageNum  页码
    * @param pageSize 分页大小
+   * @param gameName 游戏名称
+   * @param gameType 游戏分类
+   * @param recommendType 推荐类型
+   * @param platform 游戏平台
    * @return serverResponse
    */
   @Override
-  public ServerResponse<PageInfo<Game>> pageQueryAll(int pageNum, int pageSize) {
-    PageInfo<Game> pageInfo = gameDao.pageQueryByTemplate(pageNum, pageSize, null);
+  public ServerResponse<PageInfo<Game>> pageQueryGame(int pageNum, int pageSize, String gameName, int gameType, int recommendType, int platform) {
+    Game gameTemplate = new Game();
+    if (gameName != null && !gameName.equals("")) {
+      gameTemplate.setName(gameName);
+    }
+    if (gameType != 0) {
+      gameTemplate.setGameTypeId(gameType);
+    }
+    if (recommendType != 0) {
+      gameTemplate.setRecommendType(recommendType);
+    }
+    if (platform != 0) {
+      gameTemplate.setPlatform(platform);
+    }
+    PageInfo<Game> pageInfo = gameDao.pageQueryByTemplate(pageNum, pageSize, gameTemplate, "name");
     return ServerResponse.successWithData(pageInfo);
   }
 }
