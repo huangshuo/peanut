@@ -15,4 +15,5 @@ import com.peanut.entity.vo.PageInfo;
  */
 public interface ChannelService {
   ServerResponse<PageInfo<BackendChannelManage>> channelManage(int page, int pageSize);
+  ServerResponse<PageInfo<BackendChannelManage>> channelManage(int page, int pageSize,BackendChannelManage backendChannelManage);
 }

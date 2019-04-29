@@ -25,4 +25,11 @@ public class ChannelServiceImpl implements ChannelService {
     PageInfo<BackendChannelManage> pageInfo=baseDao.pageQueryByTemplate(page,pageSize,null);
     return ServerResponse.successWithData(pageInfo);
   }
+
+  @Override
+  public ServerResponse<PageInfo<BackendChannelManage>> channelManage(int page, int pageSize, BackendChannelManage backendChannelManage) {
+    BaseDao<BackendChannelManage> baseDao=new BaseDaoImpl<>(BackendChannelManage.class);
+    PageInfo<BackendChannelManage> pageInfo=baseDao.pageQueryByTemplate(page,pageSize,backendChannelManage);
+    return ServerResponse.successWithData(pageInfo);
+  }
 }

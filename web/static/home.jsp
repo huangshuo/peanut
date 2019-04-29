@@ -109,7 +109,7 @@
           for(var j in data.data.pageData){
             if(data.data.pageData[j].fid===data.data.pageData[i].id&data.data.pageData[j].isShow==1){
               $(".menu"+i).append('<li>' +
-                '          <a href="###" id="'+data.data.pageData[j].jspName+'"><span class="'+data.data.pageData[i].icon+' am-margin-left-lg"></span> '+data.data.pageData[j].mname+' </a>' +
+                '          <a href="###" id="'+data.data.pageData[j].jspName+'"><span class="'+data.data.pageData[j].icon+' am-margin-left-lg"></span> '+data.data.pageData[j].mname+' </a>' +
                 '        </li>')
             }
           }

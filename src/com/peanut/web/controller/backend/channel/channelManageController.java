@@ -29,9 +29,30 @@ public class channelManageController extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     int page=Integer.parseInt(req.getParameter("page"));
     int pageSize=Integer.parseInt(req.getParameter("pageSize"));
-    ServerResponse<PageInfo<BackendChannelManage>> serverResponse=new ChannelServiceImpl().channelManage(page,pageSize);
+    String firstClass=req.getParameter("firstClass");
+    String secondClass=req.getParameter("secondClass");
+    String searchContent=req.getParameter("searchContent");
+    String action=req.getParameter("action");
     PrintWriter pw=resp.getWriter();
-    pw.write(JSON.toJSONString(serverResponse));
+    BackendChannelManage backendChannelManage=new BackendChannelManage();
+    if ("init".equals(action)) {
+      ServerResponse<PageInfo<BackendChannelManage>> serverResponse = new ChannelServiceImpl().channelManage(page, pageSize);
+      pw.write(JSON.toJSONString(serverResponse));
+    }else if("selectOne".equals(action)){
+      backendChannelManage.setFirstClass(firstClass);
+      ServerResponse<PageInfo<BackendChannelManage>> serverResponse = new ChannelServiceImpl().channelManage(page, pageSize,backendChannelManage);
+      pw.write(JSON.toJSONString(serverResponse));
+    }else if("selectTwo".equals(action)){
+      backendChannelManage.setFirstClass(firstClass);
+      backendChannelManage.setSecondClass(secondClass);
+      ServerResponse<PageInfo<BackendChannelManage>> serverResponse = new ChannelServiceImpl().channelManage(page, pageSize,backendChannelManage);
+      pw.write(JSON.toJSONString(serverResponse));
+    }else if("search".equals(action)){
+      System.out.println("search");
+      backendChannelManage.setChannelNum(searchContent);
+      ServerResponse<PageInfo<BackendChannelManage>> serverResponse = new ChannelServiceImpl().channelManage(page, pageSize,backendChannelManage);
+      pw.write(JSON.toJSONString(serverResponse));
+    }
     pw.flush();
     pw.close();
   }
