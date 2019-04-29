@@ -2,7 +2,10 @@ package com.peanut.web.service;
 
 import com.peanut.common.http.ServerResponse;
 import com.peanut.entity.pojo.BackendUser;
+import com.peanut.entity.pojo.MenuManage;
 import com.peanut.entity.vo.PageInfo;
+
+import java.util.List;
 
 /**
  * description: 后台权限管理Service接口.
@@ -65,4 +68,17 @@ public interface PermissionService {
    * @return serverResponse
    */
   ServerResponse<BackendUser> getUserInfoByUid(long uid);
+
+  /**
+   * 根据菜单id获取菜单信息
+   * @param id 菜单id
+   * @return serverResponse
+   */
+  ServerResponse<MenuManage> getMenuByMenuId(long id);
+
+  /**
+   * 获取所有菜单信息
+   * @return serverResponse
+   */
+  ServerResponse<List<MenuManage>> getMenuList();
 }

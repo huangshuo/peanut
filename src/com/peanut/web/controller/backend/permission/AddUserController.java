@@ -1,6 +1,7 @@
 package com.peanut.web.controller.backend.permission;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.peanut.common.Constant;
 import com.peanut.common.http.ServerResponse;
 import com.peanut.common.http.ServletUrl;
@@ -29,8 +30,9 @@ public class AddUserController extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     BackendUser backendUser = getBackUserFromParameter(req);
-    BackendUser backendUserForParentId = (BackendUser) req.getSession().getAttribute(Constant.SESSION_USER_KEY);
-    backendUser.setParentUid(backendUserForParentId.getUid());
+    JSONObject backendUserForParentId = (JSONObject) JSON.parse(req.getSession().getAttribute(Constant.SESSION_USER_KEY).toString());
+    backendUser.setParentUid(backendUserForParentId.getLong("uid"));
+    backendUser.setPassword(Md5Util.encrypt(req.getParameter("password")));
     ServerResponse serverResponse = new PermissionServiceImpl().addUser(backendUser);
     PrintWriter printWriter = resp.getWriter();
     printWriter.println(JSON.toJSONString(serverResponse));
@@ -41,7 +43,6 @@ public class AddUserController extends HttpServlet {
   static BackendUser getBackUserFromParameter(HttpServletRequest req) {
     BackendUser backendUser = new BackendUser();
     backendUser.setUsername(req.getParameter("username"));
-    backendUser.setPassword(Md5Util.encrypt(req.getParameter("password")));
     backendUser.setRole(Integer.parseInt(req.getParameter("role")));
     backendUser.setStatus(Integer.parseInt(req.getParameter("status")));
     backendUser.setRemark(req.getParameter("remark"));

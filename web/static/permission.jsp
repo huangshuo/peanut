@@ -15,12 +15,14 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css"/>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css"/>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.chosen.css"/>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/zTreeStyle.css"/>
   <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js"></script>
   <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js"></script>
   <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js"></script>
   <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/handlebars.min.js"></script>
   <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.widgets.helper.min.js"></script>
   <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.chosen.min.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.ztree.all.min.js"></script>
   <script type="text/javascript">
     // 加载表格
     function loadUserList(pageInfo, $tbody, $userPagination) {
@@ -145,7 +147,7 @@
       });
       return pageInfo;
     }
-    // 获取用户信息
+    // 根据用户id获取用户信息
     function getUserInfo(uid) {
       var userInfo = null;
       $.ajax({
@@ -164,6 +166,71 @@
       });
       return userInfo;
     }
+    // 根据菜单id获取菜单信息
+    function getMenuInfo(id) {
+      var menuInfo = null;
+      $.ajax({
+        url: '${pageContext.request.contextPath}/backend/user/permission',
+        type: 'POST',
+        data: {
+          "id": id
+        },
+        dataType: 'json',
+        async: false,
+        success: function (serverResponse) {
+          if (serverResponse.code === 200) {
+            menuInfo = serverResponse.data;
+          }
+        }
+      });
+      return menuInfo;
+    }
+    // 获取所有菜单信息
+    function getMenuList() {
+      var menuList = null;
+      $.ajax({
+        url: '${pageContext.request.contextPath}/backend/user/menu/list',
+        type: 'GET',
+        async: false,
+        success: function (serverResponse) {
+          if (serverResponse.code === 200) {
+            menuList = serverResponse.data;
+          }
+        }
+      });
+      return menuList;
+    }
+    // 加载权限树状菜单
+    function loadPermissionTree() {
+      var setting = {
+        check: {
+          enable: true,
+          chkboxType:  {'Y': 'ps', 'N' : 'ps'}
+        },
+        data: {
+          simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "pId",
+            rootPid: 0
+          }
+        }
+      };
+      var permissionNodes = [];
+      var menus = getMenuList();
+      for (var i in menus) {
+        var menuInfo = menus[i];
+        var permission = {
+          id: menuInfo.id,
+          pId: menuInfo.fid,
+          name: menuInfo.mname,
+          open: true,
+          checked: false
+        };
+        permissionNodes.push(permission);
+      }
+      $.fn.zTree.init($('#permission'), setting, permissionNodes);
+    }
     // 操作信息提示
     function showOperationMsg(msg) {
       var operationMsgModal = $('#operationMsgModal');
@@ -179,10 +246,14 @@
       var $searchUserButton = $('#searchUserButton');
       var $addUserButton = $('#addUserButton');
       var $pageSize = $('#pageSize');
+      var $modifyUserForm = $('#modifyUserForm');
+      var checkedPermission = "";
       var pageNum = 1;
       var pageSize = $pageSize.val();
       var pageInfo = pageQueryUser(pageNum, pageSize);
       loadUserList(pageInfo, $tbody, $userPagination);
+      loadPermissionTree(checkedPermission);
+      var permissionTree = $.fn.zTree.getZTreeObj("permission");
 
       // 修改页面大小
       $pageSize.on('change', function () {
@@ -219,12 +290,22 @@
       // 添加按钮
       $addUserButton.on('click', function () {
         $('#modifyUserModalTitle').html('添加');
+        $modifyUserForm[0].reset();
+        permissionTree.checkAllNodes(false);
         $modifyUserModal.modal();
       });
       // 确认编辑/添加
       $modifyUserModal.find('[data-am-modal-confirm]').off('click.confirm.modal.amui').on('click', function () {
-        var $modifyUserForm = $('#modifyUserForm');
         var modifyUserFormData = $modifyUserForm.serialize();
+        // 获取已勾选的节点
+        var permissions = permissionTree.getCheckedNodes(true);
+        var permissionStr = "";
+        for (var index in permissions) {
+          permissionStr += permissions[index].id + ',';
+        }
+        // 去掉最后一个,
+        permissionStr = permissionStr.substring(0, permissionStr.length - 1);
+        modifyUserFormData += '&permission=' + permissionStr;
         if ($('#modifyUserModalTitle').html() === '添加') {
           $.ajax({
             url: '${pageContext.request.contextPath}/backend/user/add',
@@ -238,7 +319,6 @@
             }
           });
         } else {
-          $modifyUserForm.reset();
           $.ajax({
             url: '${pageContext.request.contextPath}/backend/user/modify',
             type: 'POST',
@@ -286,10 +366,10 @@
       // 编辑
       //todo
       $tbody.on('click', 'button.am-btn-primary', function () {
-        var userId = $(this).prop('name');
-        var user = getUserInfo(userId);
+        var uid = $(this).prop('name');
+        var user = getUserInfo(uid);
         $('#modifyUserModalTitle').html('编辑 ' + user.username);
-        $('#userId').val(user.uid);
+        $('#uid').val(user.uid);
         $('#username').val(user.username);
         $('#status').val(user.status);
         $('#role').val(user.role);
@@ -374,7 +454,7 @@
     }
     .userBody {
       margin-top: 1%;
-      height: 93%;
+      height: 91%;
     }
     .userHeader .am-selected-btn {
       width: 60%;
@@ -471,7 +551,7 @@
     <div class="am-modal-hd" id="modifyUserModalTitle"></div>
     <div class="am-modal-bd">
       <form class="am-form am-form-horizontal" id="modifyUserForm">
-        <input type="hidden" name="userId" id="userId">
+        <input type="hidden" name="uid" id="uid">
         <div class="am-form-group">
           <label for="username" class="am-u-md-3">用户名:</label>
           <div class="am-u-md-9">
@@ -495,6 +575,12 @@
               <option value="1">可用</option>
               <option value="2">无效</option>
             </select>
+          </div>
+        </div>
+        <div class="am-form-group">
+          <label for="role" class="am-u-md-3">权限:</label>
+          <div class="am-u-md-9">
+            <ul id="permission" class="ztree"></ul>
           </div>
         </div>
       </form>

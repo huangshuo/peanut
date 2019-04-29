@@ -33,6 +33,7 @@
       var isLastPage = pageInfo.lastPage;
       // 填充表格
       for (var index in pageData) {
+        var number = parseInt(index) + 1;
         var game = pageData[index];
         var platform;
         var gameStatus;
@@ -89,14 +90,15 @@
           recommendType = '未知';
         }
         $tbody.append($('<tr>' +
+          '<td class="table-ssm am-vertical-align"><span class="am-vertical-align-middle">' + number + '</span></td>' +
           '<td class="table-lg am-vertical-align"><span class="am-vertical-align-middle">' + game.name + '</span></td>' +
           '<td class="table-lg am-vertical-align"><span class="am-vertical-align-middle">' + game.title + '</span></td>' +
-          '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + game.downloadCount + '</span></td>' +
-          '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + game.gameSize + '</span></td>' +
+          '<td class="table-sm am-vertical-align"><span class="am-vertical-align-middle">' + game.downloadCount + '</span></td>' +
+          '<td class="table-sm am-vertical-align"><span class="am-vertical-align-middle">' + game.gameSize + '</span></td>' +
           '<td class="table-sm am-vertical-align">' + gameStatus + '</td>' +
           '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + gameType + '</span></td>' +
           '<td class="table-sm am-vertical-align">' + platform + '</td>' +
-          '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + recommendType + '</span></td>' +
+          '<td class="table-sm am-vertical-align"><span class="am-vertical-align-middle">' + recommendType + '</span></td>' +
           '<td class="table-lg">' +
           '<div class="am-btn-group">' +
           '<button type="button" class="am-btn am-btn-primary" name="' + game.gameId + '">' +
@@ -260,6 +262,7 @@
       });
       // 添加按钮
       $addGameButton.on('click', function () {
+        $('#modifyGameForm')[0].reset();
         $('#modifyGameModalTitle').html('添加');
         $modifyGameModal.modal();
       });
@@ -280,7 +283,6 @@
             }
           });
         } else {
-          $modifyGameForm.reset();
           $.ajax({
             url: '${pageContext.request.contextPath}/backend/game/modify',
             type: 'POST',
@@ -329,6 +331,7 @@
       $tbody.on('click', 'button.am-btn-primary', function () {
         var gameId = $(this).prop('name');
         var game = getGameInfo(gameId);
+        $('#modifyGameForm')[0].reset();
         $('#modifyGameModalTitle').html('编辑 ' + game.name);
         $('#gameId').val(game.gameId);
         $('#gameName').val(game.name);
@@ -400,7 +403,7 @@
   </script>
   <style>
     body {
-      overflow: auto;
+      overflow-y: auto;
     }
     #tbody td {
       height: 30px;
@@ -408,6 +411,9 @@
 
     .table-sm {
       width: 8%;
+    }
+    .table-ssm {
+      width: 4%;
     }
 
     .table-md {
@@ -421,12 +427,14 @@
       height: 70px;
     }
     .gameHeader {
+      border: solid 1px white;
       height: 5%;
       margin-top: 1%;
     }
     .gameBody {
+      border: solid 1px white;
       margin-top: 1%;
-      height: 93%;
+      height: 91%;
     }
     .gameHeader .am-selected-btn {
       width: 60%;
@@ -498,13 +506,14 @@
   <table
       class="am-table am-table-bordered am-table-centered am-table-radius am-table-striped am-table-hover .am-text-nowrap">
     <tr class="am-primary">
+      <th class="table-ssm">序号</th>
       <th class="table-lg">名称</th>
       <th class="table-md">标题</th>
-      <th class="table-md">下载量</th>
+      <th class="table-sm">下载量</th>
       <th class="table-sm">大小(M)</th>
       <th class="table-sm">状态</th>
       <th class="table-md">分类</th>
-      <th class="table-sm">平台</th>
+      <th class="table-ssm">平台</th>
       <th class="table-sm">推荐类型</th>
       <th class="table-lg">操作</th>
     </tr>
@@ -540,60 +549,60 @@
     <div class="am-modal-bd">
       <form class="am-form am-form-horizontal" id="modifyGameForm">
         <input type="hidden" name="gameId" id="gameId">
-        <div class="am-form-group am-g">
-          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
-            <span class="am-input-group-label">游戏名称</span>
+        <div class="am-form-group">
+          <label for="gameName" class="am-u-md-3">游戏名称:</label>
+          <div class="am-u-md-9">
             <input type="text" id="gameName" name="gameName" placeholder="游戏名称" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group am-g">
-          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
-            <span class="am-input-group-label">游戏标题</span>
+        <div class="am-form-group">
+          <label for="gameTitle" class="am-u-md-3">游戏标题:</label>
+          <div class="am-u-md-9">
             <input type="text" id="gameTitle" name="gameTitle" placeholder="游戏标题" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group am-g">
-          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
-            <span class="am-input-group-label">游戏大小</span>
-            <input type="text" id="gameSize" name="gameSize" placeholder="游戏大小(单位 M)" class="am-form-field" required/>
+        <div class="am-form-group">
+          <label for="gameSize" class="am-u-md-3">游戏大小:</label>
+          <div class="am-u-md-9"><input type="text" id="gameSize" name="gameSize" placeholder="游戏大小(单位: Mb)"
+                                        class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group am-g">
-          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
-            <span class="am-input-group-label">游戏图标</span>
+        <div class="am-form-group">
+          <label for="gameIcon" class="am-u-md-3">游戏图标:</label>
+          <div class="am-u-md-9">
             <input type="text" id="gameIcon" name="gameIcon" placeholder="游戏图标" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group am-g">
-          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
-            <span class="am-input-group-label">游戏图片</span>
+        <div class="am-form-group">
+          <label for="gamePictures" class="am-u-md-3">详情图片:</label>
+          <div class="am-u-md-9">
             <input type="text" id="gamePictures" name="gamePictures" placeholder="游戏详情图片" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group am-g">
-          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
-            <span class="am-input-group-label">下载地址</span>
-            <input type="text" id="iosUrl" name="iosUrl" placeholder="iOS下载地址" class="am-form-field" required/>
+        <div class="am-form-group">
+          <label for="iosUrl" class="am-u-md-3">ios:</label>
+          <div class="am-u-md-9">
+            <input type="text" id="iosUrl" name="iosUrl" placeholder="ios下载地址" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group am-g">
-          <div class="am-input-group am-input-group-primary am-u-md-10 am-u-md-offset-1">
-            <span class="am-input-group-label">下载地址</span>
-            <input type="text" id="androidUrl" name="androidUrl" placeholder="Android下载地址" class="am-form-field" required/>
+        <div class="am-form-group">
+          <label for="androidUrl" class="am-u-md-3">android:</label>
+          <div class="am-u-md-9">
+            <input type="text" id="androidUrl" name="androidUrl" placeholder="android下载地址" class="am-form-field" required/>
           </div>
         </div>
-        <div class="am-form-group am-g">
-          <div class="am-input-group am-input-group-primary am-u-md-6 am-u-md-offset-1">
-            <span class="am-input-group-label">推荐类型</span>
-            <select id="recommendType" name="recommendType" data-placeholder="推荐类型" data-am-selected>
+        <div class="am-form-group">
+          <label for="recommendType" class="am-u-md-3">推荐类型:</label>
+          <div class="am-u-md-4">
+            <select id="recommendType" name="recommendType" data-placeholder="推荐类型" class="chosen-select-width">
               <option value="1">普通</option>
               <option value="2">最新</option>
               <option value="3">推荐</option>
             </select>
           </div>
-          <div class="am-input-group am-input-group-primary am-u-md-3 am-u-md-offset-1">
-            <span class="am-input-group-label">状态</span>
-            <select id="gameStatus" name="gameStatus" data-placeholder="游戏状态" data-am-selected>
+          <label for="gameStatus" class="am-u-md-2">状态:</label>
+          <div class="am-u-md-3">
+            <select id="gameStatus" name="gameStatus" data-placeholder="游戏状态" class="chosen-select-width">
               <option value="1">启用</option>
               <option value="2">下线</option>
             </select>

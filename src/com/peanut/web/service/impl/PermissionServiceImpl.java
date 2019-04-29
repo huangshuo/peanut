@@ -7,10 +7,12 @@ import com.peanut.common.util.UidUtil;
 import com.peanut.dao.BaseDao;
 import com.peanut.dao.impl.BaseDaoImpl;
 import com.peanut.entity.pojo.BackendUser;
+import com.peanut.entity.pojo.MenuManage;
 import com.peanut.entity.vo.PageInfo;
 import com.peanut.web.service.PermissionService;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * description: 后台权限管理Service接口实现类.
@@ -23,6 +25,7 @@ import java.sql.Timestamp;
 public class PermissionServiceImpl implements PermissionService {
 
   private static BaseDao<BackendUser> backendUserDao = new BaseDaoImpl<>(BackendUser.class);
+  private static BaseDao<MenuManage> menuManageDao = new BaseDaoImpl<>(MenuManage.class);
 
   /**
    * 登录
@@ -110,7 +113,8 @@ public class PermissionServiceImpl implements PermissionService {
     // 用户名是否已存在
     BackendUser backendUserForUsername = new BackendUser();
     backendUserForUsername.setUsername(backendUser.getUsername());
-    if (backendUserDao.selectOneByTemplate(backendUserForUsername).getUid() != null) {
+    backendUserForUsername = backendUserDao.selectOneByTemplate(backendUserForUsername);
+    if (backendUserForUsername.getUid() != null && !backendUserForUsername.getUid().equals(backendUser.getUid())) {
       return ServerResponse.failWithMsg(ServerStatusCodeEnum.DUPLICATE_KEY.getCode(), "用户名已存在");
     }
     // 更新时间
@@ -149,5 +153,28 @@ public class PermissionServiceImpl implements PermissionService {
   public ServerResponse<BackendUser> getUserInfoByUid(long uid) {
     BackendUser backendUser = backendUserDao.selectOneByPrimaryKey(uid);
     return ServerResponse.successWithData(backendUser);
+  }
+
+  /**
+   * 根据菜单id获取菜单信息
+   *
+   * @param id 菜单id
+   * @return serverResponse
+   */
+  @Override
+  public ServerResponse<MenuManage> getMenuByMenuId(long id) {
+    MenuManage menuManage = menuManageDao.selectOneByPrimaryKey(id);
+    return ServerResponse.successWithData(menuManage);
+  }
+
+  /**
+   * 获取所有菜单信息
+   *
+   * @return serverResponse
+   */
+  @Override
+  public ServerResponse<List<MenuManage>> getMenuList() {
+    List<MenuManage> menuManageList = menuManageDao.selectListByTemplate(null);
+    return ServerResponse.successWithData(menuManageList);
   }
 }

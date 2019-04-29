@@ -1,6 +1,9 @@
 package com.peanut.web.config.filter;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.peanut.common.Constant;
+import com.peanut.common.http.ServletUrl;
 import com.peanut.entity.pojo.BackendUser;
 
 import javax.servlet.*;
@@ -39,14 +42,11 @@ public class LoginFilter implements Filter {
     }
     if (isExcluded) {
       filterChain.doFilter(request, response);
+    } else if (request.getSession().getAttribute(Constant.SESSION_USER_KEY) == null) {
+      // session中无用户信息, 需要重新登录
+      response.sendRedirect("login.jsp");
     } else {
-      BackendUser backendUser = (BackendUser) request.getSession().getAttribute(Constant.SESSION_USER_KEY);
-      if (backendUser.getUid() == null) {
-        // session中无用户信息, 需要重新登录
-        response.sendRedirect(request.getContextPath());
-      } else {
-        filterChain.doFilter(request, response);
-      }
+      filterChain.doFilter(request, response);
     }
   }
 
