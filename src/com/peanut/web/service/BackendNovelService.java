@@ -26,13 +26,6 @@ public interface BackendNovelService {
 	ServerResponse<BackendNovel> updateNovelInfoByTemplate(BackendNovel bean);
 
 	/**
-	 * 通过小说ID查询小说基本信息
-	 * @param key 小说ID
-	 * @return serverResponse
-	 */
-	ServerResponse<BackendNovel> selectNovelInfoById(Long key);
-
-	/**
 	 * 通过小说信息模板查询小说基本信息
 	 * @param pageNum 当前页数
 	 * @param pageSize 行数
@@ -47,12 +40,7 @@ public interface BackendNovelService {
 	 * @return serverResponse
 	 */
 	ServerResponse<BackendNovelTypePrimary> selectPrimaryTypeById(Long key);
-	/**
-	 * 通过二级分类ID 来查找一级分类信息
-	 * @param key 二级分类ID
-	 * @return serverResponse
-	 */
-	ServerResponse<BackendNovelTypePrimary> selectPrimaryTypeBySonTypeId(Long key);
+	
 	/**
 	 * 查找所有一级分类信息
 	 * @return serverResponse
