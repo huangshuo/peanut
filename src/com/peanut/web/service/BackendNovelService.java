@@ -2,7 +2,11 @@ package com.peanut.web.service;
 
 import com.peanut.common.http.ServerResponse;
 import com.peanut.entity.pojo.BackendNovel;
+import com.peanut.entity.pojo.BackendNovelTypePrimary;
+import com.peanut.entity.pojo.BackendNovelTypeSecondary;
 import com.peanut.entity.vo.PageInfo;
+
+import java.util.List;
 
 /**
  * description: 后台Novel Service接口类.
@@ -37,4 +41,35 @@ public interface BackendNovelService {
 	 */
 	ServerResponse<PageInfo<BackendNovel>> selectNovelInfoByTemplate(int pageNum, int pageSize,BackendNovel bean);
 
+	/**
+	 * 通过一级分类ID 来查找一级分类信息
+	 * @param key 一级分类ID
+	 * @return serverResponse
+	 */
+	ServerResponse<BackendNovelTypePrimary> selectPrimaryTypeById(Long key);
+	/**
+	 * 通过二级分类ID 来查找一级分类信息
+	 * @param key 二级分类ID
+	 * @return serverResponse
+	 */
+	ServerResponse<BackendNovelTypePrimary> selectPrimaryTypeBySonTypeId(Long key);
+	/**
+	 * 查找所有一级分类信息
+	 * @return serverResponse
+	 */
+	ServerResponse<List<BackendNovelTypePrimary>> selectAllPrimaryType();
+
+	/**
+	 * 通过二级目录ID查找二级目录
+	 * @param key 二级目录ID
+	 * @return serverResponse
+	 */
+	ServerResponse<BackendNovelTypeSecondary> selectSecondaryTypeById(Long key);
+
+	/**
+	 * 通过一级目录ID查找二级目录
+	 * @param key 一级目录ID
+	 * @return serverResponse
+	 */
+	ServerResponse<List<BackendNovelTypeSecondary>> selectSecondaryTypeByFatherId(Long key);
 }

@@ -4,10 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.peanut.common.http.ServletUrl;
 import com.peanut.entity.pojo.BackendNovelTypePrimary;
 import com.peanut.entity.pojo.BackendNovelTypeSecondary;
-import com.peanut.web.service.BackedNovelTypePrimaryService;
-import com.peanut.web.service.BackendNovelTypeSecondaryService;
-import com.peanut.web.service.impl.BackedNovelTypePrimaryServiceImpl;
-import com.peanut.web.service.impl.BackendNovelTypeSecondaryServiceImpl;
+import com.peanut.web.service.BackendNovelService;
+import com.peanut.web.service.impl.BackendNovelServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,13 +33,12 @@ public class SelectNovelTypeController extends HttpServlet {
 		String temp = req.getParameter("novelTypeIdSecondary");
 		Long novelTypeIdSecondary = Long.parseLong(req.getParameter("novelTypeIdSecondary"));
 		resultMap.put("novelTypeIdSecondary", novelTypeIdSecondary.toString());
-		BackendNovelTypeSecondaryService secondaryService = new BackendNovelTypeSecondaryServiceImpl();
-		BackendNovelTypeSecondary backendNovelTypeSecondary = secondaryService.selectSecondaryTypeById(novelTypeIdSecondary).getData();
+		BackendNovelService service = new BackendNovelServiceImpl();
+		BackendNovelTypeSecondary backendNovelTypeSecondary = service.selectSecondaryTypeById(novelTypeIdSecondary).getData();
 		resultMap.put("novelTypeNameSecondary", backendNovelTypeSecondary.getTypeName());
 
-		BackedNovelTypePrimaryService primaryService = new BackedNovelTypePrimaryServiceImpl();
 		Long novelTypeIdPrimary = backendNovelTypeSecondary.getFatherTypeId();
-		BackendNovelTypePrimary backendNovelTypePrimary = primaryService.selectPrimaryTypeById(novelTypeIdPrimary).getData();
+		BackendNovelTypePrimary backendNovelTypePrimary = service.selectPrimaryTypeById(novelTypeIdPrimary).getData();
 		resultMap.put("novelTypeIdPrimary", novelTypeIdPrimary.toString());
 		resultMap.put("novelTypeNamePrimary", backendNovelTypePrimary.getTypeName());
 		PrintWriter writer = resp.getWriter();
