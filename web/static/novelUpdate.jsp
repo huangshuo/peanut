@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<div id="hollyEntireFuckingPage">
 <title>小说信息修改页面</title>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>--%>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>--%>
@@ -67,7 +68,7 @@
         inputs.on("blur", function () {
             var tempText = $(this).attr("placeholder");
             if(checkEmpty(this)){
-                $(this).prop("placeholder", "请输入要更改的内容！");
+                $(this).prop("placeholder", "Am I a joke to you?");
                 $(this).css("backgroundColor", "pink");
             }else
             {
@@ -98,6 +99,17 @@
                             bottomButton.html("更新失败");
                             bottomButton.css("color", "#8B436A");
                         }
+                        window.setTimeout(function () {
+                            $.ajax({
+                                url: "/peanut/static/novel.jsp",
+                                type: "GET",
+                                dataType: "html",
+                                success: function (data) {
+                                    $("#hollyEntireFuckingPage").html(data);
+                                }
+                            });
+                        }, 2000);
+
                     }
                 })
             }
@@ -220,4 +232,5 @@
             <div class="am-u-md-3">&nbsp;</div>
         </div>
     </form>
+</div>
 </div>
