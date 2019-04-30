@@ -41,6 +41,7 @@ public final class ServletUrl {
     String MENU_DELETE = "/menu/delete";
     String CHANNEL_MANAGE = "/channel/manage";
     String CHANNEL_DELETE = "/channel/delete";
+    String USER_SESSION = "/backend/user/session";
   }
 
   /**

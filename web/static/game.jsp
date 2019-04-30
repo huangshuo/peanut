@@ -204,6 +204,7 @@
     var $searchGameButton = $('#searchGameButton');
     var $addGameButton = $('#addGameButton');
     var $pageSize = $('#pageSize');
+    var $modifyGameForm = $('#modifyGameForm');
     var pageNum = 1;
     var pageSize = $pageSize.val();
 
@@ -244,7 +245,7 @@
     });
     // 添加按钮
     $addGameButton.on('click', function () {
-      $('#modifyGameForm')[0].reset();
+      $modifyGameForm[0].reset();
       $('#modifyGameModalTitle').html('添加');
       $modifyGameModal.modal();
     });
@@ -313,7 +314,7 @@
     $tbody.on('click', 'button.am-btn-primary', function () {
       var gameId = $(this).prop('name');
       var game = getGameInfo(gameId);
-      $('#modifyGameForm')[0].reset();
+      $modifyGameForm[0].reset();
       $('#modifyGameModalTitle').html('编辑 ' + game.name);
       $('#gameId').val(game.gameId);
       $('#gameName').val(game.name);
