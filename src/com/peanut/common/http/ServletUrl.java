@@ -34,6 +34,13 @@ public final class ServletUrl {
     String SELECT_NOVEL_TYPE = "/backend/novel/select/type";
     String SELECT_NOVEL_TYPE_ALL = "/backend/novel/select/type/all";
     String CHANNEL_CLASS_MANAGE = "/backend/channel/class/manage";
+    String CHANNEL_INSERT = "/channel/insert";
+    String MENU_MANAGE = "/menu/manage";
+    String MENU_UPDATE = "/menu/update";
+    String MENU_INSERT = "/menu/insert";
+    String MENU_DELETE = "/menu/delete";
+    String CHANNEL_MANAGE = "/channel/manage";
+    String CHANNEL_DELETE = "/channel/delete";
   }
 
   /**
@@ -59,13 +66,6 @@ public final class ServletUrl {
     String VIDEO_PAGE = "/video/page";
     String VIDEO_FIRST_LIST = "/video/list/first";
     String VIDEO_SECOND_LIST = "/video/list/second";
-    String MENU_MANAGE = "/menu/manage";
-    String MENU_UPDATE = "/menu/update";
-    String MENU_INSERT = "/menu/insert";
-    String MENU_DELETE = "/menu/delete";
-    String CHANNEL_MANAGE = "/channel/manage";
-    String CHANNEL_INSERT = "/channel/insert";
-    String CHANNEL_DELETE = "/channel/delete";
 
   }
 }

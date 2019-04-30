@@ -21,4 +21,13 @@ public class Constant {
    * 默认日期序列化格式
    */
   public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+  /**
+   * 字数统计汉字匹配模式
+   */
+  public static final String WORD_COUNT_PATTERN_CHINESE_CHARACTER = "([\u4e00-\u9fa5])";
+  /**
+   * 字数统计结果的key
+   */
+  public static final String WORD_COUNT_MAP_CHARACTER_KEY = "word_count_character_key";
+
 }

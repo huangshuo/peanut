@@ -39,12 +39,4 @@ public class BackendNovelTypeSecondary {
 		this.fatherTypeId = fatherTypeId;
 	}
 
-	@Override
-	public String toString() {
-		return "BackendNovelTypeSecondary{" +
-				"typeId=" + typeId +
-				", typeName='" + typeName + '\'' +
-				", fatherTypeId=" + fatherTypeId +
-				'}';
-	}
 }

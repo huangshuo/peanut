@@ -19,7 +19,7 @@ import java.io.IOException;
  * @see com.peanut.web.controller.backend.menu
  * @since 1.0
  */
-@WebServlet(urlPatterns = ServletUrl.Portal.MENU_UPDATE)
+@WebServlet(urlPatterns = ServletUrl.Backend.MENU_UPDATE)
 public class MenuUpdateController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
