@@ -11,17 +11,14 @@
   $(function () {
     var page=1;
     var pageSize=$(".pageSizeNum").val();
-    changePageBtn("init",page,pageSize);
-    pageData("init",page,pageSize);
+    changePageBtn("select",page,pageSize);
+    pageData("select",page,pageSize);
     addMenu(page,pageSize);
-    select(page,pageSize);//生成一、二级下拉菜单数据
-    search();
-    //???????????显示数据条数
     $(".pageSizeNum").on("change",function () {
-      pageData("init",page,$(".pageSizeNum").val());
+      pageData("select",page,$(".pageSizeNum").val());
     })
   });
-  //頁面固定換頁按鈕Ok
+  //頁面固定換頁按鈕
   function changePageBtn(action,page,pageSize) {
     $("#first").on("click",function () {
       var currentPage=1;
@@ -49,23 +46,20 @@
     });
   }
   //生成页面数据
-  function pageData(action,page,pageSize,firstClass,secondClass,searchContent) {
+  function pageData(action,page,pageSize) {
     $.ajax({
-      url:"${pageContext.request.contextPath}/channel/manage",
+      url:"${pageContext.request.contextPath}/backend/channel/class/manage",
       type:"get",
-      data:{"action":action,"page":page,"pageSize":pageSize,"firstClass":firstClass,"secondClass":secondClass,"searchContent":searchContent},
+      data:{"action":action,"page":page,"pageSize":pageSize},
       dataType:"json",
       success:function (data) {
         $(".content").html("");
         $.each(data.data.pageData,function (i,d) {
           $(".content").append('<tr class="am-animation-scale-up">' +
             '      <td style="display: none">'+d.id+'</td>' +
-            '      <td id="firstClass'+i+'">'+dataType(d.firstClass)+'</td>' +
-            '      <td>'+dataType(d.secondClass)+'</td>' +
-            '      <td>'+dataType(d.channelNum)+'</td>' +
-            '      <td>'+dataType(d.channelDownloadLink)+'</td>' +
-            '      <td>'+dataType(d.productName)+'</td>' +
-            '      <td>'+dataType(d.showName)+'</td>' +
+            '      <td id="firstClass'+i+'">'+dataType(d.className)+'</td>' +
+            '      <td>'+dataType(d.fname)+'</td>' +
+            '      <td>'+dataType(d.labelOrder)+'</td>' +
             '      <td>'+dateFormat(d.createDate)+'</td>' +
             '      <td> ' +
             '         <button type="button" class="am-btn am-btn-danger am-radius deleteBtn" name="'+d.id+'">删除</button>' +
@@ -80,126 +74,57 @@
         }
         //绑定事件
         $("li[id*='page']").on("click",function () {
-          pageData(action,$(this).children().html(),pageSize,firstClass,secondClass,searchContent);
+          pageData(action,$(this).children().html(),pageSize);
         });
         //在页面暂存totalPage、currentPage
         $("#totalPage").val(data.data.totalPage);
         $("#currentPage").val(data.data.pageNum);
         $("#currentPage-totalPage").html( data.data.pageNum+"/"+data.data.totalPage+"页");
-        deleteChannel(page,pageSize);
+        deleteChannel("delete",page,pageSize);
       }
     });
   }
-  //搜素功能
-  function search() {
-    $("#search").on("click",function () {
-      var action="search";
-      if ($("#searchContent").val()==""){
-        pageData("init",1,$(".pageSizeNum").val(),null,null,$("#searchContent").val());
-      } else{
-        pageData(action,1,$(".pageSizeNum").val(),null,null,$("#searchContent").val());
-      }
-
-    });
-    $("#searchContent").on("keyup",function (event) {
-      if(event.keyCode==13){
-        var action="search";
-        if ($("#searchContent").val()==""){
-          pageData("init",1,$(".pageSizeNum").val(),null,null,$("#searchContent").val());
-        } else{
-          pageData(action,1,$(".pageSizeNum").val(),null,null,$("#searchContent").val());
-        }
-      }
-    })
-  }
-  //一、二级下拉菜单功能
-  function select(page,pageSize) {
-    $.ajax({
-      url:"${pageContext.request.contextPath}/channel/manage",
-      type:"get",
-      data:{"action":"selectOne","page":1,"pageSize":1000},
-      dataType:"json",
-      success:function (data) {
-        $("#selectOne").append('<option>选择全部</option>');
-        $.each(data.data.pageData,function (i,d) {
-          $("#selectOne").append('<option>'+d.firstClass+'</option>')
-        })
-      }
-    });
-    $("#selectOne").on("change",function () {
-      $("#searchContent").val("");
-      var firstClass=$(this).val()==="选择全部"?null:$(this).val();
-      pageData("selectOne",page,pageSize,firstClass,null,null);
-      $.ajax({
-        url:"${pageContext.request.contextPath}/channel/manage",
-        type:"get",
-        data:{"action":"selectTwo","page":1,"pageSize":1000,"firstClass":$(this).val()},
-        dataType:"json",
-        success:function (data) {
-          $("#selectTwo").html('<option>选择全部</option>');
-          $.each(data.data.pageData,function (i,d) {
-            $("#selectTwo").append('<option>'+d.secondClass+'</option>')
-          })
-        }
-      })
-    });
-    $("#selectTwo").on("change",function () {
-      $("#searchContent").val("");
-      var secondClass=$(this).val()==="选择全部"?null:$(this).val();
-      pageData("selectTwo",page,pageSize,$("#selectOne").val(),secondClass,null);
-    })
-  }
-  //添加新渠道
+  //添加新渠道分类
   function  addMenu(page,pageSize){
     $('#addChannel').on('click', function() {
       $('#my-prompt').modal({
         relatedTarget: this,
         onConfirm: function(e) {
-          var channelData=[
-            $("#first_class").val(),
-            $("#second_class").val(),
-            $("#channel_num").val(),
-            $("#channel_download_link").val(),
-            $("#product_name").val(),
-            $("#show_name").val()
-          ];
           //确认：向数据库发送请求
           $.ajax({
-            url:"${pageContext.request.contextPath}/channel/insert",
+            url:"${pageContext.request.contextPath}/backend/channel/class/manage",
             type:"get",
-            data:{
-              "first_class":channelData[0],
-              "second_class":channelData[1],
-              "channel_num": channelData[2],
-              "channel_download_link": channelData[3],
-              "product_name": channelData[4],
-              "show_name":channelData[5]
+            data:{"action":"insert",
+              "className":e.data[1],
+              "fname":e.data[2],
+              "labelOrder":e.data[3]
             },
             dataType:"text",
             success:function(data){
-              pageData("init",page,pageSize,null,null,null);
+              pageData("select",page,pageSize);
             }
           });
         }
       });
     })
   }
-  //删除渠道内容
-  function deleteChannel(page,pageSize) {
+  //删除渠道分类
+  function deleteChannel(action,page,pageSize) {
     $(".deleteBtn").on("click",function () {
       $('#my-confirm').modal({
         relatedTarget: this,
         onConfirm: function(options) {
           var id = $(this.relatedTarget).attr("name");
           $.ajax({
-            url:"${pageContext.request.contextPath}/channel/delete",
+            url:"${pageContext.request.contextPath}/backend/channel/class/manage",
             type:"get",
-            data:{"id":id},
+            data:{"action":action,"id":id},
             dataType:"text",
             success:function (data) {
-              pageData("init",page,pageSize,null,null,null);
+              console.log(123);
+              pageData("select",page,pageSize);
             }
-         })
+          })
         }
       })
     })
@@ -238,7 +163,7 @@
     }
     return data;
   }
-  </script>
+</script>
 <style>
   .border{
     margin: 20px;
@@ -256,7 +181,7 @@
     font-size: 25px;
   }
   .changeMenu{
-    height: 460px;
+    height: 350px;
     width: 700px;
   }
   .changeMenu input{
@@ -267,17 +192,12 @@
     float: right;
     margin: 0 100px 15px 0;
   }
-   select{
+  select{
     float: left;
     width: 180px;
     height: 38px;
     border-radius: 5px;
     margin-right: 20px;
-  }
-  .search{
-    float: left;
-    width: 300px;
-    margin-left: 20px;
   }
   .pageSizeNum{
     float: right;
@@ -287,35 +207,15 @@
   }
 </style>
 <div class="border" style="height: 600px;">
-  <%--下拉菜单1--%>
-  <select data-am-selected="{searchBox: 1}" id="selectOne">
-
-  </select>
-    <%--下拉菜单2--%>
-  <select data-am-selected="{searchBox: 1}" id="selectTwo">
-
-  </select>
-  <%--搜索框--%>
-  <div class="am-input-group am-input-group-default search">
-    <input type="text" class="am-form-field" placeholder="请输入渠道号" id="searchContent">
-    <span class="am-input-group-btn">
-        		<button class="am-btn am-btn-primary" type="button" id="search">
-        			<span class="am-icon-search"></span>
-        		</button>
-      		</span>
-  </div>
-  <%--渠道添加添加功能--%>
-  <button type="button" class="am-btn am-btn-primary  addChannel" id="addChannel" >添加渠道</button>
-  <%--渠道管理 表单--%>
+   <%--添加渠道分类功能--%>
+  <button type="button" class="am-btn am-btn-primary  addChannel" id="addChannel" >添加渠道分类</button>
+  <%--渠道分类 表单--%>
   <table class="am-table  am-table-centered am-table-hover am-table-striped">
     <thead>
     <tr class="am-primary">
-      <th>一级分类</th>
-      <th>二级分类</th>
-      <th>渠道号</th>
-      <th>渠道下载地址</th>
-      <th>产品名称</th>
-      <th>显示名称</th>
+      <th>分类名称</th>
+      <th>父级</th>
+      <th>标签排序</th>
       <th>创建时间</th>
       <th>操作</th>
     </tr>
@@ -344,21 +244,17 @@
 <%--添加渠道 模态框--%>
 <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt" >
   <div class="am-modal-dialog changeMenu">
-    <div class="am-modal-hd menuName" >添加菜单</div>
+    <div class="am-modal-hd menuName" >添加渠道分类</div>
     <div class="am-modal-bd">
       <input type="hidden" class="am-modal-prompt-input" id="id">
-
-      <label class="label">一级分类</label><input type="text" class="am-modal-prompt-input" id="first_class">
-      <label class="label">二级分类</label><input type="text" class="am-modal-prompt-input" id="second_class">
-      <label class="label">渠道号</label><input type="text" class="am-modal-prompt-input" id="channel_num">
-      <label class="label">渠道下载地址</label><input type="text" class="am-modal-prompt-input" id="channel_download_link">
-      <label class="label">产品名称</label><input type="text" class="am-modal-prompt-input" id="product_name">
-      <label class="label">显示名称</label><input type="text" class="am-modal-prompt-input" id="show_name">
-
+      <label class="label">分类名称</label><input type="text" class="am-modal-prompt-input" id="first_class">
+      <label class="label">父级</label><input type="text" class="am-modal-prompt-input" id="second_class">
+      <label class="label">标签排序</label><input type="text" class="am-modal-prompt-input" id="channel_num">
+      <label class="label">备注</label><input type="text" class="am-modal-prompt-input" id="channel_download_link">
     </div>
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>取消</span>
-      <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+      <span class="am-modal-btn" data-am-modal-confirm >提交</span>
     </div>
   </div>
 </div>
@@ -368,7 +264,6 @@
     <div class="am-modal-hd">花生娱乐</div>
     <div class="am-modal-bd">
       你，确定要删除这个渠道吗？
-
     </div>
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>取消</span>

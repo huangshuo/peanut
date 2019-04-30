@@ -21,7 +21,7 @@ import java.io.IOException;
  * @since 1.0
  */
 @WebServlet(urlPatterns = ServletUrl.Portal.CHANNEL_DELETE)
-public class channelDeleteController extends HttpServlet {
+public class ChannelDeleteController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     BaseDao<BackendChannelManage> baseDao=new BaseDaoImpl<>(BackendChannelManage.class);

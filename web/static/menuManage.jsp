@@ -92,13 +92,14 @@
       }
     })
   }
-  //更新菜单内容
+  //修改菜单内容
   function  modifyMenu(page){
     $("button[id*='menuId']").on('click', function() {
       $(".menuName").html("修改菜单");
       $.each(iconArr,function (i,d) {
         $("#iconList").append('<li><a href="#"><i class="'+d+' am-margin-left-sm" style="font-size: 30px"></i></a></li>');
       });
+      $("#id").val($(this).parent().parent().children().eq(0).html());
       $("#menuName").val($(this).parent().parent().children().eq(1).html());
       $("#fid").val($(this).parent().parent().children().eq(2).html());
       $("#currentIcon").html("");
@@ -106,15 +107,11 @@
       $('#my-prompt').modal({
         relatedTarget: this,
         onConfirm: function(e) {
-          var id = $(this.relatedTarget).parent().parent().children().eq(0).html();
-          var mName = $("#menuName").val();
-          var fid = $("#fid").val();
-          var isShow = $("input[name='isShow']:checked").val();
           //确认：向数据库发送请求
           $.ajax({
             url:"${pageContext.request.contextPath}/menu/update",
             type:"get",
-            data:{"id":id,"menuName":mName,"fid": fid,"isShow": isShow,"icon": $("#currentIcon").children("i:first").attr("class").split(" ")[0]},
+            data:{"id":e.data[0],"menuName":e.data[1],"fid": e.data[2],"isShow": $("input[name='isShow']:checked").val(),"icon": $("#currentIcon").children("i:first").attr("class").split(" ")[0]},
             dataType:"text",
             success:function(data){
               pageData($("#currentPage").val());
@@ -150,7 +147,7 @@
     })
   }
   //添加新菜单
-  function  addMenu(page){
+  function  addMenu(){
     $('#addMenu').on('click', function() {
       $(".menuName").html("添加菜单");
       $.each(iconArr,function (i,d) {
@@ -162,15 +159,19 @@
         relatedTarget: this,
         onConfirm: function(e) {
           //确认：向数据库发送请求
-          $.ajax({
-            url:"${pageContext.request.contextPath}/menu/insert",
-            type:"get",
-            data:{"menuName":$("#menuName").val(),"fid": $("#fid").val(),"isShow": isShow,"icon": $("#currentIcon").children("i:first").attr("class").split(" ")[0] },
-            dataType:"text",
-            success:function(data){
-              pageData($("#totalPage").val());
-            }
-          });
+          if(/^[0-9]*$/.test(e.data[2])){
+            $.ajax({
+              url:"${pageContext.request.contextPath}/menu/insert",
+              type:"get",
+              data:{"menuName":e.data[1],"fid": e.data[2],"isShow": isShow,"icon": $("#currentIcon").children("i:first").attr("class").split(" ")[0] },
+              dataType:"text",
+              success:function(data){
+                pageData($("#totalPage").val());
+              }
+            });
+          }else {
+            
+          }
         },
         onCancel: function() {
           $(".iconList").css("display","none");
@@ -1026,12 +1027,12 @@
   <div class="am-modal-dialog changeMenu">
     <div class="am-modal-hd menuName" >修改菜单</div>
     <div class="am-modal-bd">
-      <input type="hidden" class="am-modal-prompt-input" id="id">
+      <input type="hidden" class="am-modal-prompt-input" id="id"><%--隐藏菜单ID不可更改--%>
       <div class="line">
         <label class="label">菜单名</label><input type="text" class="am-modal-prompt-input" id="menuName">
       </div>
       <div class="line">
-        <label class="label">父菜单序号</label><input type="text" class="am-modal-prompt-input" id="fid">
+        <label class="label">父菜单ID</label><input type="text" class="am-modal-prompt-input" id="fid">
       </div>
       <div class="line" id="line3">
         <label class="label">是否显示</label>
