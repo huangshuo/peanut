@@ -29,6 +29,9 @@ public class SelectNovelController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		BackendNovel bean = new BackendNovel();
+		if (!"0".equals(req.getParameter("novelTypeIdPrimary")) ) {
+			bean.setPrimaryTypeId(Long.parseLong(req.getParameter("novelTypeIdPrimary")));
+		}
 		if (!"0".equals(req.getParameter("novelTypeIdSecondary")) ) {
 			bean.setSecondaryTypeId(Long.parseLong(req.getParameter("novelTypeIdSecondary")));
 		}
@@ -40,7 +43,6 @@ public class SelectNovelController extends HttpServlet {
 			bean.setNovelId(Long.parseLong(req.getParameter("novelId")));
 		}
 
-		String temp = req.getParameter("pageIndex") + "--" + req.getParameter("pageSize");
 			int pageNum = Integer.parseInt(req.getParameter("pageIndex"));
 
 

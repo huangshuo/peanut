@@ -12,11 +12,20 @@ public class BackendNovel {
 	private Long novelId;
 	private String novelName;
 	private String authorName;
+	private Long primaryTypeId;
 	private Long secondaryTypeId;
 	private Integer novelStatus;
 
 	public Integer getNovelStatus() {
 		return novelStatus;
+	}
+
+	public Long getPrimaryTypeId() {
+		return primaryTypeId;
+	}
+
+	public void setPrimaryTypeId(Long primaryTypeId) {
+		this.primaryTypeId = primaryTypeId;
 	}
 
 	public void setNovelStatus(Integer novelStatus) {
@@ -61,6 +70,7 @@ public class BackendNovel {
 				"novelId=" + novelId +
 				", novelName='" + novelName + '\'' +
 				", authorName='" + authorName + '\'' +
+				", primaryTypeId=" + primaryTypeId +
 				", secondaryTypeId=" + secondaryTypeId +
 				", novelStatus=" + novelStatus +
 				'}';
