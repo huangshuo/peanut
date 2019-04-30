@@ -40,7 +40,7 @@ public interface BackendNovelService {
 	 * @return serverResponse
 	 */
 	ServerResponse<BackendNovelTypePrimary> selectPrimaryTypeById(Long key);
-	
+
 	/**
 	 * 查找所有一级分类信息
 	 * @return serverResponse
