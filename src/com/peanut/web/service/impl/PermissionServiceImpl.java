@@ -49,6 +49,9 @@ public class PermissionServiceImpl implements PermissionService {
     }
     // 最后登录时间
     backendUser.setLastLoginTime(new Timestamp(System.currentTimeMillis()));
+    if (!backendUserDao.updateByTemplate(backendUser)) {
+      return ServerResponse.failWithMsg(ServerStatusCodeEnum.FAIL.getCode(), ServerStatusCodeEnum.FAIL.getMsg());
+    }
     return ServerResponse.successWithData(backendUser);
   }
 

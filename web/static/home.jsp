@@ -14,9 +14,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js" ></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js" ></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>
 
 <script>
   //主函数
@@ -113,21 +110,23 @@
           }
         }
         link();
+        breadCrumb();
       }
     })
   }
 
 </script>
 <style>
-  /*div{*/
-  /*  border: 1px solid red;*/
-  /*}*/
+  .bodyRightTop{
+    font-size: 25px;
+    height: 60px;
+  }
    .header {
     height: 50px;
     border-bottom: 1px lightgray solid;
     background-color: whitesmoke;
     line-height: 45px;
-    padding-left: 50px;
+    padding-left: 10px;
   }
   .bodyLeftLable{
     -webkit-transition: left 0.75s;
@@ -187,6 +186,7 @@
 <%--顶部页面(标题)--%>
 <div class="header">
     <h1 class="am-topbar-brand">
+      <img src="${pageContext.request.contextPath}/resources/img/peanut.png" alt="花生娱乐&reg;" style="height: 25px;width: 25px">
       <a href="#">花生娱乐管理平台</a>
     </h1>
     <div class="am-topbar-right">
