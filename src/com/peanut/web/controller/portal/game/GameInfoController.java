@@ -1,5 +1,7 @@
 package com.peanut.web.controller.portal.game;
 
+import com.alibaba.fastjson.JSON;
+import com.peanut.common.http.ServerResponse;
 import com.peanut.common.http.ServletUrl;
 import com.peanut.web.service.impl.GameServiceImpl;
 
@@ -23,9 +25,14 @@ public class GameInfoController extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    getGameInfoByGameId(req, resp, false);
+  }
+
+  public static void getGameInfoByGameId(HttpServletRequest req, HttpServletResponse resp, boolean b) throws IOException {
     long gameId = Long.parseLong(req.getParameter("gameId"));
     PrintWriter printWriter = resp.getWriter();
-    printWriter.println(new GameServiceImpl().getGameInfoByGameId(gameId));
+    ServerResponse serverResponse = new GameServiceImpl().getGameInfoByGameId(gameId, b);
+    printWriter.println(JSON.toJSONString(serverResponse));
     printWriter.flush();
     printWriter.close();
   }

@@ -25,10 +25,23 @@ public final class ServletUrl {
     String DELETE_GAME = "/backend/game/delete";
     String MODIFY_GAME = "/backend/game/modify";
     String GAME_LIST = "/backend/game/list";
+    String GAME_INFO = "/backend/game/info";
+    String USER_INFO = "/backend/user/info";
+    String USER_PERMISSION = "/backend/user/permission";
+    String USER_MENU_LIST = "/backend/user/menu/list";
     String UPDATE_NOVEL = "/backend/novel/update";
     String SELECT_NOVEL = "/backend/novel/select";
     String SELECT_NOVEL_TYPE = "/backend/novel/select/type";
     String SELECT_NOVEL_TYPE_ALL = "/backend/novel/select/type/all";
+    String CHANNEL_CLASS_MANAGE = "/backend/channel/class/manage";
+    String CHANNEL_INSERT = "/channel/insert";
+    String MENU_MANAGE = "/menu/manage";
+    String MENU_UPDATE = "/menu/update";
+    String MENU_INSERT = "/menu/insert";
+    String MENU_DELETE = "/menu/delete";
+    String CHANNEL_MANAGE = "/channel/manage";
+    String CHANNEL_DELETE = "/channel/delete";
+    String USER_SESSION = "/backend/user/session";
   }
 
   /**
@@ -54,10 +67,6 @@ public final class ServletUrl {
     String VIDEO_PAGE = "/video/page";
     String VIDEO_FIRST_LIST = "/video/list/first";
     String VIDEO_SECOND_LIST = "/video/list/second";
-    String MENU_MANAGE = "/menu/manage";
-    String MENU_UPDATE = "/menu/update";
-    String CHANNEL_MANAGE = "/channel/manage";
-    String CHANNEL_INSERT = "/channel/insert";
-    String CHANNEL_DELETE = "/channel/delete";
+
   }
 }

@@ -20,13 +20,13 @@ import java.io.IOException;
  * @see com.peanut.web.controller.backend.channel
  * @since 1.0
  */
-@WebServlet(urlPatterns = ServletUrl.Portal.CHANNEL_DELETE)
-public class channelDeleteController extends HttpServlet {
+@WebServlet(urlPatterns = ServletUrl.Backend.CHANNEL_DELETE)
+public class ChannelDeleteController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     BaseDao<BackendChannelManage> baseDao=new BaseDaoImpl<>(BackendChannelManage.class);
     BackendChannelManage backendChannelManage=new BackendChannelManage();
-    backendChannelManage.setFirstClass(req.getParameter("first_class"));
+    backendChannelManage.setId(Long.parseLong(req.getParameter("id")));
     backendChannelManage=baseDao.selectOneByTemplate(backendChannelManage);
     baseDao.deleteByPrimaryKey(backendChannelManage.getId());
     

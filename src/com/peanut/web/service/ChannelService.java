@@ -1,6 +1,7 @@
 package com.peanut.web.service;
 
 import com.peanut.common.http.ServerResponse;
+import com.peanut.entity.pojo.BackendChannelClassManage;
 import com.peanut.entity.pojo.BackendChannelManage;
 import com.peanut.entity.vo.PageInfo;
 
@@ -15,4 +16,8 @@ import com.peanut.entity.vo.PageInfo;
  */
 public interface ChannelService {
   ServerResponse<PageInfo<BackendChannelManage>> channelManage(int page, int pageSize);
+  ServerResponse<PageInfo<BackendChannelManage>> channelManage(int page, int pageSize,BackendChannelManage backendChannelManage);
+  ServerResponse<PageInfo<BackendChannelClassManage>> channelClassManage(int page, int pageSize);
+  ServerResponse deleteChannelClass(int id);
+  ServerResponse insertChannelClass(BackendChannelClassManage backendChannelClassManage);
 }

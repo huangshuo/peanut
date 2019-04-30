@@ -1,7 +1,5 @@
 package com.peanut.entity.pojo;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 /**
  * description:菜单管理 .
  *

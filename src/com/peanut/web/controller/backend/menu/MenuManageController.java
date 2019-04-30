@@ -20,7 +20,7 @@ import java.io.PrintWriter;
  * @see com.peanut.web.controller.backend.menu
  * @since 1.0
  */
-@WebServlet(urlPatterns = ServletUrl.Portal.MENU_MANAGE)
+@WebServlet(urlPatterns = ServletUrl.Backend.MENU_MANAGE)
 public class MenuManageController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

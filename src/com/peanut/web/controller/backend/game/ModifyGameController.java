@@ -27,7 +27,7 @@ public class ModifyGameController extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     Game game = AddGameController.getGameFromParameter(req);
-
+    game.setGameId(Long.parseLong(req.getParameter("gameId")));
     ServerResponse serverResponse = new GameServiceImpl().modifyGame(game);
     PrintWriter printWriter = resp.getWriter();
     printWriter.println(JSON.toJSONString(serverResponse));

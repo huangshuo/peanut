@@ -64,15 +64,4 @@ public class BackendNovel {
 		this.secondaryTypeId = secondaryTypeId;
 	}
 
-	@Override
-	public String toString() {
-		return "BackendNovel{" +
-				"novelId=" + novelId +
-				", novelName='" + novelName + '\'' +
-				", authorName='" + authorName + '\'' +
-				", primaryTypeId=" + primaryTypeId +
-				", secondaryTypeId=" + secondaryTypeId +
-				", novelStatus=" + novelStatus +
-				'}';
-	}
 }

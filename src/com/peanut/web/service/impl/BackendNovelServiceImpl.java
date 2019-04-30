@@ -37,16 +37,6 @@ public class BackendNovelServiceImpl implements BackendNovelService {
 		return novelDao.updateByTemplate(bean)? ServerResponse.success():ServerResponse.failWithMsg(404,"更新失败");
 	}
 
-	/**
-	 * 通过小说ID查询小说基本信息
-	 * @param key 小说ID
-	 * @return serverResponse
-	 */
-	@Override
-	public ServerResponse<BackendNovel> selectNovelInfoById(Long key) {
-		BackendNovel bean = novelDao.selectOneByPrimaryKey(key);
-		return bean.getNovelId() == null ? ServerResponse.failWithMsg(404, ServerStatusCodeEnum.NOT_FOUND.getMsg()): ServerResponse.successWithData(bean);
-	}
 
 	/**
 	 * 通过小说信息模板查询小说基本信息
@@ -97,17 +87,7 @@ public class BackendNovelServiceImpl implements BackendNovelService {
 		BackendNovelTypePrimary bean = typeDao.selectOneByPrimaryKey(key);
 		return bean.getTypeId() == null ? ServerResponse.failWithMsg(404, ServerStatusCodeEnum.NOT_FOUND.getMsg()): ServerResponse.successWithData(bean);
 	}
-	/**
-	 * 通过二级分类ID 来查找一级分类信息
-	 * @param key 二级分类ID
-	 * @return serverResponse
-	 */
-	@Override
-	public ServerResponse<BackendNovelTypePrimary> selectPrimaryTypeBySonTypeId(Long key) {
-		BackendNovelTypeSecondary sonBean = typeSonDao.selectOneByPrimaryKey(key);
-		BackendNovelTypePrimary bean = typeDao.selectOneByPrimaryKey(sonBean.getFatherTypeId());
-		return bean.getTypeId() == null ? ServerResponse.failWithMsg(404, ServerStatusCodeEnum.NOT_FOUND.getMsg()): ServerResponse.successWithData(bean);
-	}
+
 
 	@Override
 	public ServerResponse<List<BackendNovelTypePrimary>> selectAllPrimaryType() {

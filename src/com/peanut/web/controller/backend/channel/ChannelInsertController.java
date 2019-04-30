@@ -22,27 +22,18 @@ import java.util.Date;
  * @see com.peanut.web.controller.backend.channel
  * @since 1.0
  */
-@WebServlet(urlPatterns = ServletUrl.Portal.CHANNEL_INSERT)
-public class channelInsertController extends HttpServlet {
+@WebServlet(urlPatterns = ServletUrl.Backend.CHANNEL_INSERT)
+public class ChannelInsertController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
     BackendChannelManage backendChannelManage=new BackendChannelManage();
-    String first_class=req.getParameter("first_class");
-    String second_class=req.getParameter("second_class");
-    String channel_num=req.getParameter("channel_num");
-    String channel_download_link=req.getParameter("channel_download_link");
-    String product_name=req.getParameter("product_name");
-    String show_name=req.getParameter("show_name");
-    Timestamp createDate =new Timestamp(new Date().getTime());
-
-    backendChannelManage.setFirstClass(first_class);
-    backendChannelManage.setSecondClass(second_class);
-    backendChannelManage.setChannelNum(channel_num);
-    backendChannelManage.setChannelDownloadLink(channel_download_link);
-    backendChannelManage.setProductName(product_name);
-    backendChannelManage.setShowName(show_name);
-    backendChannelManage.setCreateDate(createDate);
+    backendChannelManage.setFirstClass(req.getParameter("first_class"));
+    backendChannelManage.setSecondClass(req.getParameter("second_class"));
+    backendChannelManage.setChannelNum(req.getParameter("channel_num"));
+    backendChannelManage.setChannelDownloadLink(req.getParameter("channel_download_link"));
+    backendChannelManage.setProductName(req.getParameter("product_name"));
+    backendChannelManage.setShowName(req.getParameter("show_name"));
+    backendChannelManage.setCreateDate(new Timestamp(new Date().getTime()));
     BaseDao<BackendChannelManage> baseDao=new BaseDaoImpl<>(BackendChannelManage.class);
     baseDao.insert(backendChannelManage);
   }

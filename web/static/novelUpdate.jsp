@@ -8,13 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div id="hollyEntireFuckingPage">
 <title>小说信息修改页面</title>
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>--%>
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>--%>
-<%--<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css" />--%>
-<%--<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css" />--%>
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js" ></script>--%>
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js" ></script>--%>
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>--%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>
 <script>
     $(function () {
         var prepUpdateNovelId = "${param.novelId}";
@@ -22,12 +16,9 @@
         var prepUpdateAuthorName = "${param.authorName}";
         var prepUpdateNovelTypeIdSecondary = "${param.novelTypeIdSecondary}";
 
-        console.log(prepUpdateNovelTypeIdSecondary);
-        // $("#novelId").prop("placeholder", prepUpdateNovelId);
         $("#novelName").prop("placeholder", prepUpdateNovelName);
         $("#authorName").prop("placeholder", prepUpdateAuthorName);
         $("#novelStatus>option[value=${param.novelStatus}]").attr("selected", true);
-        console.log(JSON.parse(JSON.stringify(serializeObject($("form"))).replace("}", ", \"novelId\": \"" + prepUpdateNovelId + "\"}")));
 
         //表单序列化字符串转换为JSON(代码来源网络)
         function serializeObject(form)
@@ -78,12 +69,9 @@
 
         $("#upDate").on("click", function () {
             var bottomButton = $("#upDate");
-            console.log(JSON.parse(JSON.stringify(serializeObject($("form"))).replace("}", ", \"novelId\": \"" +
-                prepUpdateNovelId + "\", \"novelTypeIdSecondary\": \"" + prepUpdateNovelTypeIdSecondary + "\"}")));
 
             inputs.blur();
             if(!checkAllEmpty()) {
-                console.log(checkAllEmpty());
                 $.ajax({
                     url: "${pageContext.request.contextPath}/backend/novel/update",
                     type: "GET",

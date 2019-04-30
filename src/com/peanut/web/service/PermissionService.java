@@ -2,7 +2,10 @@ package com.peanut.web.service;
 
 import com.peanut.common.http.ServerResponse;
 import com.peanut.entity.pojo.BackendUser;
+import com.peanut.entity.pojo.MenuManage;
 import com.peanut.entity.vo.PageInfo;
+
+import java.util.List;
 
 /**
  * description: 后台权限管理Service接口.
@@ -28,9 +31,12 @@ public interface PermissionService {
    *
    * @param pageNum  页码
    * @param pageSize 分页大小
+   * @param username 用户名
+   * @param role 用户角色(1普通用户 2合作公司 3管理员)
+   * @param status 账户状态(1可用 2不可用)
    * @return serverResponse
    */
-  ServerResponse<PageInfo<BackendUser>> pageQueryAll(int pageNum, int pageSize);
+  ServerResponse<PageInfo<BackendUser>> pageQueryUser(int pageNum, int pageSize, String username, int role, int status);
 
   /**
    * 添加用户
@@ -55,4 +61,24 @@ public interface PermissionService {
    * @return serverResponse
    */
   ServerResponse deleteUserByUsername(String username);
+
+  /**
+   * 根据用户uid获取用户信息
+   * @param uid 用户id
+   * @return serverResponse
+   */
+  ServerResponse<BackendUser> getUserInfoByUid(long uid);
+
+  /**
+   * 根据菜单id获取菜单信息
+   * @param id 菜单id
+   * @return serverResponse
+   */
+  ServerResponse<MenuManage> getMenuByMenuId(long id);
+
+  /**
+   * 获取所有菜单信息
+   * @return serverResponse
+   */
+  ServerResponse<List<MenuManage>> getMenuList();
 }
