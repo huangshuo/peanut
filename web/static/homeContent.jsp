@@ -333,10 +333,7 @@
   .numberTitle{
     font-size: small;
   }
-  .bodyRightTop{
-    font-size: 25px;
-    height: 60px;
-  }
+
 </style>
 <div class="contentLine1">
   <div class="show">

@@ -72,7 +72,7 @@
     $(".bodyLeft>ul>li>ul>li>a").on("click",function () {
       $(".bodyRightTop ol").html("");
       $(".bodyRightTop ol").append('<li class="home"><a href="###" class="am-icon-home" >首页</a></li>'+
-        '<li><a href="#">'+$(this).text()+'</a></li>');
+        '<li><a href="#">123</a></li>');
       returnHome();
     });
   }
@@ -179,7 +179,10 @@
     height: 850px;
     width: 100%;
   }
-
+  .bodyRightTop{
+    font-size: 25px;
+    height: 60px;
+  }
 </style>
 </head>
 <body>

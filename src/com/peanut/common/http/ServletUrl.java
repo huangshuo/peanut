@@ -33,6 +33,7 @@ public final class ServletUrl {
     String SELECT_NOVEL = "/backend/novel/select";
     String SELECT_NOVEL_TYPE = "/backend/novel/select/type";
     String SELECT_NOVEL_TYPE_ALL = "/backend/novel/select/type/all";
+    String CHANNEL_CLASS_MANAGE = "/backend/channel/class/manage";
   }
 
   /**

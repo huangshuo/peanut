@@ -24,7 +24,7 @@ import java.io.PrintWriter;
  * @since 1.0
  */
 @WebServlet(urlPatterns = ServletUrl.Portal.CHANNEL_MANAGE)
-public class channelManageController extends HttpServlet {
+public class ChannelManageController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     int page=Integer.parseInt(req.getParameter("page"));
@@ -50,7 +50,6 @@ public class channelManageController extends HttpServlet {
         pw.write(JSON.toJSONString(serverResponse));
       }
     }else if("selectTwo".equals(action)){
-
       backendChannelManage.setFirstClass(firstClass);
       if(secondClass==null||"".equals(secondClass)){
         serverResponse = new ChannelServiceImpl().channelManage(page, pageSize,backendChannelManage);
