@@ -47,14 +47,15 @@
         }
 
         function checkEmpty(data){
-            return $(data).val() * 1 ===0;
+            return $(data).val().length === 0;
         }
 
         function checkAllEmpty(){
-            return $("novelName").val() * $("authorName").val() ===0;
+            return $("#novelName").val().length * $("#authorName").val().length === 0;
         }
 
-        $("#novelName, #authorName").on("focus", function () {
+        var inputs = $("#novelName, #authorName");
+        inputs.on("focus", function () {
 
             if(this.id.match("novel")) {
                 $(this).prop("placeholder", prepUpdateNovelName);
@@ -63,13 +64,8 @@
             }
         });
 
-        $("#novelName, #authorName").on("blur", function () {
-
-            console.log('#' + this.name + "::-webkit-input-placeholder");
-            console.log($(this));
+        inputs.on("blur", function () {
             var tempText = $(this).attr("placeholder");
-            console.log(tempText);
-            console.log(checkEmpty());
             if(checkEmpty(this)){
                 $(this).prop("placeholder", "请输入要更改的内容！");
                 $(this).css("backgroundColor", "pink");
@@ -84,7 +80,9 @@
             console.log(JSON.parse(JSON.stringify(serializeObject($("form"))).replace("}", ", \"novelId\": \"" +
                 prepUpdateNovelId + "\", \"novelTypeIdSecondary\": \"" + prepUpdateNovelTypeIdSecondary + "\"}")));
 
+            inputs.blur();
             if(!checkAllEmpty()) {
+                console.log(checkAllEmpty());
                 $.ajax({
                     url: "${pageContext.request.contextPath}/backend/novel/update",
                     type: "GET",

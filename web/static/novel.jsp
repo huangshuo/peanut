@@ -26,6 +26,7 @@
             var novelTypeIdSecondary;
 
             var allType;
+
             $.ajax({
 
                 url: "${pageContext.request.contextPath}/backend/novel/select/type/all",
@@ -183,7 +184,7 @@
             }
             var pageIndex = $("#pageIndex");
             pageIndex.val(1);
-            pageIndex.on("keyup", function (fn) {
+            $("#pageIndex, #novelId, #novelName").on("keyup", function (fn) {
                 if(fn.keyCode === 13){
 
                     buttonConfig();
@@ -228,7 +229,9 @@
                 buttonConfig();
                 flushTable();
             });
+            buttonConfig();
         });
+
     </script>
     <style>
         .decorativeStrip{background-color: #0e90d2}
