@@ -8,7 +8,6 @@ import com.peanut.entity.pojo.BackendChannelManage;
 import com.peanut.entity.vo.PageInfo;
 import com.peanut.web.service.ChannelService;
 
-
 /**
  * description: .
  *

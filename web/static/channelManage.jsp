@@ -26,24 +26,24 @@
     $("#first").on("click",function () {
       var currentPage=1;
       $("#currentPage").val(1);
-      pageData(action,currentPage,pageSize);
+      pageData(action,currentPage,$(".pageSizeNum").val());
     });
     $("#last").on("click",function () {
       var totalPage= $("#totalPage").val();
       $("#currentPage").val(page);
       $("#currentPage").val(totalPage);
-      pageData(action,totalPage,pageSize);
+      pageData(action,totalPage,$(".pageSizeNum").val());
     });
     $("#next").on("click",function () {
       if($("#currentPage").val()!=$("#totalPage").val()){
         var currentPage=parseInt($("#currentPage").val()) +1;
-        pageData(action,currentPage,pageSize);
+        pageData(action,currentPage,$(".pageSizeNum").val());
       }
     });
     $("#prev").on("click",function () {
       if($("#currentPage").val()!=1){
         var currentPage=$("#currentPage").val()-1;
-        pageData(action,currentPage,pageSize);
+        pageData(action,currentPage,$(".pageSizeNum").val());
         $("#currentPage").val(currentPage);
       }
     });
@@ -80,7 +80,7 @@
         }
         //绑定事件
         $("li[id*='page']").on("click",function () {
-          pageData(action,$(this).children().html(),pageSize,firstClass,secondClass,searchContent);
+          pageData(action,$(this).children().html(),$(".pageSizeNum").val(),firstClass,secondClass,searchContent);
         });
         //在页面暂存totalPage、currentPage
         $("#totalPage").val(data.data.totalPage);
@@ -115,38 +115,62 @@
   //一、二级下拉菜单功能
   function select(page,pageSize) {
     $.ajax({
-      url:"${pageContext.request.contextPath}/channel/manage",
+      url:"${pageContext.request.contextPath}/backend/channel/class/manage",
       type:"get",
-      data:{"action":"selectOne","page":1,"pageSize":1000},
+      data:{"action":"select","page":1,"pageSize":1000},
       dataType:"json",
       success:function (data) {
         $("#selectOne").append('<option>选择全部</option>');
         $.each(data.data.pageData,function (i,d) {
-          $("#selectOne").append('<option>'+d.firstClass+'</option>')
+          if(d.fname=="无父级"){
+            $("#selectOne").append('<option>'+d.className+'</option>');
+            $("#first_class").append('<option>'+d.className+'</option>');
+          }
         })
       }
     });
+
     $("#selectOne").on("change",function () {
       $("#searchContent").val("");
       var firstClass=$(this).val()==="选择全部"?null:$(this).val();
-      pageData("selectOne",page,pageSize,firstClass,null,null);
+      pageData("selectOne",page,$(".pageSizeNum").val(),firstClass,null,null);
       $.ajax({
-        url:"${pageContext.request.contextPath}/channel/manage",
+        url:"${pageContext.request.contextPath}/backend/channel/class/manage",
         type:"get",
-        data:{"action":"selectTwo","page":1,"pageSize":1000,"firstClass":$(this).val()},
+        data:{"action":"select","page":1,"pageSize":1000},
         dataType:"json",
         success:function (data) {
           $("#selectTwo").html('<option>选择全部</option>');
           $.each(data.data.pageData,function (i,d) {
-            $("#selectTwo").append('<option>'+d.secondClass+'</option>')
+            if(d.fname==$("#selectOne").val()){
+              $("#selectTwo").append('<option>'+d.className+'</option>');
+            }
           })
         }
       })
     });
+
+    $("#first_class").on("change",function () {
+      $.ajax({
+        url:"${pageContext.request.contextPath}/backend/channel/class/manage",
+        type:"get",
+        data:{"action":"select","page":1,"pageSize":1000},
+        dataType:"json",
+        success:function (data) {
+          $("#second_class").html("");
+          $.each(data.data.pageData,function (i,d) {
+            if($("#first_class").val()===d.fname){
+              $("#second_class").append('<option>'+d.className+'</option>');
+            };
+          })
+        }
+      })
+    });
+
     $("#selectTwo").on("change",function () {
       $("#searchContent").val("");
       var secondClass=$(this).val()==="选择全部"?null:$(this).val();
-      pageData("selectTwo",page,pageSize,$("#selectOne").val(),secondClass,null);
+      pageData("selectTwo",page,$(".pageSizeNum").val(),$("#selectOne").val(),secondClass,null);
     })
   }
   //添加新渠道
@@ -177,7 +201,7 @@
             },
             dataType:"text",
             success:function(data){
-              pageData("init",page,pageSize,null,null,null);
+              pageData("init",page,$(".pageSizeNum").val(),null,null,null);
             }
           });
         }
@@ -216,12 +240,12 @@
       var hours=oDate.getHours();
       var minutes=oDate.getMinutes();
       var seconds=oDate.getSeconds();
-      return year+"年"+
-        addZero(month)+"月"+
-        addZero(date)+"日 "+
-        addZero(hours)+"h"+
-        addZero(minutes)+"m"+
-        addZero(seconds)+"s";
+      return year+"-"+
+        addZero(month)+"-"+
+        addZero(date)+" "+
+        addZero(hours)+":"+
+        addZero(minutes)+":"+
+        addZero(seconds);
     }
   }
   //日期补零
@@ -257,10 +281,20 @@
   }
   .changeMenu{
     height: 460px;
-    width: 700px;
+    width: 500px;
   }
   .changeMenu input{
-    margin: 20px 0;
+    margin: 10px;
+    width: 300px;
+  }
+  .changeMenu select{
+    height: 33px;
+    margin-bottom: 10px;
+    width: 300px;
+  }
+  .changeMenuLine{
+    height: 50px;
+    text-align: center;
   }
   .addChannel{
     display: block;
@@ -344,17 +378,33 @@
 <%--添加渠道 模态框--%>
 <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt" >
   <div class="am-modal-dialog changeMenu">
-    <div class="am-modal-hd menuName" >添加菜单</div>
+    <div class="am-modal-hd menuName" >添加渠道</div>
     <div class="am-modal-bd">
       <input type="hidden" class="am-modal-prompt-input" id="id">
-
-      <label class="label">一级分类</label><input type="text" class="am-modal-prompt-input" id="first_class">
-      <label class="label">二级分类</label><input type="text" class="am-modal-prompt-input" id="second_class">
-      <label class="label">渠道号</label><input type="text" class="am-modal-prompt-input" id="channel_num">
-      <label class="label">渠道下载地址</label><input type="text" class="am-modal-prompt-input" id="channel_download_link">
-      <label class="label">产品名称</label><input type="text" class="am-modal-prompt-input" id="product_name">
+      <div class="changeMenuLine">
+        <label class="label">产品名称</label><input type="text" class="am-modal-prompt-input" id="product_name">
+      </div>
+      <div class="changeMenuLine">
       <label class="label">显示名称</label><input type="text" class="am-modal-prompt-input" id="show_name">
+      </div>
+      <div class="changeMenuLine">
+        <label class="label">一级分类</label>
+        <select id="first_class">
 
+       </select>
+      </div>
+      <div class="changeMenuLine">
+        <label class="label">二级分类</label>
+        <select id="second_class" >
+        </select>
+      </div>
+
+      <div class="changeMenuLine">
+        <label class="label">渠道号</label><input type="text" class="am-modal-prompt-input" id="channel_num">
+      </div>
+      <div class="changeMenuLine">
+        <label class="label">渠道下载地址</label><input type="text" class="am-modal-prompt-input" id="channel_download_link">
+      </div>
     </div>
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>取消</span>

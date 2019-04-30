@@ -26,6 +26,7 @@
             var novelTypeIdSecondary;
 
             var allType;
+
             $.ajax({
 
                 url: "${pageContext.request.contextPath}/backend/novel/select/type/all",
@@ -177,16 +178,15 @@
                             $("#totalPage").text("共0页");
                             $("table tr:gt(0)").remove();
                         }
+                        buttonConfig();
                     }
 
                 });
             }
             var pageIndex = $("#pageIndex");
             pageIndex.val(1);
-            pageIndex.on("keyup", function (fn) {
+            $("#pageIndex, #novelId, #novelName").on("keyup", function (fn) {
                 if(fn.keyCode === 13){
-
-                    buttonConfig();
                     flushTable();
                 }
             });
@@ -194,12 +194,17 @@
                 console.log(typeof totalPage);
                 $("#previousPage").removeClass("am-disabled");
                 $("#nextPage").removeClass("am-disabled");
-                if(parseInt(pageIndex.val()) <= 1){
-                    pageIndex.val("1");
+                if(totalPage !== 0) {
+                    if (parseInt(pageIndex.val()) <= 1) {
+                        pageIndex.val("1");
+                        $("#previousPage").addClass("am-disabled");
+                    }
+                    if (parseInt(pageIndex.val()) >= totalPage) {
+                        pageIndex.val("" + totalPage);
+                        $("#nextPage").addClass("am-disabled");
+                    }
+                }else {
                     $("#previousPage").addClass("am-disabled");
-                }
-                if(parseInt(pageIndex.val()) >= totalPage){
-                    pageIndex.val("" + totalPage);
                     $("#nextPage").addClass("am-disabled");
                 }
             }
@@ -210,25 +215,23 @@
             });
             $("#nextPage").on("click", function () {
                 pageIndex.val("" + (parseInt(pageIndex.val()) + 1));
-                buttonConfig();
                 flushTable();
             });
             $("#previousPage").on("click", function () {
                 pageIndex.val("" + (parseInt(pageIndex.val()) - 1));
-                buttonConfig();
                 flushTable();
             });
             $("#firstPage").on("click", function () {
                 pageIndex.val("1");
-                buttonConfig();
                 flushTable();
             });
             $("#lastPage").on("click", function () {
                 pageIndex.val(totalPage);
-                buttonConfig();
                 flushTable();
             });
+            buttonConfig();
         });
+
     </script>
     <style>
         .decorativeStrip{background-color: #0e90d2}

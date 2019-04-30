@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<div id="hollyEntireFuckingPage">
 <title>小说信息修改页面</title>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>--%>
 <%--<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>--%>
@@ -47,14 +48,15 @@
         }
 
         function checkEmpty(data){
-            return $(data).val() * 1 ===0;
+            return $(data).val().length === 0;
         }
 
         function checkAllEmpty(){
-            return $("novelName").val() * $("authorName").val() ===0;
+            return $("#novelName").val().length * $("#authorName").val().length === 0;
         }
 
-        $("#novelName, #authorName").on("focus", function () {
+        var inputs = $("#novelName, #authorName");
+        inputs.on("focus", function () {
 
             if(this.id.match("novel")) {
                 $(this).prop("placeholder", prepUpdateNovelName);
@@ -63,15 +65,10 @@
             }
         });
 
-        $("#novelName, #authorName").on("blur", function () {
-
-            console.log('#' + this.name + "::-webkit-input-placeholder");
-            console.log($(this));
+        inputs.on("blur", function () {
             var tempText = $(this).attr("placeholder");
-            console.log(tempText);
-            console.log(checkEmpty());
             if(checkEmpty(this)){
-                $(this).prop("placeholder", "请输入要更改的内容！");
+                $(this).prop("placeholder", "Am I a joke to you?");
                 $(this).css("backgroundColor", "pink");
             }else
             {
@@ -84,7 +81,9 @@
             console.log(JSON.parse(JSON.stringify(serializeObject($("form"))).replace("}", ", \"novelId\": \"" +
                 prepUpdateNovelId + "\", \"novelTypeIdSecondary\": \"" + prepUpdateNovelTypeIdSecondary + "\"}")));
 
+            inputs.blur();
             if(!checkAllEmpty()) {
+                console.log(checkAllEmpty());
                 $.ajax({
                     url: "${pageContext.request.contextPath}/backend/novel/update",
                     type: "GET",
@@ -100,6 +99,17 @@
                             bottomButton.html("更新失败");
                             bottomButton.css("color", "#8B436A");
                         }
+                        window.setTimeout(function () {
+                            $.ajax({
+                                url: "/peanut/static/novel.jsp",
+                                type: "GET",
+                                dataType: "html",
+                                success: function (data) {
+                                    $("#hollyEntireFuckingPage").html(data);
+                                }
+                            });
+                        }, 2000);
+
                     }
                 })
             }
@@ -222,4 +232,5 @@
             <div class="am-u-md-3">&nbsp;</div>
         </div>
     </form>
+</div>
 </div>

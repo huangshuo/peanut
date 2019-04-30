@@ -33,6 +33,9 @@
     returnHome();
     //生成左侧折叠菜单栏
     menuManage();
+    $("#AD").on("click",function(){
+      $(this).css("display","none");
+    })
   });
   //折叠菜单右侧小箭头图标样式改变
   function iconStyle() {
@@ -75,7 +78,7 @@
     $(".bodyLeft>ul>li>ul>li>a").on("click",function () {
       $(".bodyRightTop ol").html("");
       $(".bodyRightTop ol").append('<li class="home"><a href="###" class="am-icon-home" >首页</a></li>'+
-        '<li><a href="#">123</a></li>');
+        '<li><a href="#">'+$(this).text()+'</a></li>');
       returnHome();
     });
   }
