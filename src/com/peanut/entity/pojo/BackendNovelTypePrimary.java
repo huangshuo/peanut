@@ -29,11 +29,4 @@ public class BackendNovelTypePrimary {
 		this.typeName = typeName;
 	}
 
-	@Override
-	public String toString() {
-		return "BackendNovelTypePrimary{" +
-				"typeId=" + typeId +
-				", typeName='" + typeName + '\'' +
-				'}';
-	}
 }

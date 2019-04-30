@@ -20,7 +20,7 @@ import java.io.IOException;
  * @see com.peanut.web.controller.backend.menu
  * @since 1.0
  */
-@WebServlet(urlPatterns = ServletUrl.Portal.MENU_DELETE)
+@WebServlet(urlPatterns = ServletUrl.Backend.MENU_DELETE)
 public class MenuDeleteController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

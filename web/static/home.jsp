@@ -14,9 +14,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js" ></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js" ></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js" ></script>
 
 <script>
   //主函数
@@ -33,9 +30,8 @@
     returnHome();
     //生成左侧折叠菜单栏
     menuManage();
-    $("#AD").on("click",function(){
-      $(this).css("display","none");
-    })
+    //生成修改密码注销按钮
+    logoutButton();
   });
   //折叠菜单右侧小箭头图标样式改变
   function iconStyle() {
@@ -78,7 +74,7 @@
     $(".bodyLeft>ul>li>ul>li>a").on("click",function () {
       $(".bodyRightTop ol").html("");
       $(".bodyRightTop ol").append('<li class="home"><a href="###" class="am-icon-home" >首页</a></li>'+
-        '<li><a href="#">'+$(this).text()+'</a></li>');
+        '<li><a href="#">'+ this.innerText +'</a></li>');
       returnHome();
     });
   }
@@ -120,18 +116,26 @@
       }
     })
   }
+  // 注销按钮
+  function logoutButton() {
+    $('#userButton').html(${pageContext.session.getAttribute('session_user_key')}.username + '&nbsp;&nbsp;<span class="am-icon-caret-down"></span>');
+    $('#changePassword').on('click', function () {
+      $('#changePasswordModal').modal();
+    })
+  }
 
 </script>
 <style>
-  /*div{*/
-  /*  border: 1px solid red;*/
-  /*}*/
+  .bodyRightTop{
+    font-size: 25px;
+    height: 60px;
+  }
    .header {
     height: 50px;
     border-bottom: 1px lightgray solid;
     background-color: whitesmoke;
     line-height: 45px;
-    padding-left: 50px;
+    padding-left: 10px;
   }
   .bodyLeftLable{
     -webkit-transition: left 0.75s;
@@ -194,17 +198,18 @@
 <%--顶部页面(标题)--%>
 <div class="header">
     <h1 class="am-topbar-brand">
+      <img src="${pageContext.request.contextPath}/resources/img/peanut.png" alt="花生娱乐&reg;" style="height: 25px;width: 25px">
       <a href="#">花生娱乐管理平台</a>
     </h1>
     <div class="am-topbar-right">
       <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
-        <button class="am-btn am-btn-secondary am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle>账户<span class="am-icon-caret-down"></span></button>
+        <button id="userButton" class="am-btn am-btn-secondary am-topbar-btn am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle></button>
         <ul class="am-dropdown-content">
-          <li>
+          <li id="changePassword">
             <a href="#">修改密码</a>
           </li>
           <li>
-            <a href="#">注销</a>
+            <a href="${pageContext.request.contextPath}/backend/logout">注销</a>
           </li>
         </ul>
       </div>
@@ -237,9 +242,31 @@
   </div>
   <%--主页面内容--%>
   <div class="bodyRightContent">
-
-
-
+  </div>
+</div>
+<div class="am-modal am-modal-confirm" tabindex="-1" id="changePasswordModal">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd">修改密码</div>
+    <div class="am-modal-bd">
+      <form class="am-form am-form-horizontal" id="changePasswordForm">
+        <div class="am-form-group">
+          <label for="oldPassword" class="am-u-md-3">原始密码:</label>
+          <div class="am-u-md-9">
+            <input type="password" id="oldPassword" name="oldPassword" placeholder="原始密码" class="am-form-field" required/>
+          </div>
+        </div>
+        <div class="am-form-group">
+          <label for="newPassword" class="am-u-md-3">新密码:</label>
+          <div class="am-u-md-9">
+            <input type="password" id="newPassword" name="newPassword" placeholder="新密码" class="am-form-field" required/>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="am-modal-footer">
+      <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+      <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+    </div>
   </div>
 </div>
 </body>

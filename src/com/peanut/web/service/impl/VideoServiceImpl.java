@@ -2,8 +2,7 @@ package com.peanut.web.service.impl;
 
 import com.peanut.common.http.ServerResponse;
 import com.peanut.dao.BaseDao;
-import com.peanut.dao.VideoPageDao;
-import com.peanut.dao.impl.*;
+import com.peanut.dao.impl.BaseDaoImpl;
 import com.peanut.entity.pojo.*;
 import com.peanut.web.service.VideoService;
 
@@ -32,7 +31,7 @@ public class VideoServiceImpl implements VideoService {
 
   @Override
   public ServerResponse<List<VideoSecondList>> videoSecondList(Long fid) {
-    BaseDao bd = new BaseDaoImpl(VideoSecondList.class);
+    BaseDao<VideoSecondList> bd = new BaseDaoImpl<>(VideoSecondList.class);
     VideoSecondList videoSecondList = new VideoSecondList();
     videoSecondList.setFid(fid);
     List<VideoSecondList> list = bd.selectListByTemplate(videoSecondList);
@@ -41,7 +40,7 @@ public class VideoServiceImpl implements VideoService {
 
   @Override
   public ServerResponse<Map<String, Object>> videoPage(Long fid, int page) {
-    BaseDao bd = new BaseDaoImpl(VideoPage.class);
+    BaseDao<VideoPage> bd = new BaseDaoImpl<>(VideoPage.class);
     VideoPage videoPage = new VideoPage();
     videoPage.setFid(fid);
     Map<String, Object> map = new HashMap<>(16);
@@ -52,10 +51,10 @@ public class VideoServiceImpl implements VideoService {
 
   @Override
   public ServerResponse<VideoDetail> videoDetail(String vid) {
-    BaseDao bd = new BaseDaoImpl(VideoDetail.class);
+    BaseDao<VideoDetail> bd = new BaseDaoImpl<>(VideoDetail.class);
     VideoDetail videoDetail = new VideoDetail();
     videoDetail.setVid(vid);
-    videoDetail = (VideoDetail) bd.selectOneByTemplate(videoDetail);
+    videoDetail = bd.selectOneByTemplate(videoDetail);
     return ServerResponse.successWithData(videoDetail);
   }
 
@@ -68,12 +67,12 @@ public class VideoServiceImpl implements VideoService {
     map.put("descinfo", videoDetail.getDescinfo());
     map.put("title", videoDetail.getTitle());
     //视频总集数
-    BaseDao bd = new BaseDaoImpl(VideoPageDao.class);
+    BaseDao<VideoPage> bd = new BaseDaoImpl<>(VideoPage.class);
     VideoPage videoPage = new VideoPage();
     videoPage.setVid(vid);
     map.put("epCnt", bd.selectOneByTemplate(videoPage));
     //视频单集信息
-    BaseDao bd1 = new BaseDaoImpl(VideoEpisodeDetail.class);
+    BaseDao<VideoEpisodeDetail> bd1 = new BaseDaoImpl<>(VideoEpisodeDetail.class);
     VideoEpisodeDetail videoEpisodeDetail = new VideoEpisodeDetail();
     videoEpisodeDetail.setVid(vid);
     List<VideoEpisodeDetail> list = bd1.selectListByTemplate(videoEpisodeDetail);

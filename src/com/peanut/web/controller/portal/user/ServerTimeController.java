@@ -1,6 +1,7 @@
 package com.peanut.web.controller.portal.user;
 
 import com.alibaba.fastjson.JSON;
+import com.peanut.common.Constant;
 import com.peanut.common.http.ServerResponse;
 import com.peanut.common.http.ServletUrl;
 
@@ -27,8 +28,8 @@ public class ServerTimeController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     PrintWriter printWriter = resp.getWriter();
-    Map<String, Date> now = new HashMap<>(16);
-    now.put("time", new Date(new java.util.Date().getTime()));
+    Map<String, String> now = new HashMap<>(16);
+    now.put("time", JSON.toJSONStringWithDateFormat(new Date(new java.util.Date().getTime()), Constant.DEFAULT_DATE_TIME_FORMAT));
     ServerResponse serverResponse = ServerResponse.successWithData(now);
     printWriter.println(JSON.toJSONString(serverResponse));
     printWriter.flush();

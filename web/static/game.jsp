@@ -1,450 +1,425 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: huangs
-  Date: 2019/4/25
-  Time: 18:30
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-  <title>游戏管理</title>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.min.css"/>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css"/>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css"/>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/amazeui.chosen.css"/>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/echarts.min.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shine.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/modernizr-2.8.3.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/handlebars.min.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.widgets.helper.min.js"></script>
-  <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.chosen.min.js"></script>
-  <script type="text/javascript">
-    // 加载表格
-    function loadGameList(pageInfo, $tbody, $gamePagination) {
-      $tbody.empty();
-      var pageData = pageInfo.pageData;
-      var pageNum = pageInfo.pageNum;
-      var totalPage = pageInfo.totalPage;
-      var totalRow = pageInfo.totalRow;
-      var isFirstPage = pageInfo.firstPage;
-      var isLastPage = pageInfo.lastPage;
-      // 填充表格
-      for (var index in pageData) {
-        var number = parseInt(index) + 1;
-        var game = pageData[index];
-        var platform;
-        var gameStatus;
-        var gameType;
-        var recommendType;
-        if (game.platform === 1) {
-          platform = '<span class="am-icon-apple am-vertical-align-middle"></span>'
-        } else if (game.platform === 2) {
-          platform = '<span class="am-icon-android am-vertical-align-middle"></span>'
-        } else {
-          platform = '<span class="am-icon-apple am-vertical-align-middle">&nbsp;</span><span class="am-icon-android am-vertical-align-middle"></span>'
-        }
-        if (game.gameStatus === 1) {
-          gameStatus = '<span class="am-badge am-badge-success am-radius am-vertical-align-middle">启用</span>'
-        } else {
-          gameStatus = '<span class="am-badge am-badge-danger am-radius am-vertical-align-middle">下线</span>'
-        }
-        switch (parseInt(game.gameTypeId)) {
-          case 1:
-            gameType = '休闲益智';
-            break;
-          case 2:
-            gameType = '网络游戏';
-            break;
-          case 3:
-            gameType = '动作冒险';
-            break;
-          case 4:
-            gameType = '棋牌中心';
-            break;
-          case 5:
-            gameType = '飞行设计';
-            break;
-          case 6:
-            gameType = '经营策略';
-            break;
-          case 7:
-            gameType = '角色扮演';
-            break;
-          case 8:
-            gameType = '体育竞技';
-            break;
-          default:
-            gameType = '未知类型';
-            break;
-        }
-        if (parseInt(game.recommendType) === 1) {
-          recommendType = '普通';
-        } else if (parseInt(game.recommendType) === 2) {
-          recommendType = '最新';
-        } else if (parseInt(game.recommendType) === 3) {
-          recommendType = '推荐';
-        } else {
-          recommendType = '未知';
-        }
-        $tbody.append($('<tr>' +
-          '<td class="table-ssm am-vertical-align"><span class="am-vertical-align-middle">' + number + '</span></td>' +
-          '<td class="table-lg am-vertical-align"><span class="am-vertical-align-middle">' + game.name + '</span></td>' +
-          '<td class="table-lg am-vertical-align"><span class="am-vertical-align-middle">' + game.title + '</span></td>' +
-          '<td class="table-sm am-vertical-align"><span class="am-vertical-align-middle">' + game.downloadCount + '</span></td>' +
-          '<td class="table-sm am-vertical-align"><span class="am-vertical-align-middle">' + game.gameSize + '</span></td>' +
-          '<td class="table-sm am-vertical-align">' + gameStatus + '</td>' +
-          '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + gameType + '</span></td>' +
-          '<td class="table-sm am-vertical-align">' + platform + '</td>' +
-          '<td class="table-sm am-vertical-align"><span class="am-vertical-align-middle">' + recommendType + '</span></td>' +
-          '<td class="table-lg">' +
-          '<div class="am-btn-group">' +
-          '<button type="button" class="am-btn am-btn-primary" name="' + game.gameId + '">' +
-          '<span class="am-icon-pencil-square-o"></span> 编辑</button>' +
-          '<button type="button" class="am-btn am-btn-danger am-hide-sm-only" name="' + game.gameId + '">' +
-          '<span class="am-icon-trash-o"></span> 删除</button>' +
-          '</div>' +
-          '</td>' +
-          '</tr>'));
-      }
-      // 显示分页信息
-      var template = Handlebars.compile('{{>pagination}}');
-      var page = [];
-      for (var i = 1; i <= totalPage; i++) {
-        var className = "pagination-index";
-        if (i === parseInt(pageNum)) {
-          className += ' am-active';
-        }
-        page.push({
-          "title": "" + i + "",
-          "link": "#",
-          "className": className
-        })
-      }
-      var data = {
-        paginationData: {
-          "content": {
-            "prevTitle": "上一页",
-            "prevLink": "#",
-            "nextTitle": "下一页",
-            "nextLink": "#",
-            "firstTitle": "首页",
-            "firstLink": "#",
-            "lastTitle": "末页",
-            "lastLink": "#",
-            "page": page
-          }
-        }
-      };
-      var html = template(data.paginationData);
-      $gamePagination.html(html);
-      $('#totalRow').html(totalRow);
-      $('#gamePaginationOption').show();
-      // 禁用相应的按钮
-      if (isFirstPage) {
-        $gamePagination.find('li.am-pagination-first').addClass('am-disabled');
-        $gamePagination.find('li.am-pagination-prev').addClass('am-disabled');
+<%@ page contentType="text/html;charset=UTF-8"%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/handlebars.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.widgets.helper.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/amazeui.chosen.min.js"></script>
+<script type="text/javascript">
+  // 加载表格
+  function loadGameList(pageInfo, $tbody, $gamePagination) {
+    $tbody.empty();
+    var pageData = pageInfo.pageData;
+    var pageNum = pageInfo.pageNum;
+    var totalPage = pageInfo.totalPage;
+    var totalRow = pageInfo.totalRow;
+    var isFirstPage = pageInfo.firstPage;
+    var isLastPage = pageInfo.lastPage;
+    // 填充表格
+    for (var index in pageData) {
+      var number = parseInt(index) + 1;
+      var game = pageData[index];
+      var platform;
+      var gameStatus;
+      var gameType;
+      var recommendType;
+      if (game.platform === 1) {
+        platform = '<span class="am-icon-apple am-vertical-align-middle"></span>'
+      } else if (game.platform === 2) {
+        platform = '<span class="am-icon-android am-vertical-align-middle"></span>'
       } else {
-        $gamePagination.find('li.am-pagination-first').removeClass('am-disabled');
-        $gamePagination.find('li.am-pagination-prev').removeClass('am-disabled');
+        platform = '<span class="am-icon-apple am-vertical-align-middle">&nbsp;</span><span class="am-icon-android am-vertical-align-middle"></span>'
       }
-      if (isLastPage) {
-        $gamePagination.find('li.am-pagination-last').addClass('am-disabled');
-        $gamePagination.find('li.am-pagination-next').addClass('am-disabled');
+      if (game.gameStatus === 1) {
+        gameStatus = '<span class="am-badge am-badge-success am-radius am-vertical-align-middle">启用</span>'
       } else {
-        $gamePagination.find('li.am-pagination-last').removeClass('am-disabled');
-        $gamePagination.find('li.am-pagination-next').removeClass('am-disabled');
+        gameStatus = '<span class="am-badge am-badge-danger am-radius am-vertical-align-middle">下线</span>'
       }
-      // 恢复按钮加载状态
-      $('#searchGameButton').button('reset');
+      switch (parseInt(game.gameTypeId)) {
+        case 1:
+          gameType = '休闲益智';
+          break;
+        case 2:
+          gameType = '网络游戏';
+          break;
+        case 3:
+          gameType = '动作冒险';
+          break;
+        case 4:
+          gameType = '棋牌中心';
+          break;
+        case 5:
+          gameType = '飞行设计';
+          break;
+        case 6:
+          gameType = '经营策略';
+          break;
+        case 7:
+          gameType = '角色扮演';
+          break;
+        case 8:
+          gameType = '体育竞技';
+          break;
+        default:
+          gameType = '未知类型';
+          break;
+      }
+      if (parseInt(game.recommendType) === 1) {
+        recommendType = '<span class="am-vertical-align-middle">普通</span>'
+      } else if (parseInt(game.recommendType) === 2) {
+        recommendType = '<span class="am-vertical-align-middle">最新&nbsp;<i class="am-icon-star-o"></span>'
+      } else if (parseInt(game.recommendType) === 3) {
+        recommendType = '<span class="am-vertical-align-middle">推荐&nbsp;<i class="am-icon-thumbs-o-up"></span>'
+      } else {
+        recommendType = '<span class="am-vertical-align-middle">未知</span>'
+      }
+      $tbody.append($('<tr>' +
+        '<td class="table-ssm am-vertical-align"><span class="am-vertical-align-middle">' + number + '</span></td>' +
+        '<td class="table-lg am-vertical-align"><span class="am-vertical-align-middle">' + game.name + '</span></td>' +
+        '<td class="table-lg am-vertical-align"><span class="am-vertical-align-middle">' + game.title + '</span></td>' +
+        '<td class="table-sm am-vertical-align"><span class="am-vertical-align-middle">' + game.downloadCount + '</span></td>' +
+        '<td class="table-sm am-vertical-align"><span class="am-vertical-align-middle">' + game.gameSize + '</span></td>' +
+        '<td class="table-sm am-vertical-align">' + gameStatus + '</td>' +
+        '<td class="table-md am-vertical-align"><span class="am-vertical-align-middle">' + gameType + '</span></td>' +
+        '<td class="table-sm am-vertical-align">' + platform + '</td>' +
+        '<td class="table-sm am-vertical-align">' + recommendType + '</td>' +
+        '<td class="table-lg">' +
+        '<div class="am-btn-group">' +
+        '<button type="button" class="am-btn am-btn-primary" name="' + game.gameId + '">' +
+        '<span class="am-icon-pencil-square-o"></span> 编辑</button>' +
+        '<button type="button" class="am-btn am-btn-danger am-hide-sm-only" name="' + game.gameId + '">' +
+        '<span class="am-icon-trash-o"></span> 删除</button>' +
+        '</div>' +
+        '</td>' +
+        '</tr>'));
     }
-    // 获取游戏分页列表
-    function pageQueryGame(pageNum, pageSize) {
-      var gameName = $('#searchGameName').val().trim();
-      var gameType = $('#searchGameGameType').val();
-      var platform = $('#searchGamePlatform').val();
-      var recommendType = $('#searchGameRecommendType').val();
-      var pageInfo = null;
-      $.ajax({
-        url: '${pageContext.request.contextPath}/backend/game/list',
-        type: 'GET',
-        data: {
-          "pageNum": pageNum,
-          "pageSize": pageSize,
-          "gameName": gameName,
-          "gameType": gameType,
-          "platform": platform,
-          "recommendType": recommendType
-        },
-        dataType: 'json',
-        async: false,
-        success: function (serverResponse) {
-          if (serverResponse.code === 200) {
-            pageInfo = serverResponse.data;
-          }
+    // 显示分页信息
+    var template = Handlebars.compile('{{>pagination}}');
+    var page = [];
+    for (var i = 1; i <= totalPage; i++) {
+      var className = "pagination-index";
+      if (i === parseInt(pageNum)) {
+        className += ' am-active';
+      }
+      page.push({
+        "title": "" + i + "",
+        "link": "#",
+        "className": className
+      })
+    }
+    var data = {
+      paginationData: {
+        "content": {
+          "prevTitle": "上一页",
+          "prevLink": "#",
+          "nextTitle": "下一页",
+          "nextLink": "#",
+          "firstTitle": "首页",
+          "firstLink": "#",
+          "lastTitle": "末页",
+          "lastLink": "#",
+          "page": page
         }
-      });
-      return pageInfo;
+      }
+    };
+    var html = template(data.paginationData);
+    $gamePagination.html(html);
+    $('#totalRow').html(totalRow);
+    $('#gamePaginationOption').show();
+    // 禁用相应的按钮
+    if (isFirstPage) {
+      $gamePagination.find('li.am-pagination-first').addClass('am-disabled');
+      $gamePagination.find('li.am-pagination-prev').addClass('am-disabled');
+    } else {
+      $gamePagination.find('li.am-pagination-first').removeClass('am-disabled');
+      $gamePagination.find('li.am-pagination-prev').removeClass('am-disabled');
     }
-    // 获取游戏信息
-    function getGameInfo(gameId) {
-      var gameInfo = null;
-      $.ajax({
-        url: '${pageContext.request.contextPath}/backend/game/info',
-        type: 'POST',
-        data: {
-          "gameId": gameId
-        },
-        dataType: 'json',
-        async: false,
-        success: function (serverResponse) {
-          if (serverResponse.code === 200) {
-            gameInfo = serverResponse.data;
-          }
+    if (isLastPage) {
+      $gamePagination.find('li.am-pagination-last').addClass('am-disabled');
+      $gamePagination.find('li.am-pagination-next').addClass('am-disabled');
+    } else {
+      $gamePagination.find('li.am-pagination-last').removeClass('am-disabled');
+      $gamePagination.find('li.am-pagination-next').removeClass('am-disabled');
+    }
+    // 恢复按钮加载状态
+    $('#searchGameButton').button('reset');
+  }
+  // 获取游戏分页列表
+  function pageQueryGame(pageNum, pageSize) {
+    var gameName = $('#searchGameName').val().trim();
+    var gameType = $('#searchGameGameType').val();
+    var platform = $('#searchGamePlatform').val();
+    var recommendType = $('#searchGameRecommendType').val();
+    var pageInfo = null;
+    $.ajax({
+      url: '${pageContext.request.contextPath}/backend/game/list',
+      type: 'GET',
+      data: {
+        "pageNum": pageNum,
+        "pageSize": pageSize,
+        "gameName": gameName,
+        "gameType": gameType,
+        "platform": platform,
+        "recommendType": recommendType
+      },
+      dataType: 'json',
+      async: false,
+      success: function (serverResponse) {
+        if (serverResponse.code === 200) {
+          pageInfo = serverResponse.data;
         }
-      });
-      return gameInfo;
-    }
-    // 操作信息提示
-    function showOperationMsg(msg) {
-      var operationMsgModal = $('#operationMsgModal');
-      operationMsgModal.find('.am-modal-bd').html(msg);
-      operationMsgModal.modal();
-    }
-    // main
-    $(function () {
-      var $tbody = $('#tbody');
-      var $gamePagination = $('#gamePagination');
-      var $modifyGameModal = $('#modifyGameModal');
-      var $deleteGameModal = $('#deleteGameModal');
-      var $searchGameButton = $('#searchGameButton');
-      var $addGameButton = $('#addGameButton');
-      var $pageSize = $('#pageSize');
-      var pageNum = 1;
-      var pageSize = $pageSize.val();
+      }
+    });
+    return pageInfo;
+  }
+  // 获取游戏信息
+  function getGameInfo(gameId) {
+    var gameInfo = null;
+    $.ajax({
+      url: '${pageContext.request.contextPath}/backend/game/info',
+      type: 'POST',
+      data: {
+        "gameId": gameId
+      },
+      dataType: 'json',
+      async: false,
+      success: function (serverResponse) {
+        if (serverResponse.code === 200) {
+          gameInfo = serverResponse.data;
+        }
+      }
+    });
+    return gameInfo;
+  }
+  // 操作信息提示
+  function showOperationMsg(msg) {
+    var operationMsgModal = $('#operationMsgModal');
+    operationMsgModal.find('.am-modal-bd').html(msg);
+    operationMsgModal.modal();
+  }
+  // main
+  $(function () {
+    var $tbody = $('#tbody');
+    var $gamePagination = $('#gamePagination');
+    var $modifyGameModal = $('#modifyGameModal');
+    var $deleteGameModal = $('#deleteGameModal');
+    var $searchGameButton = $('#searchGameButton');
+    var $addGameButton = $('#addGameButton');
+    var $pageSize = $('#pageSize');
+    var $modifyGameForm = $('#modifyGameForm');
+    var pageNum = 1;
+    var pageSize = $pageSize.val();
 
+    var pageInfo = pageQueryGame(pageNum, pageSize);
+    loadGameList(pageInfo, $tbody, $gamePagination);
+
+    // 修改页面大小
+    $pageSize.on('change', function () {
+      pageNum = 1;
+      pageSize = $(this).val();
+      pageInfo = pageQueryGame(pageNum, pageSize);
+      loadGameList(pageInfo, $tbody, $gamePagination);
+    });
+    // 游戏分类
+    $('#searchGameGameType').on('change', function () {
+      $searchGameButton.button('loading');
       var pageInfo = pageQueryGame(pageNum, pageSize);
       loadGameList(pageInfo, $tbody, $gamePagination);
-
-      // 修改页面大小
-      $pageSize.on('change', function () {
-        pageNum = 1;
-        pageSize = $(this).val();
-        pageInfo = pageQueryGame(pageNum, pageSize);
-        loadGameList(pageInfo, $tbody, $gamePagination);
-      });
-      // 游戏分类
-      $('#searchGameGameType').on('change', function () {
-        $searchGameButton.button('loading');
-        var pageInfo = pageQueryGame(pageNum, pageSize);
-        loadGameList(pageInfo, $tbody, $gamePagination);
-      });
-      // 推荐类别
-      $('#searchGameRecommendType').on('change', function () {
-        $searchGameButton.button('loading');
-        var pageInfo = pageQueryGame(pageNum, pageSize);
-        loadGameList(pageInfo, $tbody, $gamePagination);
-      });
-      // 游戏平台
-      $('#searchGamePlatform').on('change', function () {
-        $searchGameButton.button('loading');
-        var pageInfo = pageQueryGame(pageNum, pageSize);
-        loadGameList(pageInfo, $tbody, $gamePagination);
-      });
-      // 搜索按钮
-      $searchGameButton.on('click', function () {
-        // 显示为加载状态
-        $searchGameButton.button('loading');
-        var pageInfo = pageQueryGame(pageNum, pageSize);
-        loadGameList(pageInfo, $tbody, $gamePagination);
-      });
-      // 添加按钮
-      $addGameButton.on('click', function () {
-        $('#modifyGameForm')[0].reset();
-        $('#modifyGameModalTitle').html('添加');
-        $modifyGameModal.modal();
-      });
-      // 确认编辑/添加
-      $modifyGameModal.find('[data-am-modal-confirm]').off('click.confirm.modal.amui').on('click', function() {
-        var $modifyGameForm = $('#modifyGameForm');
-        var modifyGameFormData = $modifyGameForm.serialize();
-        if ($('#modifyGameModalTitle').html() === '添加') {
-          $.ajax({
-            url: '${pageContext.request.contextPath}/backend/game/add',
-            type: 'POST',
-            data: modifyGameFormData,
-            dataType: 'json',
-            success: function (serverResponse) {
-              showOperationMsg(serverResponse.msg);
-              pageInfo = pageQueryGame(pageNum, pageSize);
-              loadGameList(pageInfo, $tbody, $gamePagination);
-            }
-          });
-        } else {
-          $.ajax({
-            url: '${pageContext.request.contextPath}/backend/game/modify',
-            type: 'POST',
-            data: modifyGameFormData,
-            dataType: 'json',
-            success: function (serverResponse) {
-              showOperationMsg(serverResponse.msg);
-              pageInfo = pageQueryGame(pageNum, pageSize);
-              loadGameList(pageInfo, $tbody, $gamePagination);
-            }
-          });
-        }
-      });
-      // 取消编辑/添加
-      $modifyGameModal.find('[data-am-modal-cancel]').off('click.cancel.modal.amui').on('click', function() {
-        showOperationMsg('已取消');
-      });
-      // 确认删除
-      $deleteGameModal.find('[data-am-modal-confirm]').off('click.confirm.modal.amui').on('click', function() {
-        var deleteGameName = $deleteGameModal.find('.hiddenSpan').html();
+    });
+    // 推荐类别
+    $('#searchGameRecommendType').on('change', function () {
+      $searchGameButton.button('loading');
+      var pageInfo = pageQueryGame(pageNum, pageSize);
+      loadGameList(pageInfo, $tbody, $gamePagination);
+    });
+    // 游戏平台
+    $('#searchGamePlatform').on('change', function () {
+      $searchGameButton.button('loading');
+      var pageInfo = pageQueryGame(pageNum, pageSize);
+      loadGameList(pageInfo, $tbody, $gamePagination);
+    });
+    // 搜索按钮
+    $searchGameButton.on('click', function () {
+      // 显示为加载状态
+      $searchGameButton.button('loading');
+      var pageInfo = pageQueryGame(pageNum, pageSize);
+      loadGameList(pageInfo, $tbody, $gamePagination);
+    });
+    // 添加按钮
+    $addGameButton.on('click', function () {
+      $modifyGameForm[0].reset();
+      $('#modifyGameModalTitle').html('添加');
+      $modifyGameModal.modal();
+    });
+    // 确认编辑/添加
+    $modifyGameModal.find('[data-am-modal-confirm]').off('click.confirm.modal.amui').on('click', function() {
+      var $modifyGameForm = $('#modifyGameForm');
+      var modifyGameFormData = $modifyGameForm.serialize();
+      if ($('#modifyGameModalTitle').html() === '添加') {
         $.ajax({
-          url: '${pageContext.request.contextPath}/backend/game/delete',
-          type: 'GET',
-          data: {
-            "name": deleteGameName
-          },
+          url: '${pageContext.request.contextPath}/backend/game/add',
+          type: 'POST',
+          data: modifyGameFormData,
           dataType: 'json',
           success: function (serverResponse) {
             showOperationMsg(serverResponse.msg);
-            if (serverResponse.code === 200) {
-              // 当前删除的是此页的最后一条记录
-              if (pageInfo.totalRow === (pageInfo.totalPage - 1) * pageSize) {
-                pageNum--;
-              }
-              pageInfo = pageQueryGame(pageNum, pageSize);
-              loadGameList(pageInfo, $tbody, $gamePagination);
-            }
+            pageInfo = pageQueryGame(pageNum, pageSize);
+            loadGameList(pageInfo, $tbody, $gamePagination);
           }
-        })
-      });
-      // 取消删除
-      $deleteGameModal.find('[data-am-modal-cancel]').off('click.cancel.modal.amui').on('click', function() {
-        showOperationMsg('已取消');
-      });
-      // 编辑
-      $tbody.on('click', 'button.am-btn-primary', function () {
-        var gameId = $(this).prop('name');
-        var game = getGameInfo(gameId);
-        $('#modifyGameForm')[0].reset();
-        $('#modifyGameModalTitle').html('编辑 ' + game.name);
-        $('#gameId').val(game.gameId);
-        $('#gameName').val(game.name);
-        $('#gameTitle').val(game.title);
-        $('#gameSize').val(game.gameSize);
-        $('#gameIcon').val(game.gameIcon);
-        $('#gamePictures').val(game.gamePictures);
-        $('#iosUrl').val(game.iosUrl);
-        $('#androidUrl').val(game.androidUrl);
-        $('#recommendType').val(game.recommendType);
-        $('#platform').val(game.platform);
-        $('#gameType').val(game.gameTypeId);
-        $('#gameStatus').val(game.gameStatus);
-        $modifyGameModal.modal();
-      });
-      // 删除
-      $tbody.on('click', 'button.am-btn-danger', function () {
-        var name = getGameInfo($(this).prop('name')).name;
-        $deleteGameModal.find('.hiddenSpan').html(name);
-        $deleteGameModal.find('.am-modal-bd').html(name);
-        $deleteGameModal.modal();
-      });
-      // 首页
-      $gamePagination.on('click', 'li.am-pagination-first', function () {
-        if (pageNum === 1) {
-          return;
+        });
+      } else {
+        $.ajax({
+          url: '${pageContext.request.contextPath}/backend/game/modify',
+          type: 'POST',
+          data: modifyGameFormData,
+          dataType: 'json',
+          success: function (serverResponse) {
+            showOperationMsg(serverResponse.msg);
+            pageInfo = pageQueryGame(pageNum, pageSize);
+            loadGameList(pageInfo, $tbody, $gamePagination);
+          }
+        });
+      }
+    });
+    // 取消编辑/添加
+    $modifyGameModal.find('[data-am-modal-cancel]').off('click.cancel.modal.amui').on('click', function() {
+      showOperationMsg('已取消');
+    });
+    // 确认删除
+    $deleteGameModal.find('[data-am-modal-confirm]').off('click.confirm.modal.amui').on('click', function() {
+      var deleteGameName = $deleteGameModal.find('.hiddenSpan').html();
+      $.ajax({
+        url: '${pageContext.request.contextPath}/backend/game/delete',
+        type: 'GET',
+        data: {
+          "name": deleteGameName
+        },
+        dataType: 'json',
+        success: function (serverResponse) {
+          showOperationMsg(serverResponse.msg);
+          if (serverResponse.code === 200) {
+            // 当前删除的是此页的最后一条记录
+            if (pageInfo.totalRow === (pageInfo.totalPage - 1) * pageSize) {
+              pageNum--;
+            }
+            pageInfo = pageQueryGame(pageNum, pageSize);
+            loadGameList(pageInfo, $tbody, $gamePagination);
+          }
         }
-        pageNum = 1;
-        pageInfo = pageQueryGame(pageNum, pageSize);
-        loadGameList(pageInfo, $tbody, $gamePagination);
-      });
-      // 末页
-      $gamePagination.on('click', 'li.am-pagination-last', function () {
-        if (pageNum === pageInfo.totalPage) {
-          return;
-        }
-        pageNum = pageInfo.totalPage;
-        pageInfo = pageQueryGame(pageNum, pageSize);
-        loadGameList(pageInfo, $tbody, $gamePagination);
-      });
-      // 上一页
-      $gamePagination.on('click', 'li.am-pagination-prev', function () {
-        if (pageNum === 1) {
-          return;
-        }
-        pageNum--;
-        pageInfo = pageQueryGame(pageNum, pageSize);
-        loadGameList(pageInfo, $tbody, $gamePagination);
-      });
-      // 下一页
-      $gamePagination.on('click', 'li.am-pagination-next', function () {
-        if (pageNum === pageInfo.totalPage) {
-          return;
-        }
-        pageNum++;
-        pageInfo = pageQueryGame(pageNum, pageSize);
-        loadGameList(pageInfo, $tbody, $gamePagination);
-      });
-      // 指定页码
-      $gamePagination.on('click', 'a.pagination-index', function () {
-        if (parseInt($(this).html()) === pageNum) {
-          return;
-        }
-        pageNum = $(this).html();
-        pageInfo = pageQueryGame(pageNum, pageSize);
-        loadGameList(pageInfo, $tbody, $gamePagination);
       })
+    });
+    // 取消删除
+    $deleteGameModal.find('[data-am-modal-cancel]').off('click.cancel.modal.amui').on('click', function() {
+      showOperationMsg('已取消');
+    });
+    // 编辑
+    $tbody.on('click', 'button.am-btn-primary', function () {
+      var gameId = $(this).prop('name');
+      var game = getGameInfo(gameId);
+      $modifyGameForm[0].reset();
+      $('#modifyGameModalTitle').html('编辑 ' + game.name);
+      $('#gameId').val(game.gameId);
+      $('#gameName').val(game.name);
+      $('#gameTitle').val(game.title);
+      $('#gameSize').val(game.gameSize);
+      $('#gameIcon').val(game.gameIcon);
+      $('#gamePictures').val(game.gamePictures);
+      $('#iosUrl').val(game.iosUrl);
+      $('#androidUrl').val(game.androidUrl);
+      $('#recommendType').val(game.recommendType);
+      $('#platform').val(game.platform);
+      $('#gameType').val(game.gameTypeId);
+      $('#gameStatus').val(game.gameStatus);
+      $modifyGameModal.modal();
+    });
+    // 删除
+    $tbody.on('click', 'button.am-btn-danger', function () {
+      var name = getGameInfo($(this).prop('name')).name;
+      $deleteGameModal.find('.hiddenSpan').html(name);
+      $deleteGameModal.find('.am-modal-bd').html(name);
+      $deleteGameModal.modal();
+    });
+    // 首页
+    $gamePagination.on('click', 'li.am-pagination-first', function () {
+      if (pageNum === 1) {
+        return;
+      }
+      pageNum = 1;
+      pageInfo = pageQueryGame(pageNum, pageSize);
+      loadGameList(pageInfo, $tbody, $gamePagination);
+    });
+    // 末页
+    $gamePagination.on('click', 'li.am-pagination-last', function () {
+      if (pageNum === pageInfo.totalPage) {
+        return;
+      }
+      pageNum = pageInfo.totalPage;
+      pageInfo = pageQueryGame(pageNum, pageSize);
+      loadGameList(pageInfo, $tbody, $gamePagination);
+    });
+    // 上一页
+    $gamePagination.on('click', 'li.am-pagination-prev', function () {
+      if (pageNum === 1) {
+        return;
+      }
+      pageNum--;
+      pageInfo = pageQueryGame(pageNum, pageSize);
+      loadGameList(pageInfo, $tbody, $gamePagination);
+    });
+    // 下一页
+    $gamePagination.on('click', 'li.am-pagination-next', function () {
+      if (pageNum === pageInfo.totalPage) {
+        return;
+      }
+      pageNum++;
+      pageInfo = pageQueryGame(pageNum, pageSize);
+      loadGameList(pageInfo, $tbody, $gamePagination);
+    });
+    // 指定页码
+    $gamePagination.on('click', 'a.pagination-index', function () {
+      if (parseInt($(this).html()) === pageNum) {
+        return;
+      }
+      pageNum = $(this).html();
+      pageInfo = pageQueryGame(pageNum, pageSize);
+      loadGameList(pageInfo, $tbody, $gamePagination);
     })
-  </script>
-  <style>
-    body {
-      overflow-y: auto;
-    }
-    #tbody td {
-      height: 30px;
-    }
-
-    .table-sm {
-      width: 8%;
-    }
-    .table-ssm {
-      width: 4%;
-    }
-
-    .table-md {
-      width: 10%;
-    }
-
-    .table-lg {
-      width: 15%;
-    }
-    .am-fr {
-      height: 70px;
-    }
-    .gameHeader {
-      border: solid 1px white;
-      height: 5%;
-      margin-top: 1%;
-    }
-    .gameBody {
-      border: solid 1px white;
-      margin-top: 1%;
-      height: 91%;
-    }
-    .gameHeader .am-selected-btn {
-      width: 60%;
-    }
-    .gameHeader .am-btn-block {
-      float: right;
-    }
-  </style>
-</head>
-<body>
+  })
+</script>
+<style>
+  #tbody td {
+    height: 30px;
+  }
+  .table-sm {
+    width: 8%;
+  }
+  .table-ssm {
+    width: 4%;
+  }
+  .table-md {
+    width: 10%;
+  }
+  .table-lg {
+    width: 15%;
+  }
+  .gameHeader {
+    border: solid 1px white;
+    height: 5%;
+    margin-top: 1%;
+  }
+  .gameBody {
+    border: solid 1px white;
+    margin-top: 1%;
+    height: 91%;
+  }
+  .gameBody .am-fr {
+    height: 70px;
+  }
+  .gameHeader .am-selected-btn {
+    width: 60%;
+  }
+  .gameHeader .am-btn-block {
+    float: right;
+  }
+</style>
 <%--搜索--%>
 <div class="gameHeader">
   <div class="am-g">
@@ -662,5 +637,3 @@
     </div>
   </div>
 </div>
-</body>
-</html>
