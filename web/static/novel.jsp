@@ -230,6 +230,7 @@
                 flushTable();
             });
             $("#rowNumberSelect").on("change", function () {
+                pageIndex.val("1");
                 flushTable();
             });
             buttonConfig();
