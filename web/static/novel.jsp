@@ -229,6 +229,9 @@
                 pageIndex.val(totalPage);
                 flushTable();
             });
+            $("#rowNumberSelect").on("change", function () {
+                flushTable();
+            });
             buttonConfig();
         });
 
