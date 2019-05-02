@@ -81,4 +81,13 @@ public interface PermissionService {
    * @return serverResponse
    */
   ServerResponse<List<MenuManage>> getMenuList();
+
+  /**
+   * 修改密码
+   * @param uid 用户id
+   * @param originPassword 原密码
+   * @param newPassword 新密码
+   * @return serverResponse
+   */
+  ServerResponse changePassword(long uid, String originPassword, String newPassword);
 }

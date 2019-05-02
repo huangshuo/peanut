@@ -180,4 +180,25 @@ public class PermissionServiceImpl implements PermissionService {
     List<MenuManage> menuManageList = menuManageDao.selectListByTemplate(null);
     return ServerResponse.successWithData(menuManageList);
   }
+
+  /**
+   * 修改密码
+   *
+   * @param uid            用户id
+   * @param originPassword 原密码
+   * @param newPassword    新密码
+   * @return serverResponse
+   */
+  @Override
+  public ServerResponse changePassword(long uid, String originPassword, String newPassword) {
+    BackendUser backendUser = backendUserDao.selectOneByPrimaryKey(uid);
+    if (!Md5Util.verify(originPassword, backendUser.getPassword())) {
+      return ServerResponse.failWithMsg(ServerStatusCodeEnum.AUTHENTICATION_FAILED.getCode(), "密码错误");
+    }
+    backendUser.setPassword(Md5Util.encrypt(newPassword));
+    if (backendUserDao.updateByTemplate(backendUser)) {
+      return ServerResponse.success();
+    }
+    return ServerResponse.failWithMsg(ServerStatusCodeEnum.FAIL.getCode(), ServerStatusCodeEnum.FAIL.getMsg());
+  }
 }

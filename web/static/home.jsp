@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
 
-<script>
+  <script>
   //主函数
   $(function() {
     //折叠菜单右侧小箭头图标样式改变
@@ -113,15 +113,52 @@
         }
         link();
         breadCrumb();
+        iconStyle();
       }
     })
   }
   // 注销按钮
   function logoutButton() {
+    var $changePasswordModal = $('#changePasswordModal');
+    var $operationMsgModal = $('#operationMsgModal');
     $('#userButton').html(${pageContext.session.getAttribute('session_user_key')}.username + '&nbsp;&nbsp;<span class="am-icon-caret-down"></span>');
     $('#changePassword').on('click', function () {
-      $('#changePasswordModal').modal();
-    })
+      $('#changePasswordForm')[0].reset();
+      $changePasswordModal.modal();
+    });
+    // 确认
+    $changePasswordModal.find('[data-am-modal-confirm]').off('click.confirm.modal.amui').on('click', function() {
+      var id = ${pageContext.session.getAttribute('session_user_key')}.uid;
+      $.ajax({
+        url: '${pageContext.request.contextPath}/backend/password',
+        type: 'POST',
+        data: {
+          "originPassword": $('#originPassword').val(),
+          "newPassword": $('#newPassword').val(),
+          "uid": id
+        },
+        dataType: 'json',
+        success: function (serverResponse) {
+          if (serverResponse.code === 200) {
+            showOperationMsg(serverResponse.msg + ', 请重新登录');
+            $operationMsgModal.on('closed.modal.amui', function () {
+              window.location.href = '${pageContext.request.contextPath}/backend/logout';
+            });
+          } else {
+            showOperationMsg(serverResponse.msg);
+          }
+        }
+      });
+    });
+    // 取消
+    $changePasswordModal.find('[data-am-modal-cancel]').off('click.cancel.modal.amui').on('click', function() {
+      showOperationMsg('已取消');
+    });
+    // 操作信息提示
+    function showOperationMsg(msg) {
+      $operationMsgModal.find('.am-modal-bd').html(msg);
+      $operationMsgModal.modal();
+    }
   }
 
 </script>
@@ -250,9 +287,9 @@
     <div class="am-modal-bd">
       <form class="am-form am-form-horizontal" id="changePasswordForm">
         <div class="am-form-group">
-          <label for="oldPassword" class="am-u-md-3">原始密码:</label>
+          <label for="originPassword" class="am-u-md-3">原始密码:</label>
           <div class="am-u-md-9">
-            <input type="password" id="oldPassword" name="oldPassword" placeholder="原始密码" class="am-form-field" required/>
+            <input type="password" id="originPassword" name="originPassword" placeholder="原始密码" class="am-form-field" required/>
           </div>
         </div>
         <div class="am-form-group">
@@ -266,6 +303,16 @@
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>取消</span>
       <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+    </div>
+  </div>
+</div>
+<%--提示框--%>
+<div class="am-modal am-modal-confirm" tabindex="-1" id="operationMsgModal">
+  <div class="am-modal-dialog">
+    <div class="am-modal-bd">
+    </div>
+    <div class="am-modal-footer">
+      <span class="am-modal-btn">确定</span>
     </div>
   </div>
 </div>
