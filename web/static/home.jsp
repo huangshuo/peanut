@@ -131,8 +131,10 @@
     height: 60px;
   }
    .header {
+       z-index: 5;
     height: 50px;
     border-bottom: 1px lightgray solid;
+       box-shadow: 0px 2px 5px 1px #B7B7B7;
     background-color: whitesmoke;
     line-height: 45px;
     padding-left: 10px;
@@ -154,7 +156,7 @@
     font-weight: 700;
     border: 0;
     outline:none;
-    box-shadow: 2px 2px 2px 0px darkgray;
+    box-shadow: 3px 3px 2px 0px darkgray;
   }
   .bodyLeft {
     -webkit-transition: left 0.75s;
@@ -164,7 +166,7 @@
     width: 14%;
     height: 937px;
     background-color: rgb(41, 60, 85);
-    box-shadow: 2px 2px 2px 2px darkgray;
+    box-shadow: 2px 2px 2px 1px darkgray;
   }
   .bodyLeft li,.bodyLeft ul {
     background-color: rgb(41, 60, 85);
