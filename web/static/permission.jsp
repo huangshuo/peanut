@@ -454,6 +454,7 @@
   .userBody {
     margin-top: 1%;
     height: 91%;
+    overflow-y: auto;
   }
   .userBody .am-fr {
     height: 70px;
@@ -532,7 +533,7 @@
     <div class="am-fr am-vertical-align">
       <div id="userPaginationOption" hidden="hidden" class="am-vertical-align-middle">
         <label for="pageSize">&nbsp;每页&nbsp;</label>
-        <select id="pageSize" data-am-selected="{btnWidth: '25%'}">
+        <select id="pageSize" data-am-selected="{btnWidth: '26%'}">
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="15">15</option>
