@@ -23,7 +23,7 @@
 
     option = {
       title : {
-        text: '用户组成',
+        text: '用户按地区分布',
         subtext: '',
         x:'center'
       },
@@ -66,10 +66,8 @@
       var legendData = [];
       var seriesData = [];
       var selected = {};
-      for (var i = 0; i < 5; i++) {
-        var name = Math.random() > 0.65
-          ? makeWord(4, 1) + '·' + makeWord(3, 0)
-          : makeWord(2, 1);
+      for (var i = 0; i < 9; i++) {
+        var name = ["江苏","浙江","广东","山东","四川","河南","上海","北京","其他"][i];
         legendData.push(name);
         seriesData.push({
           name: name,
@@ -93,7 +91,6 @@
         return name.join('');
       }
     }
-    ;
     if (option && typeof option === "object") {
       myChart.setOption(option, true);
     }
@@ -105,14 +102,14 @@
     option = null;
     option = {
       title : {
-        text: '某地区蒸发量和降水量',
-        subtext: '纯属虚构'
+        text: '用户充值率',
+        subtext: ''
       },
       tooltip : {
         trigger: 'axis'
       },
       legend: {
-        data:['蒸发量','降水量']
+        data:['总用户','有充值记录用户']
       },
       toolbox: {
         show : true,
@@ -137,9 +134,9 @@
       ],
       series : [
         {
-          name:'蒸发量',
+          name:'总用户',
           type:'bar',
-          data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+          data:[10000*2, 10000*3, 10000*4.5, 10000*5.2, 10000*6, 10000*9, 10000*20, 10000*25, 10000*33, 10000*39, 10000*45, 10000*50],
           markPoint : {
             data : [
               {type : 'max', name: '最大值'},
@@ -153,9 +150,9 @@
           }
         },
         {
-          name:'降水量',
+          name:'有充值记录用户',
           type:'bar',
-          data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+          data:[10000*2*0.1, 10000*3*0.11, 10000*4.5*0.125, 10000*5.2*0.08, 10000*6*0.16, 10000*9*0.22, 10000*20*0.26, 10000*25*0.13, 10000*33*0.22, 10000*39*0.13, 10000*45*0.121, 10000*50*0.125],
           markPoint : {
             data : [
               {name : '年最高', value : 182.2, xAxis: 7, yAxis: 183},
@@ -182,7 +179,7 @@
     option = null;
     option = {
       title: {
-        text: '堆叠区域图'
+        text: '渠道下载量'
       },
       tooltip : {
         trigger: 'axis',
@@ -194,7 +191,7 @@
         }
       },
       legend: {
-        data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+        data:['应用市场推广','手机厂商预装','社交平台推广','内容推广','其他']
       },
       toolbox: {
         feature: {
@@ -221,35 +218,35 @@
       ],
       series : [
         {
-          name:'邮件营销',
+          name:'应用市场推广',
           type:'line',
           stack: '总量',
           areaStyle: {},
-          data:[120, 132, 101, 134, 90, 230, 210]
+          data:[820*10, 932*10, 901*10, 934*10, 1290*10, 1330*10, 1320*10]
         },
         {
-          name:'联盟广告',
+          name:'手机厂商预装',
           type:'line',
           stack: '总量',
           areaStyle: {},
-          data:[220, 182, 191, 234, 290, 330, 310]
+          data:[220*10, 182*10, 191*10, 234*10, 290*10, 330*10, 310*10]
         },
         {
-          name:'视频广告',
+          name:'社交平台推广',
           type:'line',
           stack: '总量',
           areaStyle: {},
-          data:[150, 232, 201, 154, 190, 330, 410]
+          data:[150*10, 232*10, 201*10, 154*10, 190*10, 330*10, 410*10]
         },
         {
-          name:'直接访问',
+          name:'内容推广',
           type:'line',
           stack: '总量',
           areaStyle: {normal: {}},
-          data:[320, 332, 301, 334, 390, 330, 320]
+          data:[320*10, 332*10, 301*10, 334*10, 390*10, 330*10, 320*10]
         },
         {
-          name:'搜索引擎',
+          name:'其他渠道',
           type:'line',
           stack: '总量',
           label: {
@@ -259,7 +256,7 @@
             }
           },
           areaStyle: {normal: {}},
-          data:[820, 932, 901, 934, 1290, 1330, 1320]
+          data:[120*10, 132*10, 101*10, 134*10, 90*10, 230*10, 210*10]
         }
       ]
     };

@@ -14,6 +14,7 @@
     changePageBtn("select",page,pageSize);
     pageData("select",page,pageSize);
     addMenu(page,pageSize);
+    selectClass();
     $(".pageSizeNum").on("change",function () {
       pageData("select",page,$(".pageSizeNum").val());
     })
@@ -23,24 +24,24 @@
     $("#first").on("click",function () {
       var currentPage=1;
       $("#currentPage").val(1);
-      pageData(action,currentPage,pageSize);
+      pageData(action,currentPage,$(".pageSizeNum").val());
     });
     $("#last").on("click",function () {
       var totalPage= $("#totalPage").val();
       $("#currentPage").val(page);
       $("#currentPage").val(totalPage);
-      pageData(action,totalPage,pageSize);
+      pageData(action,totalPage,$(".pageSizeNum").val());
     });
     $("#next").on("click",function () {
       if($("#currentPage").val()!=$("#totalPage").val()){
         var currentPage=parseInt($("#currentPage").val()) +1;
-        pageData(action,currentPage,pageSize);
+        pageData(action,currentPage,$(".pageSizeNum").val());
       }
     });
     $("#prev").on("click",function () {
       if($("#currentPage").val()!=1){
         var currentPage=$("#currentPage").val()-1;
-        pageData(action,currentPage,pageSize);
+        pageData(action,currentPage,$(".pageSizeNum").val());
         $("#currentPage").val(currentPage);
       }
     });
@@ -74,13 +75,13 @@
         }
         //绑定事件
         $("li[id*='page']").on("click",function () {
-          pageData(action,$(this).children().html(),pageSize);
+          pageData(action,$(this).children().html(),$(".pageSizeNum").val());
         });
         //在页面暂存totalPage、currentPage
         $("#totalPage").val(data.data.totalPage);
         $("#currentPage").val(data.data.pageNum);
         $("#currentPage-totalPage").html( data.data.pageNum+"/"+data.data.totalPage+"页");
-        deleteChannel("delete",page,pageSize);
+        deleteChannel("delete",page,$(".pageSizeNum").val());
       }
     });
   }
@@ -90,20 +91,29 @@
       $('#my-prompt').modal({
         relatedTarget: this,
         onConfirm: function(e) {
+          console.log(e.data);
           //确认：向数据库发送请求
-          $.ajax({
-            url:"${pageContext.request.contextPath}/backend/channel/class/manage",
-            type:"get",
-            data:{"action":"insert",
-              "className":e.data[1],
-              "fname":e.data[2],
-              "labelOrder":e.data[3]
-            },
-            dataType:"text",
-            success:function(data){
-              pageData("select",page,pageSize);
-            }
-          });
+          var i=1;
+          if(e.data[1]==""||e.data[2]==""){
+            i=0;
+          }
+          if(i==1){
+            $.ajax({
+              url:"${pageContext.request.contextPath}/backend/channel/class/manage",
+              type:"get",
+              data:{"action":"insert",
+                "className":e.data[1],
+                "fname":$("#selectClass").val(),
+                "labelOrder":e.data[2]
+              },
+              dataType:"text",
+              success:function(data){
+                pageData("select",page,pageSize);
+              }
+            });
+          }else {
+            alert("数据不能为空");
+          }
         }
       });
     })
@@ -141,12 +151,12 @@
       var hours=oDate.getHours();
       var minutes=oDate.getMinutes();
       var seconds=oDate.getSeconds();
-      return year+"年"+
-        addZero(month)+"月"+
-        addZero(date)+"日 "+
-        addZero(hours)+"h"+
-        addZero(minutes)+"m"+
-        addZero(seconds)+"s";
+      return year+"-"+
+        addZero(month)+"-"+
+        addZero(date)+" "+
+        addZero(hours)+":"+
+        addZero(minutes)+":"+
+        addZero(seconds);
     }
   }
   //日期补零
@@ -163,6 +173,23 @@
     }
     return data;
   }
+
+  function selectClass() {
+    $.ajax({
+      url:"${pageContext.request.contextPath}/backend/channel/class/manage",
+      type:"get",
+      data:{"action":"select","page":1,"pageSize":1000},
+      dataType:"json",
+      success:function (data) {
+        console.log(data)
+        $("#selectClass").append('<option>无父级</option>');
+        $.each(data.data.pageData,function (i,d) {
+          $("#selectClass").append('<option>'+d.className+'</option>')
+        })
+      }
+    });
+  }
+
 </script>
 <style>
   .border{
@@ -181,7 +208,7 @@
     font-size: 25px;
   }
   .changeMenu{
-    height: 350px;
+    height: 299px;
     width: 700px;
   }
   .changeMenu input{
@@ -213,7 +240,7 @@
   <table class="am-table  am-table-centered am-table-hover am-table-striped">
     <thead>
     <tr class="am-primary">
-      <th>分类名称</th>
+      <th>渠道分类名称</th>
       <th>父级</th>
       <th>标签排序</th>
       <th>创建时间</th>
@@ -248,9 +275,11 @@
     <div class="am-modal-bd">
       <input type="hidden" class="am-modal-prompt-input" id="id">
       <label class="label">分类名称</label><input type="text" class="am-modal-prompt-input" id="first_class">
-      <label class="label">父级</label><input type="text" class="am-modal-prompt-input" id="second_class">
+      <label class="label">父级</label>
+      <select id="selectClass" style="width: 79%;float: left;margin-bottom: 15px">
+
+      </select>
       <label class="label">标签排序</label><input type="text" class="am-modal-prompt-input" id="channel_num">
-      <label class="label">备注</label><input type="text" class="am-modal-prompt-input" id="channel_download_link">
     </div>
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>取消</span>
@@ -263,7 +292,7 @@
   <div class="am-modal-dialog">
     <div class="am-modal-hd">花生娱乐</div>
     <div class="am-modal-bd">
-      你，确定要删除这个渠道吗？
+      你，确定要删除这个渠道分类吗？
     </div>
     <div class="am-modal-footer">
       <span class="am-modal-btn" data-am-modal-cancel>取消</span>

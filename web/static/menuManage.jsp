@@ -988,13 +988,14 @@
     height: 50px;
     width: 80px;
    }
-.addMenu{
-  margin:0 0 10px 30px;
+#addMenu{
+  margin:0 80px 10px 0;
+  float: right;
 }
 </style>
 <div class="border" style="height: 600px;">
   <%--渠道添加添加功能--%>
-  <button type="button" class="am-btn am-btn-warning am-round addMenu" id="addMenu" >添加菜单</button>
+  <button type="button" class="am-btn am-btn-primary  " id="addMenu" >添加菜单</button>
   <%--菜单管理表单--%>
   <table class="am-table  am-table-centered am-table-hover am-table-striped">
     <thead>

@@ -45,7 +45,7 @@ public class BackendNovelServiceImpl implements BackendNovelService {
 	 */
 	@Override
 	public ServerResponse<PageInfo<BackendNovel>> selectNovelInfoByTemplate(int pageNum, int pageSize, BackendNovel bean) {
-		PageInfo<BackendNovel> pageInfo = novelDao.pageQueryByTemplate(pageNum, pageSize, bean);
+		PageInfo<BackendNovel> pageInfo = novelDao.pageQueryByTemplate(pageNum, pageSize, bean, "novel_name");
 		return pageInfo.getTotalPage() == 0 ? ServerResponse.failWithMsg(ServerStatusCodeEnum.NOT_FOUND.getCode(), ServerStatusCodeEnum.NOT_FOUND.getMsg()) :
 				ServerResponse.successWithData(pageInfo);
 	}

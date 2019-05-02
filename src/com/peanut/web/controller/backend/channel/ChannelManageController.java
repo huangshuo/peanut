@@ -36,7 +36,6 @@ public class ChannelManageController extends HttpServlet {
     PrintWriter pw=resp.getWriter();
     BackendChannelManage backendChannelManage=new BackendChannelManage();
     ServerResponse<PageInfo<BackendChannelManage>> serverResponse=null;
-    System.out.println(action);
     if ("init".equals(action)) {
       serverResponse = new ChannelServiceImpl().channelManage(page, pageSize);
       pw.write(JSON.toJSONString(serverResponse));

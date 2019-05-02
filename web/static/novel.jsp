@@ -32,12 +32,13 @@
                 }
             });
             $("#novelTypeIdPrimary").on("change", function () {
+                var secondaryType = $("#novelTypeIdSecondary");
                 if ($("#novelTypeIdPrimary>option[value='0']").prop("selected") === false) {
                     $("#novelTypeIdPrimary").css("color", "#3c3c3c");
                 } else {
+                    secondaryType.css("color", "#f5cecd");
                     $("#novelTypeIdPrimary").css("color", "#f5cecd");
                 }
-                var secondaryType = $("#novelTypeIdSecondary");
                 secondaryType.children().each(function (index) {
                     if (index > 0) {
                         $(this).remove();
@@ -184,6 +185,7 @@
             pageIndex.val(1);
             $("#pageIndex, #novelId, #novelName").on("keyup", function (fn) {
                 if (fn.keyCode === 13) {
+                    buttonConfig();
                     flushTable();
                 }
             });

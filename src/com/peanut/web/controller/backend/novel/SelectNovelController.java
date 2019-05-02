@@ -51,7 +51,6 @@ public class SelectNovelController extends HttpServlet {
 		BackendNovelService service = new BackendNovelServiceImpl();
 		ServerResponse<PageInfo<BackendNovel>> serverResponse = service.selectNovelInfoByTemplate(pageNum, pageSize, bean);
 		PrintWriter writer = resp.getWriter();
-		System.out.println(JSON.toJSONString(serverResponse));
 		writer.print(JSON.toJSONString(serverResponse));
 		writer.close();
 	}
