@@ -267,8 +267,6 @@
         });
         var formData = new FormData($modifyGameForm[0]);
         formData.append("gameIcon", $('input[type=file]')[0].files[0]);
-        formData.append("gamePictures", $('input[type=file]')[1].files[0]);
-        console.log(formData);
         $.ajax({
           url: '${pageContext.request.contextPath}/backend/upload',
           type: 'POST',
@@ -292,8 +290,6 @@
         });
         var formData = new FormData($modifyGameForm[0]);
         formData.append("gameIcon", $('input[type=file]')[0].files[0]);
-        formData.append("gamePictures", $('input[type=file]')[1].files[0]);
-        console.log(formData);
         $.ajax({
           url: '${pageContext.request.contextPath}/backend/upload',
           type: 'POST',
