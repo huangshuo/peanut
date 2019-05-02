@@ -199,7 +199,7 @@
     position:relative;
     float: left;
     width: 14%;
-    height: 937px;
+    height: 100%;
     background-color: rgb(41, 60, 85);
     box-shadow: 2px 2px 2px 2px darkgray;
   }
