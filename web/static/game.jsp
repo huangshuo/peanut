@@ -265,6 +265,19 @@
             loadGameList(pageInfo, $tbody, $gamePagination);
           }
         });
+        var formData = new FormData($modifyGameForm[0]);
+        formData.append("gameIcon", $('input[type=file]')[0].files[0]);
+        formData.append("gamePictures", $('input[type=file]')[1].files[0]);
+        console.log(formData);
+        $.ajax({
+          url: '${pageContext.request.contextPath}/backend/upload',
+          type: 'POST',
+          data: formData,
+          processData : false,
+          contentType : false,
+          success: function (serverResponse) {
+          }
+        });
       } else {
         $.ajax({
           url: '${pageContext.request.contextPath}/backend/game/modify',
@@ -275,6 +288,19 @@
             showOperationMsg(serverResponse.msg);
             pageInfo = pageQueryGame(pageNum, pageSize);
             loadGameList(pageInfo, $tbody, $gamePagination);
+          }
+        });
+        var formData = new FormData($modifyGameForm[0]);
+        formData.append("gameIcon", $('input[type=file]')[0].files[0]);
+        formData.append("gamePictures", $('input[type=file]')[1].files[0]);
+        console.log(formData);
+        $.ajax({
+          url: '${pageContext.request.contextPath}/backend/upload',
+          type: 'POST',
+          data: formData,
+          processData : false,
+          contentType : false,
+          success: function (serverResponse) {
           }
         });
       }
@@ -314,14 +340,16 @@
     $tbody.on('click', 'button.am-btn-primary', function () {
       var gameId = $(this).prop('name');
       var game = getGameInfo(gameId);
+      var gameIcon = game.gameIcon;
+      var gamePictures = game.gamePictures;
       $modifyGameForm[0].reset();
       $('#modifyGameModalTitle').html('编辑 ' + game.name);
       $('#gameId').val(game.gameId);
       $('#gameName').val(game.name);
       $('#gameTitle').val(game.title);
       $('#gameSize').val(game.gameSize);
-      $('#gameIcon').val(game.gameIcon);
-      $('#gamePictures').val(game.gamePictures);
+      $('#gameIcon').text(gameIcon);
+      $('#gamePictures').text(gamePictures);
       $('#iosUrl').val(game.iosUrl);
       $('#androidUrl').val(game.androidUrl);
       $('#recommendType').val(game.recommendType);
@@ -523,7 +551,7 @@
   <div class="am-modal-dialog">
     <div class="am-modal-hd" id="modifyGameModalTitle"></div>
     <div class="am-modal-bd">
-      <form class="am-form am-form-horizontal" id="modifyGameForm">
+      <form class="am-form am-form-horizontal" id="modifyGameForm" enctype="multipart/form-data">
         <input type="hidden" name="gameId" id="gameId">
         <div class="am-form-group">
           <label for="gameName" class="am-u-md-3">游戏名称:</label>
@@ -546,13 +574,15 @@
         <div class="am-form-group">
           <label for="gameIcon" class="am-u-md-3">游戏图标:</label>
           <div class="am-u-md-9">
-            <input type="text" id="gameIcon" name="gameIcon" placeholder="游戏图标" class="am-form-field" required/>
+            <input type="file" id="gameIcon" name="gameIcon" placeholder="游戏图标" class="am-form-field" required/>
+            <img id="uploadIcon" src="">
           </div>
         </div>
         <div class="am-form-group">
           <label for="gamePictures" class="am-u-md-3">详情图片:</label>
           <div class="am-u-md-9">
-            <input type="text" id="gamePictures" name="gamePictures" placeholder="游戏详情图片" class="am-form-field" required/>
+            <input type="file" id="gamePictures" name="gamePictures" placeholder="游戏详情图片" class="am-form-field" required/>
+            <img id="uploadPictures" src="">
           </div>
         </div>
         <div class="am-form-group">
