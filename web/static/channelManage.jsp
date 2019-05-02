@@ -22,15 +22,13 @@
     })
   });
   //頁面固定換頁按鈕Ok
-  function changePageBtn(action,page,pageSize) {
+  function changePageBtn(action) {
     $("#first").on("click",function () {
-      var currentPage=1;
       $("#currentPage").val(1);
-      pageData(action,currentPage,$(".pageSizeNum").val());
+      pageData(action,1,$(".pageSizeNum").val());
     });
     $("#last").on("click",function () {
       var totalPage= $("#totalPage").val();
-      $("#currentPage").val(page);
       $("#currentPage").val(totalPage);
       pageData(action,totalPage,$(".pageSizeNum").val());
     });

@@ -118,7 +118,7 @@
   }
   // 注销按钮
   function logoutButton() {
-    $('#userButton').html(${pageContext.session.getAttribute('session_user_key')}.username + '&nbsp;&nbsp;<span class="am-icon-caret-down"></span>');
+    $('#userButton').html(${pageContext.session.getAttribute('session_user_key')}.username + '&nbsp;&nbsp;<span class="am-icon-caret-down"></span>' );
     $('#changePassword').on('click', function () {
       $('#changePasswordModal').modal();
     })
