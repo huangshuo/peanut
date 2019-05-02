@@ -36,6 +36,9 @@
       } else {
         status = '<span class="am-badge am-badge-danger am-radius am-vertical-align-middle">失效</span>'
       }
+      if (!user.lastLoginTime) {
+        user.lastLoginTime = "\\";
+      }
       $tbody.append($('<tr>' +
         '<td class="table-sm am-vertical-align"><span class="am-vertical-align-middle">' + number + '</span></td>' +
         '<td class="table-lg am-vertical-align"><span class="am-vertical-align-middle">' + user.username + '</span></td>' +
@@ -47,7 +50,7 @@
         '<div class="am-btn-group">' +
         '<button type="button" class="am-btn am-btn-primary" name="' + user.uid + '">' +
         '<span class="am-icon-pencil-square-o"></span> 编辑</button>' +
-        '<button type="button" class="am-btn am-btn-danger am-hide-sm-only deleteUser" name="' + user.uid + '">' +
+        '<button type="button" class="am-btn am-btn-danger am-hide-sm-only" name="' + user.uid + '">' +
         '<span class="am-icon-trash-o"></span> 删除</button>' +
         '</div>' +
         '</td>' +
@@ -245,12 +248,11 @@
     loadPermissionTree();
     var permissionTree = $.fn.zTree.getZTreeObj("permissionTree");
     // 删除
-    $tbody.on('click', '.deleteUser', function () {
-      alert("13213");
-      // var name = getUserInfo($(this).prop('name')).username;
-      // $deleteUserModal.find('.hiddenSpan').html(name);
-      // $deleteUserModal.find('.am-modal-bd').html(name);
-      // $deleteUserModal.modal();
+    $tbody.on('click', 'button.am-btn-danger', function () {
+      var name = getUserInfo($(this).prop('name')).username;
+      $deleteUserModal.find('.hiddenSpan').html(name);
+      $deleteUserModal.find('.am-modal-bd').html(name);
+      $deleteUserModal.modal();
     });
     // 修改页面大小
     $pageSize.on('change', function () {
