@@ -229,6 +229,10 @@
                 pageIndex.val(totalPage);
                 flushTable();
             });
+            $("#rowNumberSelect").on("change", function () {
+                pageIndex.val("1");
+                flushTable();
+            });
             buttonConfig();
         });
 
@@ -260,6 +264,11 @@
             background-color: lightskyblue;
         }
 
+        .am-scrollable-vertical {
+            height: auto;
+            max-height: 500px;
+            overflow: auto;
+        }
         /*#buttonContainer{padding-bottom: 10px}*/
         div[class="am-container"] {
             border: lightgray solid 1px;
@@ -395,7 +404,7 @@
                             </div>
                         </div>
                         <div id="table" class="am-panel-collapse am-collapse am-in">
-                            <div class="am-g am-g-collapse" id="tableRow">
+                            <div class="am-g am-g-collapse am-scrollable-vertical" id="tableRow">
                                 <div class="am-panel-bd">
                                     <div class="am-u-md-12">
                                         <table
