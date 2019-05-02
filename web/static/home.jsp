@@ -171,7 +171,6 @@
        z-index: 5;
     height: 50px;
     border-bottom: 1px lightgray solid;
-       box-shadow: 0px 1px 4px 1px #919191;
     background-color: whitesmoke;
     line-height: 45px;
     padding-left: 10px;
