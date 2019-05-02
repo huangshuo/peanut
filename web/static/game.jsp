@@ -409,6 +409,7 @@
     border: solid 1px white;
     margin-top: 1%;
     height: 91%;
+    overflow-y: auto;
   }
   .gameBody .am-fr {
     height: 70px;
